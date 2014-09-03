@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-public class SwipeScreenExample extends Activity implements SimpleGestureListener{
+public class MainChallengeActivity extends Activity implements SimpleGestureListener{
 	private SimpleGestureFilter detector;
 
 	@Override
@@ -35,14 +35,14 @@ public class SwipeScreenExample extends Activity implements SimpleGestureListene
 	public void onSwipe(int direction) {
 		switch (direction) {
 		case SimpleGestureFilter.SWIPE_RIGHT : 
-			Intent intent = new Intent(this, SwipeRightActivity.class);
+			Intent intent = new Intent(this, ReplyCameraActivity.class);
 //			Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation1 ,R.anim.animation2).toBundle();
 //			startActivity(intent, bndlanimation);
 			startActivity(intent);
 			break;
 
 		case SimpleGestureFilter.SWIPE_LEFT :
-			Intent intent1 = new Intent(this, SwipeLeftActivity.class);
+			Intent intent1 = new Intent(this, FeedActivity.class);
 			startActivity(intent1);
 			break;
 		}

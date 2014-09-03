@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.ape.SwipeScreenExample"
+            android:name="com.example.ape.MainChallengeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.ape.SwipeLeftActivity" >
+        <activity android:name="com.example.ape.FeedActivity" >
         </activity>
-        <activity android:name="com.example.ape.SwipeRightActivity" >
+        <activity android:name="com.example.ape.ReplyCameraActivity" >
         </activity>
     </application>
 

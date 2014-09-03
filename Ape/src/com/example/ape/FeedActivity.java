@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-public class SwipeLeftActivity extends Activity implements SimpleGestureListener {
+public class FeedActivity extends Activity implements SimpleGestureListener {
 	private SimpleGestureFilter detector;
 	
 	@Override
@@ -36,7 +36,7 @@ public class SwipeLeftActivity extends Activity implements SimpleGestureListener
 		switch (direction) {
 
 		case SimpleGestureFilter.SWIPE_RIGHT : 
-			Intent intent = new Intent(this, SwipeScreenExample.class);
+			Intent intent = new Intent(this, MainChallengeActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			finish();
