@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.example.ape.R;
-import com.example.ape.R.drawable;
  
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +22,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
  
+/**
+ * Image loader 
+ * @author MercaIonel
+ *
+ */
 public class ImageLoader {
  
     MemoryCache memoryCache=new MemoryCache();

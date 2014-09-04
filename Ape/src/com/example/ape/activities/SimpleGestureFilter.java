@@ -5,6 +5,11 @@ import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 
+/**
+ * Class used to implement the swyping process.
+ * @author MercaIonel
+ *
+ */
 public class SimpleGestureFilter extends SimpleOnGestureListener{
 
 	public final static int SWIPE_UP    = 1;
@@ -57,7 +62,6 @@ public class SimpleGestureFilter extends SimpleOnGestureListener{
 			}
 
 		}
-		//else just do nothing, it's Transparent
 	}
 
 	public void setMode(int m){

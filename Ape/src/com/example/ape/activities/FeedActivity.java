@@ -1,6 +1,5 @@
 package com.example.ape.activities;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.ape.R;
-import com.example.ape.R.id;
-import com.example.ape.R.layout;
-import com.example.ape.R.raw;
 import com.example.ape.activities.SimpleGestureFilter.SimpleGestureListener;
 import com.example.ape.adapters.CustomAdapter;
 import com.example.ape.utilsFeed.ItemInfo;
@@ -31,16 +27,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * The activity in which the user can visualize a list of other people's
+ * replies
+ * 
+ * @author MercaIonel
+ *
+ */
 public class FeedActivity extends Activity implements SimpleGestureListener {
-	private SimpleGestureFilter detector;
+	private SimpleGestureFilter detector;	// Gesture detector for swipe
 
-	static final String KEY_USR = "username"; // parent node
-	static final String KEY_TITLE = "title";
-	static final String KEY_TIMESTAMP = "timestamp";
-	static final String KEY_THUMBNAIL = "thumbnail";
+	static final String KEY_USR = "username"; 			// username key
+	static final String KEY_TITLE = "title";  			// title key
+	static final String KEY_TIMESTAMP = "timestamp";	// timestamp key
+	static final String KEY_THUMBNAIL = "thumbnail"; 	// thumbnail key
 
-	ListView view;
-	CustomAdapter adapter;
+	ListView view;			// the list view with the replies
+	CustomAdapter adapter;	// the custom adapter used for populating the view
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +53,28 @@ public class FeedActivity extends Activity implements SimpleGestureListener {
 		// this layout is a list view
 		setContentView(R.layout.swipe_screen_left);
 
+		// the data that contains row element information
 		ArrayList<HashMap<String, String>> data = new ArrayList<>();
+
+		// google's GSON library used to map a JSON into a Java Object
 		Gson gson = new Gson();
 
+		// read the data from the JSON 
 		InputStream inStream = getResources().openRawResource(R.raw.input);
 		Writer writer = new StringWriter();
 		char[] buffer = new char[1024];
 		try {
-		    Reader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-		    int n;
-		    while ((n = reader.read(buffer)) != -1) {
-		        writer.write(buffer, 0, n);
-		    }
+			Reader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+			int n;
+			while ((n = reader.read(buffer)) != -1) {
+				writer.write(buffer, 0, n);
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-		    try {
+			try {
 				inStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -75,7 +83,10 @@ public class FeedActivity extends Activity implements SimpleGestureListener {
 
 		String jsonString = writer.toString();
 
+		// get a list of ItemInfo from the JSON
 		ItemInfo[] items = gson.fromJson(jsonString, ItemInfo[].class);
+
+		// iterate through the items and create a new hashMap
 		for (ItemInfo item : items) {
 			HashMap<String, String> map = new HashMap<>();
 			map.put(KEY_USR, item.getUsername());
@@ -84,28 +95,23 @@ public class FeedActivity extends Activity implements SimpleGestureListener {
 			map.put(KEY_THUMBNAIL, item.getThumb_image());
 			data.add(map);
 		}
-
+		
+		// get the view, initialize the adapter, populate the view and 
+		// set an onclick listener
 		view = (ListView)findViewById(R.id.list);
-
 		adapter = new CustomAdapter(this, data);
 		view.setAdapter(adapter);
+		
 		view.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 			}
-			
 		});
-
 
 		// Detect touched area 
 		detector = new SimpleGestureFilter(this,this);
 	}
-
-
-
-
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent me){
@@ -117,7 +123,7 @@ public class FeedActivity extends Activity implements SimpleGestureListener {
 	@Override
 	public void onSwipe(int direction) {
 		switch (direction) {
-
+		// take an action only for swipe right to the main activity
 		case SimpleGestureFilter.SWIPE_RIGHT : 
 			Intent intent = new Intent(this, MainChallengeActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -147,7 +153,6 @@ public class FeedActivity extends Activity implements SimpleGestureListener {
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 

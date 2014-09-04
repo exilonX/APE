@@ -3,9 +3,11 @@ package com.example.ape.adapters;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 import com.example.ape.R;
 import com.example.ape.utilsFeed.ImageLoader;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,17 +17,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * Custom Adapter used for populating the feed view
+ * @author MercaIonel
+ *
+ */
 public class CustomAdapter extends BaseAdapter {
 
 	private Activity activity;
 	private ArrayList<HashMap<String, String>> data;
-	private static LayoutInflater inflater = null;
+	private LayoutInflater inflater = null;
 	public ImageLoader imageLoader;
 
 	public CustomAdapter(Activity a, ArrayList<HashMap<String, String>> data) {
 		this.activity = a;
 		this.data = data;
-		this.setInflater((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+		this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.imageLoader = new ImageLoader(activity.getApplicationContext());
 	}
 
@@ -46,18 +53,22 @@ public class CustomAdapter extends BaseAdapter {
 	}
 
 	
+	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		
+		// inflate the view and populate the other views inside
 		if(convertView==null)
-			view = getInflater().inflate(R.layout.list_row, null);
-
+			view = inflater.inflate(R.layout.list_row, null);
+		
+		// get each sub-view and populate with coresponding data
 		TextView title = (TextView)view.findViewById(R.id.title); 
 		TextView username = (TextView)view.findViewById(R.id.username); 
 		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
 		ImageView thumb_image=(ImageView)view.findViewById(R.id.list_image);
-
+		
+		
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
 
@@ -67,16 +78,6 @@ public class CustomAdapter extends BaseAdapter {
 		timestamp.setText(item.get("timestamp"));
 		imageLoader.DisplayImage(item.get("thumbnail"), thumb_image);
 		return view;
-	}
-
-
-	public static LayoutInflater getInflater() {
-		return inflater;
-	}
-
-
-	public static void setInflater(LayoutInflater inflater) {
-		CustomAdapter.inflater = inflater;
 	}
 
 }

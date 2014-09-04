@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Unused class, meant to create an animation at swipe
+ * @author MercaIonel
+ *
+ */
 public class ScreenSlidePageFragment extends Fragment {
 
     @Override

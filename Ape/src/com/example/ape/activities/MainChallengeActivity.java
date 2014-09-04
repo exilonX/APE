@@ -1,18 +1,21 @@
 package com.example.ape.activities;
 
 import com.example.ape.R;
-import com.example.ape.R.layout;
+
 import com.example.ape.activities.SimpleGestureFilter.SimpleGestureListener;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+/**
+ * This activity contains the current challenge and represents the main 
+ * access point of the application
+ * @author MercaIonel
+ *
+ */
 public class MainChallengeActivity extends Activity implements SimpleGestureListener{
 	private SimpleGestureFilter detector;
 
@@ -32,17 +35,19 @@ public class MainChallengeActivity extends Activity implements SimpleGestureList
 		return super.dispatchTouchEvent(me);
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public void onSwipe(int direction) {
+
 		switch (direction) {
+		// on swipe right the screen is switched to the Reply camera activity
 		case SimpleGestureFilter.SWIPE_RIGHT : 
 			Intent intent = new Intent(this, ReplyCameraActivity.class);
 //			Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation1 ,R.anim.animation2).toBundle();
 //			startActivity(intent, bndlanimation);
 			startActivity(intent);
 			break;
-
+		
+		// on swipe left the feed activity that contains a list of items
 		case SimpleGestureFilter.SWIPE_LEFT :
 			Intent intent1 = new Intent(this, FeedActivity.class);
 			startActivity(intent1);

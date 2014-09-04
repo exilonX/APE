@@ -2,7 +2,6 @@ package com.example.ape.activities;
 
 
 import com.example.ape.R;
-import com.example.ape.R.layout;
 import com.example.ape.activities.SimpleGestureFilter.SimpleGestureListener;
 
 import android.app.Activity;
@@ -11,13 +10,16 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+/**
+ * Class that should be a camera activity.
+ *
+ */
 public class ReplyCameraActivity extends Activity implements SimpleGestureListener {
 	
 	private SimpleGestureFilter detector;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.swipe_screen_right);
 		
