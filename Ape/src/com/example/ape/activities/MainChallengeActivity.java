@@ -1,6 +1,8 @@
-package com.example.ape;
+package com.example.ape.activities;
 
-import com.example.ape.SimpleGestureFilter.SimpleGestureListener;
+import com.example.ape.R;
+import com.example.ape.R.layout;
+import com.example.ape.activities.SimpleGestureFilter.SimpleGestureListener;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

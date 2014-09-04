@@ -1,7 +1,9 @@
-package com.example.ape;
+package com.example.ape.activities;
 
 
-import com.example.ape.SimpleGestureFilter.SimpleGestureListener;
+import com.example.ape.R;
+import com.example.ape.R.layout;
+import com.example.ape.activities.SimpleGestureFilter.SimpleGestureListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,17 +11,17 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-public class FeedActivity extends Activity implements SimpleGestureListener {
+public class ReplyCameraActivity extends Activity implements SimpleGestureListener {
+	
 	private SimpleGestureFilter detector;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.swipe_screen_left);
+		setContentView(R.layout.swipe_screen_right);
 		
-		// Detect touched area 
-		detector = new SimpleGestureFilter(this,this);
+		detector = new SimpleGestureFilter(this, this);
 	}
 	
 	@Override
@@ -31,14 +33,11 @@ public class FeedActivity extends Activity implements SimpleGestureListener {
 	
 	@Override
 	public void onSwipe(int direction) {
-		String str = "";
-
 		switch (direction) {
-
-		case SimpleGestureFilter.SWIPE_RIGHT : 
-			Intent intent = new Intent(this, MainChallengeActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+		case SimpleGestureFilter.SWIPE_LEFT :
+			Intent intent1 = new Intent(this, MainChallengeActivity.class);
+			intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent1);
 			finish();
 			break;
 		}

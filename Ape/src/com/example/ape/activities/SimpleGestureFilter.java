@@ -1,4 +1,4 @@
-package com.example.ape;
+package com.example.ape.activities;
 
 import android.app.Activity;
 import android.view.GestureDetector;
