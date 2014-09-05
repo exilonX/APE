@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
 
 /**
  * Custom Adapter used for populating the feed view
@@ -67,7 +68,7 @@ public class CustomAdapter extends BaseAdapter {
 		TextView username = (TextView)view.findViewById(R.id.username); 
 		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
 		ImageView thumb_image=(ImageView)view.findViewById(R.id.list_image);
-		
+		thumb_image.setScaleType(ScaleType.FIT_CENTER);
 		
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
