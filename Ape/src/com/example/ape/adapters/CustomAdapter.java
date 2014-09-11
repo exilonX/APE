@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ImageView.ScaleType;
 
 /**
  * Custom Adapter used for populating the feed view
@@ -61,14 +60,14 @@ public class CustomAdapter extends BaseAdapter {
 		
 		// inflate the view and populate the other views inside
 		if(convertView==null)
-			view = inflater.inflate(R.layout.list_row, null);
+			view = inflater.inflate(R.layout.list_row2, null);
 		
 		// get each sub-view and populate with coresponding data
 		TextView title = (TextView)view.findViewById(R.id.title); 
 		TextView username = (TextView)view.findViewById(R.id.username); 
 		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
 		ImageView thumb_image=(ImageView)view.findViewById(R.id.list_image);
-		thumb_image.setScaleType(ScaleType.FIT_CENTER);
+		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
 		
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
@@ -77,7 +76,7 @@ public class CustomAdapter extends BaseAdapter {
 		title.setText(item.get("title"));
 		username.setText(item.get("username"));
 		timestamp.setText(item.get("timestamp"));
-		imageLoader.DisplayImage(item.get("thumbnail"), thumb_image);
+		//imageLoader.DisplayImage(item.get("thumbnail"), thumb_image);
 		return view;
 	}
 

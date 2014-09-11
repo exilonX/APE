@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_selector"
+    android:padding="5dip" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dip"
+            android:background="@color/white" >
+
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/username"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+            
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/username"
+                android:layout_alignBottom="@+id/username"
+                android:layout_alignParentRight="true"
+                android:text="08-09-2014, 00:00:00"
+                android:textSize="9dp" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/profilePic"
+                android:textSize="13dip"
+                android:text="exilonX" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dip"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O descriere titlu"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ImageView
+                android:id="@+id/list_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/lion" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dip"
+            android:background="@color/white" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start" 
+                android:layout_marginLeft="15dip">
+
+                <Button
+                    android:id="@+id/imageView3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/monkeyface" />
+
+                <TextView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100" />
+
+            </LinearLayout>
+            
+            
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
