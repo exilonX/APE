@@ -1,6 +1,5 @@
 package com.example.fragments;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,20 +16,20 @@ import com.example.ape.adapters.CustomAdapter;
 import com.example.ape.utilsFeed.ItemInfo;
 import com.google.gson.Gson;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class FeedFragment extends Fragment {
-	
+public class CommentFragment extends Fragment {
+
 	static final String KEY_USR = "username"; 			// username key
 	static final String KEY_TITLE = "title";  			// title key
 	static final String KEY_TIMESTAMP = "timestamp";	// timestamp key
@@ -40,7 +39,7 @@ public class FeedFragment extends Fragment {
 	CustomAdapter adapter;	// the custom adapter used for populating the view
 	
 	public String getJsonString() {
-		// read the data from the JSON 
+		// read the data from the JSON
 		InputStream inStream = getResources().openRawResource(R.raw.input);
 		Writer writer = new StringWriter();
 		char[] buffer = new char[1024];
@@ -119,5 +118,4 @@ public class FeedFragment extends Fragment {
 			}
 		});
 	}
-	
 }

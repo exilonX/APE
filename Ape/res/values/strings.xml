@@ -3,4 +3,5 @@
 
     <string name="comment">This is the challenge</string>
     <string name="app_name">Ape</string>
+    <string name="commentTextField">Comment</string>
 </resources>

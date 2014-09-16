@@ -9,6 +9,8 @@ import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.Window;
 
 public class MainActivity extends FragmentActivity {
 
@@ -18,8 +20,17 @@ public class MainActivity extends FragmentActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// remove the title and icon of the app
+		actionBar = getActionBar();
+		if (actionBar == null)
+			Log.d("ONCREATE", "MATA");
+		
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
 		
 		tabAdapter = new TabPaggerAdapter(getSupportFragmentManager());
 		
@@ -37,6 +48,7 @@ public class MainActivity extends FragmentActivity {
 		actionBar = getActionBar();
 		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 			
 			@Override
