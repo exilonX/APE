@@ -57,4 +57,8 @@ local.properties
 # PDT-specific
 .buildpath
 
+# ignore npm install and bower install results
+Server/node_modules
+Server/client/lib
+
 
