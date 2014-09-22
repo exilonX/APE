@@ -12,35 +12,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.ape.R;
-import com.example.ape.adapters.CustomAdapter;
-import com.example.ape.utilsFeed.ItemInfo;
+import com.example.ape.adapters.CommentAdaptor;
+import com.example.ape.utilsFeed.CommentInfo;
 import com.google.gson.Gson;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout;
 
 public class CommentFragment extends Fragment {
 
 	static final String KEY_USR = "username"; 			// username key
-	static final String KEY_TITLE = "title";  			// title key
+	static final String KEY_COMMENT = "comment";  			// title key
 	static final String KEY_TIMESTAMP = "timestamp";	// timestamp key
-	static final String KEY_THUMBNAIL = "thumbnail"; 	// thumbnail key
 	
 	ListView view;			// the list view with the replies
-	CustomAdapter adapter;	// the custom adapter used for populating the view
+	CommentAdaptor adapter;	// the custom adapter used for populating the view
 	
 	public String getJsonString() {
 		// read the data from the JSON
-		InputStream inStream = getResources().openRawResource(R.raw.input);
+		InputStream inStream = getResources().openRawResource(R.raw.comment);
 		Writer writer = new StringWriter();
 		char[] buffer = new char[1024];
 		try {
@@ -64,11 +61,12 @@ public class CommentFragment extends Fragment {
 		return writer.toString();
 	}
 	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		LinearLayout linear = (LinearLayout) inflater.inflate(R.layout.swipe_screen_left, container, false);
-		view = (ListView) linear.getChildAt(0);
+		RelativeLayout relative = (RelativeLayout) inflater.inflate(R.layout.comment_view, container, false);
+		view = (ListView) relative.findViewById(R.id.commentList);
 		String json = getJsonString();
 
 		// the data that contains row element information
@@ -78,22 +76,22 @@ public class CommentFragment extends Fragment {
 		Gson gson = new Gson();
 		
 		// get a list of ItemInfo from the JSON
-		ItemInfo[] items = gson.fromJson(json, ItemInfo[].class);
+		CommentInfo[] items = gson.fromJson(json, CommentInfo[].class);
 		
 		// iterate through the items and create a new hashMap
-		for (ItemInfo item : items) {
+		for (CommentInfo item : items) {
 			HashMap<String, String> map = new HashMap<>();
-			map.put(KEY_USR, item.getUsername());
-			map.put(KEY_TITLE, item.getTitle());
-			map.put(KEY_TIMESTAMP, item.getTimestamp());
-			map.put(KEY_THUMBNAIL, item.getThumb_image());
+			map.put(KEY_USR, item.username);
+			map.put(KEY_COMMENT, item.comment);
+			map.put(KEY_TIMESTAMP, item.timestamp);
+			
 			data.add(map);
 		}
 		
 		// get the view, initialize the adapter, populate the view and 
 		// set an onclick listener
 		
-		adapter = new CustomAdapter(getActivity(), data);
+		adapter = new CommentAdaptor(getActivity(), data);
 		view.setAdapter(adapter);
 		
 		view.setOnItemClickListener(new OnItemClickListener() {
@@ -104,18 +102,8 @@ public class CommentFragment extends Fragment {
 			}
 		});
 		
-       return linear;
+       return relative;
 	}
 	
-	public void setOnClickComment() {
-		
-		Button btn = (Button)view.findViewById(R.id.addComment);
-		btn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-			}
-		});
-	}
+	
 }

@@ -12,33 +12,47 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.ape.R;
 import com.example.ape.adapters.CustomAdapter;
 import com.example.ape.utilsFeed.ItemInfo;
+import com.example.volley.AppController;
 import com.google.gson.Gson;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class FeedFragment extends Fragment {
-	
+
 	static final String KEY_USR = "username"; 			// username key
 	static final String KEY_TITLE = "title";  			// title key
 	static final String KEY_TIMESTAMP = "timestamp";	// timestamp key
 	static final String KEY_THUMBNAIL = "thumbnail"; 	// thumbnail key
-	
+
 	ListView view;			// the list view with the replies
 	CustomAdapter adapter;	// the custom adapter used for populating the view
-	
+
 	public String getJsonString() {
 		// read the data from the JSON 
 		InputStream inStream = getResources().openRawResource(R.raw.input);
@@ -64,7 +78,32 @@ public class FeedFragment extends Fragment {
 
 		return writer.toString();
 	}
+
+	public String getJSONLocal() {
+		// Tag used to cancel the request
+		String tag_json_arry = "json_array_req";
+
+		String url = "http://api.androidhive.info/volley/person_array.json";
+
 	
+		JsonArrayRequest req = new JsonArrayRequest(url,
+				new Response.Listener<JSONArray>() {
+			@Override
+			public void onResponse(JSONArray response) {
+				Log.d("TAG", response.toString());       
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				VolleyLog.d("TAG", "Error: " + error.getMessage());
+			}
+		});
+
+		// Adding request to request queue
+		AppController.getInstance().addToRequestQueue(req, tag_json_arry);
+		return null;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -77,10 +116,10 @@ public class FeedFragment extends Fragment {
 
 		// google's GSON library used to map a JSON into a Java Object
 		Gson gson = new Gson();
-		
+
 		// get a list of ItemInfo from the JSON
 		ItemInfo[] items = gson.fromJson(json, ItemInfo[].class);
-		
+
 		// iterate through the items and create a new hashMap
 		for (ItemInfo item : items) {
 			HashMap<String, String> map = new HashMap<>();
@@ -90,34 +129,26 @@ public class FeedFragment extends Fragment {
 			map.put(KEY_THUMBNAIL, item.getThumb_image());
 			data.add(map);
 		}
-		
+
 		// get the view, initialize the adapter, populate the view and 
 		// set an onclick listener
-		
-		adapter = new CustomAdapter(getActivity(), data);
+
+		adapter = new CustomAdapter(getActivity(), data, getFragmentManager());
 		view.setAdapter(adapter);
-		
+
+		// set listener on comment click
+
 		view.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				
+
 			}
 		});
-		
-       return linear;
+
+		return linear;
 	}
-	
-	public void setOnClickComment() {
-		
-		Button btn = (Button)view.findViewById(R.id.addComment);
-		btn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-			}
-		});
-	}
-	
+
+
+
 }

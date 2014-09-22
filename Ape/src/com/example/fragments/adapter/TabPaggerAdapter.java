@@ -3,6 +3,7 @@ package com.example.fragments.adapter;
 
 import com.example.fragments.CameraFragment;
 import com.example.fragments.ChallengeFragment;
+import com.example.fragments.CommentFragment;
 import com.example.fragments.FeedFragment;
 
 import android.support.v4.app.Fragment;
@@ -21,7 +22,7 @@ public class TabPaggerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int item) {
 		switch (item) {
 		case 0:
-			return new CameraFragment();
+			return new CommentFragment();
 
 		case 1:
 			return new ChallengeFragment();

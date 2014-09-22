@@ -41,4 +41,16 @@
     </LinearLayout>
     
 	</LinearLayout>
+
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:text="08-09-2014, 00:00:00"
+        android:textSize="9dp" />
+
 </RelativeLayout>

@@ -99,7 +99,7 @@ public class FeedActivity extends Activity implements SimpleGestureListener {
 		// get the view, initialize the adapter, populate the view and 
 		// set an onclick listener
 		view = (ListView)findViewById(R.id.list);
-		adapter = new CustomAdapter(this, data);
+//		adapter = new CustomAdapter(this, data);
 		view.setAdapter(adapter);
 		
 		view.setOnItemClickListener(new OnItemClickListener() {
