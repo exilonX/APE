@@ -1,0 +1,24 @@
+{
+    "name": "application-name",
+    "version": "0.0.1",
+    "dependencies": {
+        "express": "~4.0.0",
+        "mongoose": "*",
+        "body-parser": "*",
+        "jwt-simple": "*",
+        "node-restful": "*",
+        "method-override": "*",
+        "path": "*",
+        "moment": "*",
+        "underscore": "*",
+        "bcrypt-nodejs": "*",
+        "url": "*"
+    },
+    "devDependencies": {
+        "bower": "*",
+        "grunt-bower-install": "*"
+    },
+    "engines": {
+        "node": ">=0.10.19"
+    }
+}
