@@ -1,11 +1,12 @@
-var express = require('express');
-var jwt = require('jwt-simple');
-var bodyParser = require('body-parser');
-var restful = require('node-restful');
-var mongoose = restful.mongoose;
-var methodOverride = require('method-override');
-var path = require('path');
-var router = express.Router();
+var express         = require('express');
+var jwt             = require('jwt-simple');
+var bodyParser      = require('body-parser');
+var restful         = require('node-restful');
+var mongoose        = restful.mongoose;
+var methodOverride  = require('method-override');
+var path            = require('path');
+var router          = express.Router();
+var models          = require('./models');
 
 GLOBAL.app = express();
 
@@ -18,77 +19,30 @@ app.use(methodOverride());
 
 var port = 8080;
 
-router.route('/apeFeed')
-    // get all the bears (accessed at GET http://localhost:8080/api/bears)
+// connect to local database
+mongoose.connect('mongodb://localhost/ape');
+var Challenge       = mongoose.model('Challenge');
+var Reply           = mongoose.model('Reply');
+
+// routes
+
+// main feed containg replies to latest challenge
+router.route('/feed')
     .get(function(req, res) {
-        var jsonRes = [
-            {
-                "username": "exilonX",
-                "title": "Stupid pic",
-                "timestamp": "04:47:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "andreea",
-                "title": "Cute pic",
-                "timestamp": "05:47:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "razvan",
-                "title": "My pic",
-                "timestamp": "06:54:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "leona",
-                "title": "My pic",
-                "timestamp": "06:33:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "marius",
-                "title": "My pic",
-                "timestamp": "06:12:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "exilonX",
-                "title": "Stupid pic",
-                "timestamp": "04:47:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "andreea",
-                "title": "Cute pic",
-                "timestamp": "05:47:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "razvan",
-                "title": "My pic",
-                "timestamp": "06:54:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "leona",
-                "title": "My pic",
-                "timestamp": "06:33:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            },
-            {
-                "username": "marius",
-                "title": "My pic",
-                "timestamp": "06:12:60",
-                "thumb_url": "http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg"
-            }
-        ];
-
-        res.json(jsonRes);
-
+        // find lastest challenge
+        Challenge.findOne().sort('-date').exec(
+            function(err, challenge) {
+                // find replies to it and return them
+                Reply.find({challenge_id : challenge._id},
+                    function(err, replies) {
+                        if (err)
+                            res.send(err);
+                        res.json(replies);
+                });
+        });
     });
 
-// REGISTER OUR ROUTES -------------------------------
+// register routes -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 
