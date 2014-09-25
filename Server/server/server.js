@@ -1,13 +1,14 @@
-var express         = require('express');
-var jwt             = require('jwt-simple');
-var bodyParser      = require('body-parser');
-var restful         = require('node-restful');
-var mongoose        = restful.mongoose;
-var methodOverride  = require('method-override');
-var path            = require('path');
-var router          = express.Router();
-var validator       = require('validator');
-var models          = require('./models');
+var express         = require('express'),
+    jwt             = require('jwt-simple'),
+    bodyParser      = require('body-parser'),
+    restful         = require('node-restful'),
+    mongoose        = restful.mongoose,
+    methodOverride  = require('method-override'),
+    path            = require('path'),
+    router          = express.Router(),
+    validator       = require('validator'),
+    models          = require('./models'),
+    auth            = require('./authentication');
 
 GLOBAL.app = express();
 
@@ -28,8 +29,16 @@ var Reply           = mongoose.model('Reply');
 
 // routes
 
+
+// middleware for member resources
+// it will do the required authentication
+router.get('/member/*', function(req, res, next) {
+    auth.loggedOn(req, res);
+    next();
+});
+
 // main feed containg replies to latest challenge
-router.route('/feed')
+router.route('feed')
     .get(function(req, res) {
         // find latest challenge
         Challenge.findOne().sort('-date').exec(
@@ -87,6 +96,13 @@ router.route('/signup')
         });
     });
 
+
+// log in user (used only when a token expires or does not exists)
+router.route('/login')
+    .post(function(req, res) {
+        auth.authenticate(req, res);
+    });
+
 // get user info
 router.route('/user/:name')
 
@@ -98,8 +114,6 @@ router.route('/user/:name')
             res.json(user);
         });
     });
-
-
 
 // register routes -------------------------------
 // all of our routes will be prefixed with /api

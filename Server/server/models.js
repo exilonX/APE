@@ -13,6 +13,14 @@ var User  = new Schema({
     birth_date          : Date
 });
 
+User.methods.isValidPassword = function isValidPassword(password) {
+    if (this.password == password) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
 
 var Like = new Schema({
     username            : String,
