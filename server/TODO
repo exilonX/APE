@@ -1,0 +1,7 @@
+Here is a temporary TODO list:
+
+- keep crypted passwords in the database
+- separate functions from routes. Ideally the server.js should contain
+only the routes. Even better it would be if the routes would be defined
+in a separate file.
+- more to come...
