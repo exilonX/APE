@@ -12,7 +12,8 @@
         "moment": "*",
         "underscore": "*",
         "bcrypt-nodejs": "*",
-        "url": "*"
+        "url": "*",
+        "validator": "*"
     },
     "devDependencies": {
         "bower": "*",
