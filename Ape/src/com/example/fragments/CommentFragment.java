@@ -67,8 +67,11 @@ public class CommentFragment extends Fragment {
 			Bundle savedInstanceState) {
 		RelativeLayout relative = (RelativeLayout) inflater.inflate(R.layout.comment_view, container, false);
 		view = (ListView) relative.findViewById(R.id.commentList);
+		
+		getFragmentManager().beginTransaction().add(this, "CommentFragment");
+		
 		String json = getJsonString();
-
+		
 		// the data that contains row element information
 		ArrayList<HashMap<String, String>> data = new ArrayList<>();
 
@@ -103,6 +106,11 @@ public class CommentFragment extends Fragment {
 		});
 		
        return relative;
+	}
+	
+	@Override
+	public String toString() {
+		return "CommentFragment";
 	}
 	
 	

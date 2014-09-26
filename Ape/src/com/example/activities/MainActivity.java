@@ -4,15 +4,17 @@ import com.example.ape.R;
 import com.example.fragments.adapter.TabPaggerAdapter;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.app.ActionBar.Tab;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Window;
 
-public class MainActivity extends FragmentActivity {
+
+public class MainActivity extends FragmentActivity implements FragmentSwitchListener {
 
 	ViewPager tab;
     TabPaggerAdapter tabAdapter;
@@ -50,21 +52,24 @@ public class MainActivity extends FragmentActivity {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-			
+
 			@Override
-			public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+			public void onTabReselected(Tab arg0,
+					android.app.FragmentTransaction arg1) {
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			@Override
-			public void onTabSelected(ActionBar.Tab tab1, FragmentTransaction ft) {
+			public void onTabSelected(Tab arg0,
+					android.app.FragmentTransaction arg1) {
 				// TODO Auto-generated method stub
-				tab.setCurrentItem(tab1.getPosition());
+				
 			}
-			
+
 			@Override
-			public void onTabReselected(Tab tab, FragmentTransaction ft) {
+			public void onTabUnselected(Tab arg0,
+					android.app.FragmentTransaction arg1) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -73,6 +78,25 @@ public class MainActivity extends FragmentActivity {
 		actionBar.addTab(actionBar.newTab().setText("Reply").setTabListener(tabListener));
 		actionBar.addTab(actionBar.newTab().setText("Challenge").setTabListener(tabListener));
 		actionBar.addTab(actionBar.newTab().setText("Feed").setTabListener(tabListener));
+	}
+
+	@Override
+	public void replaceFragment(Fragment newFragment) {
+		FragmentManager fragmentManager = getSupportFragmentManager();;     
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(android.R.id.content, newFragment, newFragment.toString());
+        fragmentTransaction.addToBackStack(newFragment.toString());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+        
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+        	String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.hide(getSupportFragmentManager().findFragmentByTag(tag));
+            fragmentTransaction.commit();
+        }
+        
+        
 	}
 	
 }

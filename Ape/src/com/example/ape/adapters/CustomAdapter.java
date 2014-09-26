@@ -3,10 +3,19 @@ package com.example.ape.adapters;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
 
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.activities.FragmentSwitchListener;
+import com.example.activities.MainActivity;
 import com.example.ape.R;
 import com.example.ape.utilsFeed.ImageLoader;
 import com.example.fragments.CommentFragment;
+import com.example.volley.AppController;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -94,8 +103,31 @@ public class CustomAdapter extends BaseAdapter {
 		return view;
 	}
 	
+	public String getJSONLocal() {
+		// Tag used to cancel the request
+		String tag_json_arry = "json_array_req";
+
+		String url = "http://10.0.2.2:8080/api/feed";
+
+		JsonArrayRequest req = new JsonArrayRequest(url,
+				new Response.Listener<JSONArray>() {
+			@Override
+			public void onResponse(JSONArray response) {
+				Log.d("TAG", response.toString());       
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				VolleyLog.d("TAG", "Error: " + error.getMessage());
+			}
+		});
+
+		// Adding request to request queue
+		AppController.getInstance().addToRequestQueue(req, tag_json_arry);
+		return null;
+	}
+	
 	public void setOnClickComment(View view) {
-		
 		final ImageButton btn = (ImageButton)view.findViewById(R.id.addComment);
 		if (btn != null) {
 			btn.setOnClickListener(new OnClickListener() {
@@ -103,10 +135,16 @@ public class CustomAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					Log.d("ONCLICK", "I just clicked this shit" + btn.getTag());
-					FragmentTransaction trans = manager.beginTransaction()
-									.replace(R.id.feedLayout, new CommentFragment());
-					trans.addToBackStack(null);
-					trans.commit();
+//					FragmentTransaction trans = manager.beginTransaction()
+//									.replace(R.id.feedLayout, new CommentFragment());
+//					trans.addToBackStack(null);
+//					trans.commit();
+					
+					FragmentSwitchListener activ = (FragmentSwitchListener)activity;
+					Fragment commentFrag = new CommentFragment();
+					activ.replaceFragment(commentFrag);
+					
+					getJSONLocal();
 				}
 			});
 		} else {

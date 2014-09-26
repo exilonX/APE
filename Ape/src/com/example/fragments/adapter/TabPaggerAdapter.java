@@ -22,7 +22,7 @@ public class TabPaggerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int item) {
 		switch (item) {
 		case 0:
-			return new CommentFragment();
+			return new CameraFragment();
 
 		case 1:
 			return new ChallengeFragment();

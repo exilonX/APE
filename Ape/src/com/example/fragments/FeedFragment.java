@@ -79,30 +79,7 @@ public class FeedFragment extends Fragment {
 		return writer.toString();
 	}
 
-	public String getJSONLocal() {
-		// Tag used to cancel the request
-		String tag_json_arry = "json_array_req";
 
-		String url = "http://api.androidhive.info/volley/person_array.json";
-
-	
-		JsonArrayRequest req = new JsonArrayRequest(url,
-				new Response.Listener<JSONArray>() {
-			@Override
-			public void onResponse(JSONArray response) {
-				Log.d("TAG", response.toString());       
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				VolleyLog.d("TAG", "Error: " + error.getMessage());
-			}
-		});
-
-		// Adding request to request queue
-		AppController.getInstance().addToRequestQueue(req, tag_json_arry);
-		return null;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,7 +87,9 @@ public class FeedFragment extends Fragment {
 		LinearLayout linear = (LinearLayout) inflater.inflate(R.layout.swipe_screen_left, container, false);
 		view = (ListView) linear.getChildAt(0);
 		String json = getJsonString();
-
+		
+		getFragmentManager().beginTransaction().add(this, "FeedFragment");
+		
 		// the data that contains row element information
 		ArrayList<HashMap<String, String>> data = new ArrayList<>();
 
