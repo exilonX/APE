@@ -8,11 +8,17 @@ var db      = conn.getDB('ape');
 db.dropDatabase();
 
 // insert some users ---------------------------------------------
-db.users.insert({name : 'andreea', email : 'andreea.badoiu@gmail.com', password : '123456'});
-db.users.insert({name : 'ionel', email: 'ionel.ionel@gmail.com', password: '123456'});
-db.users.insert({name : 'leona', email: 'leona.cilibeanu@gmail.com', password: '123456'});
-db.users.insert({name : 'marius', email: 'marius.avram@gmail.com', password: '123456'});
-db.users.insert({name : 'razvan', email: 'razvan.florea@gmail.com', password: '123456'});
+// clear text password for following users is '123456'
+db.users.insert({name : 'andreea', email : 'andreea.badoiu@gmail.com',
+    password : '$2a$11$rWftGcr3HduY8OZwlmZ8G.LEkmCvOQGQ9bxmZmRSBm1jCV9rtnfIm'});
+db.users.insert({name : 'ionel', email: 'ionel.ionel@gmail.com',
+    password: '$2a$11$rWftGcr3HduY8OZwlmZ8G.LEkmCvOQGQ9bxmZmRSBm1jCV9rtnfIm'});
+db.users.insert({name : 'leona', email: 'leona.cilibeanu@gmail.com',
+    password: '$2a$11$rWftGcr3HduY8OZwlmZ8G.LEkmCvOQGQ9bxmZmRSBm1jCV9rtnfIm'});
+db.users.insert({name : 'marius', email: 'marius.avram@gmail.com',
+    password: '$2a$11$rWftGcr3HduY8OZwlmZ8G.LEkmCvOQGQ9bxmZmRSBm1jCV9rtnfIm'});
+db.users.insert({name : 'razvan', email: 'razvan.florea@gmail.com',
+    password: '$2a$11$rWftGcr3HduY8OZwlmZ8G.LEkmCvOQGQ9bxmZmRSBm1jCV9rtnfIm'});
 
 // print them out
 db.users.find().forEach(printjson);

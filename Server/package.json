@@ -11,7 +11,7 @@
         "path": "*",
         "moment": "*",
         "underscore": "*",
-        "bcrypt-nodejs": "*",
+        "bcrypt": "*",
         "url": "*",
         "validator": "*"
     },
