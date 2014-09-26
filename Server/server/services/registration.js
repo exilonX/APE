@@ -134,5 +134,17 @@ module.exports = {
                     }
                 });
             });
+        },
+
+    userInfo:
+        // get user info which could be used for a profile page
+        function(req, res) {
+            // do not expose password and email
+            User.findOne({name : req.params.name}, '-password -email', function(err, user) {
+                if (err)
+                    res.send(err);
+                res.json(user);
+            });
         }
+
 }
