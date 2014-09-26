@@ -2,6 +2,8 @@
 
 var mongoose    = require('mongoose');
 var Schema      = mongoose.Schema;
+var bcrypt      = require('bcrypt');
+var SALT_FACTOR = 11;
 
 var User  = new Schema({
     name                : String,
@@ -13,13 +15,32 @@ var User  = new Schema({
     birth_date          : Date
 });
 
-User.methods.isValidPassword = function isValidPassword(password) {
-    if (this.password == password) {
-        return true;
-    }
-    else {
-        return false;
-    }
+// check if password is valid
+User.methods.isValidPassword = function isValidPassword(password, next) {
+    bcrypt.compare(password, this.password, function(err, matches){
+        if (err) {
+            return next(err);
+        }
+        next(null, matches);
+    });
+};
+
+// return hashed password
+User.methods.hashPassword = function hashPassword(password, next) {
+    // generate a salt
+    bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+        if (err) {
+            return next(err);
+        }
+
+        // hash the password using our new salt
+        bcrypt.hash(password, salt, function(err, hash) {
+            if (err) {
+                return next(err);
+            }
+            next(null, hash);
+        });
+    });
 };
 
 var Like = new Schema({

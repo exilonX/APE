@@ -84,13 +84,17 @@ router.route('/signup')
                 // save the object
                 var user = new User();
                 user.name = req.body.name;
-                user.password = req.body.password;
                 user.email = req.body.email;
-
-                user.save(function(err) {
+                // hash password
+                user.hashPassword(req.body.password, function(err, password) {
                     if (err)
                         res.send(err);
-                    res.json({result : 'success'});
+                    user.password = password;
+                    user.save(function(err) {
+                        if (err)
+                            res.send(err);
+                        res.json({result : 'success'});
+                    });
                 });
             });
         });

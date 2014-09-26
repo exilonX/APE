@@ -12,7 +12,7 @@ app.set('jwt_token_secret', 'd783ada0fl9b');
 module.exports = {
     loggedOn:
         // verifies if token is valid and sets proper user in request
-        function(req, res) {
+        function (req, res) {
             // allow multiple types of request (e.g. GET, POST, PUT)
             var token = (req.body && req.body.access_token) ||
                 (req.query && req.query.access_token) ||
@@ -42,7 +42,7 @@ module.exports = {
 
     authenticate:
         // does first time authentication
-        function authenticate(req, res) {
+        function (req, res) {
             var name = req.body.name;
             var password = req.body.password;
             if (!name || !password) {
@@ -60,25 +60,30 @@ module.exports = {
                     return res.send(401);
                 }
 
-                if (!user.isValidPassword(password)) {
-                    // incorrect password
-                    return res.send(401);
-                }
+                // verify password
+                user.isValidPassword(password, function(err, matches) {
+                    console.log("matches" + matches);
+                    if (err || !matches) {
+                        // incorrect password
+                        return res.send(401);
+                    }
+                    else { 
+                        var expires     = moment().add(1, 'years');
+                        var token       = jwt.encode({
+                            iss : name,
+                            exp : expires
+                        }, app.get('jwt_token_secret'));
 
-                var expires     = moment().add(1, 'years');
-                var token       = jwt.encode({
-                    iss : name,
-                    exp : expires
-                }, app.get('jwt_token_secret'));
+                        res.json({
+                            token   : token,
+                            expires : expires,
+                            user    : name
+                        });
 
-                res.json({
-                    token   : token,
-                    expires : expires,
-                    user    : name
+                        // User has authenticated OK
+                        res.send(200);
+                    }
                 });
-
-                // User has authenticated OK
-                res.send(200);
             });
         }
 }
