@@ -6,9 +6,8 @@ var express         = require('express'),
     methodOverride  = require('method-override'),
     path            = require('path'),
     router          = express.Router(),
-    validator       = require('validator'),
     models          = require('./models'),
-    auth            = require('./authentication');
+    registration    = require('./registration');
 
 GLOBAL.app = express();
 
@@ -33,7 +32,7 @@ var Reply           = mongoose.model('Reply');
 // middleware for member resources
 // it will do the required authentication
 router.get('/member/*', function(req, res, next) {
-    auth.loggedOn(req, res);
+    registration.loggedOn(req, res);
     next();
 });
 
@@ -54,58 +53,10 @@ router.route('feed')
     });
 
 // sign up new user
-router.route('/signup')
-    .post(function(req, res) {
-        // check required fields are filled
-        if (!req.body.name || !req.body.email || !req.body.password) {
-            res.json({result : 'failure', errors : ['Please complete all fields.']});
-            return;
-        }
-        // check username uniqueness
-        User.findOne({ name : req.body.name}, function(err, user_found) {
-            var errors = [];
-            if (user_found)
-                errors.push('Username already exists.');
-            // check email is valid
-            if (!validator.isEmail(req.body.email)) {
-                errors.push('Invalid email address.');
-            }
-
-            // check email uniqueness
-            User.findOne({ email : req.body.email }, function(err, user_found) {
-                if (user_found)
-                    errors.push('Email address is already in use.');
-
-                // return error if validation failed
-                if (errors.length != 0) {
-                    res.json({result : 'failure', errors : errors});
-                    return;
-                }
-                // save the object
-                var user = new User();
-                user.name = req.body.name;
-                user.email = req.body.email;
-                // hash password
-                user.hashPassword(req.body.password, function(err, password) {
-                    if (err)
-                        res.send(err);
-                    user.password = password;
-                    user.save(function(err) {
-                        if (err)
-                            res.send(err);
-                        res.json({result : 'success'});
-                    });
-                });
-            });
-        });
-    });
-
+router.route('/signup').post(registration.register);
 
 // log in user (used only when a token expires or does not exists)
-router.route('/login')
-    .post(function(req, res) {
-        auth.authenticate(req, res);
-    });
+router.route('/login').post(registration.authenticate);
 
 // get user info
 router.route('/user/:name')
