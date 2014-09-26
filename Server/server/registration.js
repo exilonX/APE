@@ -1,15 +1,64 @@
-var express         = require('express');
-var jwt             = require('jwt-simple');
-var moment          = require('moment');
-var app             = express();
-var restful         = require('node-restful');
-var mongoose        = restful.mongoose;
+var express         = require('express'),
+    jwt             = require('jwt-simple'),
+    moment          = require('moment'),
+    app             = express(),
+    restful         = require('node-restful'),
+    mongoose        = restful.mongoose,
+    validator       = require('validator');
 
 var User            = mongoose.model('User');
 
 app.set('jwt_token_secret', 'd783ada0fl9b');
 
 module.exports = {
+    register:
+        // used to register new user
+        function (req, res) {
+            // check required fields are filled
+            if (!req.body.name || !req.body.email || !req.body.password) {
+                res.json({result : 'failure', errors : ['Please complete all fields.']});
+                return;
+            }
+            // check username uniqueness
+            User.findOne({ name : req.body.name}, function(err, user_found) {
+                var errors = [];
+                if (user_found)
+                    errors.push('Username already exists.');
+                // check email is valid
+                if (!validator.isEmail(req.body.email)) {
+                    errors.push('Invalid email address.');
+                }
+
+                // check email uniqueness
+                User.findOne({ email : req.body.email }, function(err, user_found) {
+                    if (user_found)
+                        errors.push('Email address is already in use.');
+
+                    // return error if validation failed
+                    if (errors.length != 0) {
+                        res.json({result : 'failure', errors : errors});
+                        return;
+                    }
+                    // save the object
+                    var user = new User();
+
+                    user.name = req.body.name;
+                    user.email = req.body.email;
+                    // hash password
+                    user.hashPassword(req.body.password, function(err, password) {
+                        if (err)
+                            res.send(err);
+                        user.password = password;
+                        user.save(function(err) {
+                            if (err)
+                                res.send(err);
+                            res.json({result : 'success'});
+                        });
+                    });
+                });
+            });
+        },
+
     loggedOn:
         // verifies if token is valid and sets proper user in request
         function (req, res) {
