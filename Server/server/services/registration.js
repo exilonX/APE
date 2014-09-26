@@ -16,7 +16,9 @@ module.exports = {
         function (req, res) {
             // check required fields are filled
             if (!req.body.name || !req.body.email || !req.body.password) {
-                res.json({result : 'failure', errors : ['Please complete all fields.']});
+                res.json({errors : ['Please complete all fields.']});
+                // TODO: Status doesn't seem to work.
+                res.send(400);
                 return;
             }
             // check username uniqueness
@@ -111,7 +113,6 @@ module.exports = {
 
                 // verify password
                 user.isValidPassword(password, function(err, matches) {
-                    console.log("matches" + matches);
                     if (err || !matches) {
                         // incorrect password
                         return res.send(401);
@@ -146,5 +147,4 @@ module.exports = {
                 res.json(user);
             });
         }
-
 }
