@@ -14,6 +14,8 @@ import com.example.activities.FragmentSwitchListener;
 import com.example.activities.MainActivity;
 import com.example.ape.R;
 import com.example.ape.utilsFeed.ImageLoader;
+import com.example.ape.volley.request.VolleyRequests;
+import com.example.ape.volley.request.handlers.LogHandler;
 import com.example.fragments.CommentFragment;
 import com.example.volley.AppController;
 
@@ -103,29 +105,6 @@ public class CustomAdapter extends BaseAdapter {
 		return view;
 	}
 	
-	public String getJSONLocal() {
-		// Tag used to cancel the request
-		String tag_json_arry = "json_array_req";
-
-		String url = "http://10.0.2.2:8080/api/feed";
-
-		JsonArrayRequest req = new JsonArrayRequest(url,
-				new Response.Listener<JSONArray>() {
-			@Override
-			public void onResponse(JSONArray response) {
-				Log.d("TAG", response.toString());       
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				VolleyLog.d("TAG", "Error: " + error.getMessage());
-			}
-		});
-
-		// Adding request to request queue
-		AppController.getInstance().addToRequestQueue(req, tag_json_arry);
-		return null;
-	}
 	
 	public void setOnClickComment(View view) {
 		final ImageButton btn = (ImageButton)view.findViewById(R.id.addComment);
@@ -144,7 +123,8 @@ public class CustomAdapter extends BaseAdapter {
 					Fragment commentFrag = new CommentFragment();
 					activ.replaceFragment(commentFrag);
 					
-					getJSONLocal();
+					VolleyRequests.feedRequest(new LogHandler());
+					
 				}
 			});
 		} else {

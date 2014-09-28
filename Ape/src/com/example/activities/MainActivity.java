@@ -89,12 +89,7 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
         
-        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-        	String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.hide(getSupportFragmentManager().findFragmentByTag(tag));
-            fragmentTransaction.commit();
-        }
+
         
         
 	}

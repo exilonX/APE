@@ -12,8 +12,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
@@ -78,8 +76,6 @@ public class FeedFragment extends Fragment {
 
 		return writer.toString();
 	}
-
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
