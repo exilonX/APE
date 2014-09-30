@@ -5,8 +5,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     >
-    <fragment android:id="@+id/fragmentMain"
-        android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            class="com.example.fragments.FeedFragment"/>
     </android.support.v4.view.ViewPager>
