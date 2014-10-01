@@ -13,7 +13,7 @@ module.exports = {
             Challenge.findOne().sort('-date').exec(
                 function(err, challenge) {
                     // find replies to it and return them
-                    Reply.find({challenge_id : challenge._id},
+                    Reply.find({challenge_id : challenge._id}, '-likes -comments',
                         function(err, replies) {
                             if (err) {
                                 res.send(err);
