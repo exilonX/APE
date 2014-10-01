@@ -65,19 +65,19 @@ db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', titl
             { _id : new ObjectId(), username : 'ionel', date : new Date(), comment : 'Cool!' },
             { _id : new ObjectId(), username : 'razvan', date : new Date(), comment : 'You\'re my idol' }
         ]});
-db.replies.insert({challenge_id : last_challenge._id, username : db.users.findOne({name: 'ionel'})._id, title: 'Stupid pic',
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'Stupid pic',
         date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg',
         likes : [
             { _id : new ObjectId(), username : 'andreea', date : new Date() },
             { _id : new ObjectId(), username : 'leona', date : new Date() }
         ], comments : []});
-db.replies.insert({challenge_id : last_challenge._id, username : db.users.findOne({name: 'marius'})._id, title : 'Kill me now',
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title : 'Kill me now',
         date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
-db.replies.insert({challenge_id : last_challenge._id, username : db.users.findOne({name: 'leona'})._id, title: 'Truly beatifull',
+db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'Truly beatifull',
         date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
-db.replies.insert({challenge_id : last_challenge._id, username : db.users.findOne({name: 'razvan'})._id, title : 'This is all you got?',
+db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title : 'This is all you got?',
         date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
-db.replies.insert({challenge_id : last_challenge._id, username : db.users.findOne({name: 'ionel'})._id, title: 'I can do better than that',
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'I can do better than that',
         date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg',
         likes : [
             { _id : new ObjectId(), username : 'marius', date : new Date() },
