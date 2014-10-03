@@ -19,7 +19,8 @@ app.use(bodyParser.json());
 app.use(express.query());
 app.use(methodOverride());
 
-var port = 8080;
+//var port = 8080;
+app.set('port', (process.env.PORT || 8080));
 
 // connect to local database
 mongoose.connect('mongodb://ape:m0nk3y@ds043350.mongolab.com:43350/ape');
@@ -50,6 +51,5 @@ router.route('/user/:name').get(registration.userInfo);
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 
-
-app.listen(port);
-console.log('Server started on port ' + port);
+app.listen(app.get('port'));
+console.log('Server started on port ' + app.get('port'));
