@@ -22,7 +22,7 @@ app.use(methodOverride());
 var port = 8080;
 
 // connect to local database
-mongoose.connect('mongodb://localhost/ape');
+mongoose.connect('mongodb://ape:m0nk3y@ds043350.mongolab.com:43350/ape');
 
 // routes
 
