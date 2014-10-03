@@ -1,11 +1,19 @@
 // to repopulate the databse use the following command:
 // mongo populate.js
 
-var conn    = new Mongo();
+var conn    = new Mongo('ds043350.mongolab.com:43350');
 var db      = conn.getDB('ape');
 
+// authenticate
+db.auth('ape', 'm0nk3y');
+
 // clear database
-db.dropDatabase();
+// remove collecitons individualy
+db.comments.drop();
+db.likes.drop();
+db.users.drop();
+db.replies.drop();
+db.challenges.drop();
 
 // insert some users ---------------------------------------------
 // clear text password for following users is '123456'
