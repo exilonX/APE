@@ -14,7 +14,7 @@ if [ "$previous_branch" != "$deployment_branch" ] ; then
     echo "=============================="
     git checkout develop
 fi
-git subtree push --prefix Server heroku master
+git push heroku `git subtree split --prefix Server $deployment_branch`:master --force
 if [ "$previous_branch" != "$deployment_branch" ] ; then
     echo "=============================="
     echo "Switching to $previous_branch branch ..."

@@ -1,6 +1,7 @@
 {
     "name": "application-name",
     "version": "0.0.1",
+    "main": "server/server.js",
     "dependencies": {
         "express": "~4.0.0",
         "mongoose": "*",
