@@ -1,11 +1,13 @@
 var express         = require('express'),
-    app             = express(),
     restful         = require('node-restful'),
     mongoose        = restful.mongoose,
 	mongoosePaginate = require('mongoose-paginate');
 
+GLOBAL.app = express();
+
 var Challenge       = mongoose.model('Challenge');
 var Reply           = mongoose.model('Reply');
+
 
 module.exports = {
     feed:
@@ -21,12 +23,17 @@ module.exports = {
                   //          }
                   //          res.json(replies);
                   //  });
-					// pagination that will always return page 1 with 1 result
+				    // pagination that will always return page 1 with 1 result
 					// TO BE continued when "lenea scade"
 					Reply.paginate({}, 1, 1, function(error, pageCount, paginatedResults, itemCoount) {
 						if(error) {
 							res.send(error);
 						} else {
+                            // Add host prefix to static resources
+                            var host = app.get('host');
+                            for (i = 0; i < paginatedResults.length; i++) {
+                                paginatedResults[i].thumb_url = host + paginatedResults[i].thumb_url;
+                            }
 							res.json(paginatedResults);
 						}
             		});

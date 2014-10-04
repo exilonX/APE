@@ -40,7 +40,7 @@ var yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 db.challenges.insert({
     username : 'marius', date : yesterday, title : 'This is nay Sparta',
-    thumb_url: 'http://i58.tinypic.com/15e7ern.jpg',
+    thumb_url: 'images/test/sparta.jpg',
     likes : [
         { _id : new ObjectId(), username : 'marius', date : new Date() },
         { _id : new ObjectId(), username : 'leona', date : new Date() },
@@ -55,7 +55,7 @@ db.challenges.insert({
 // one today
 db.challenges.insert({
     username : 'marius', date : new Date(), title : 'This is Sparta', 
-    thumb_url: 'http://i58.tinypic.com/15e7ern.jpg', likes : [], comments : []});
+    thumb_url: 'images/test/sparta.jpg', likes : [], comments : []});
 
 // print them out
 db.challenges.find().forEach(printjson);
@@ -64,7 +64,7 @@ db.challenges.find().forEach(printjson);
 var last_challenge = db.challenges.findOne({title : 'This is Sparta'});
 
 db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', title : 'Very professional',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', 
+        date : new Date(), thumb_url : 'images/test/lions.jpg', 
         likes : [
             { _id : new ObjectId(), username : 'ionel', date : new Date() },
             { _id : new ObjectId(), username : 'razvan', date : new Date() }
@@ -74,26 +74,26 @@ db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', titl
             { _id : new ObjectId(), username : 'razvan', date : new Date(), comment : 'You\'re my idol' }
         ]});
 db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'Stupid pic',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg',
+        date : new Date(), thumb_url : 'images/test/lions.jpg',
         likes : [
             { _id : new ObjectId(), username : 'andreea', date : new Date() },
             { _id : new ObjectId(), username : 'leona', date : new Date() }
         ], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title : 'Kill me now',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'Truly beatifull',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title : 'This is all you got?',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'I can do better than that',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg',
+        date : new Date(), thumb_url : 'images/test/lions.jpg',
         likes : [
             { _id : new ObjectId(), username : 'marius', date : new Date() },
         ], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title : 'Life is nice',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', title: 'Got lucky',
-        date : new Date(), thumb_url : 'http://img-9gag-lol.9cache.com/photo/aAVp75L_700b.jpg', likes : [], comments : []});
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 
 // print them out
 db.replies.find().forEach(printjson);
