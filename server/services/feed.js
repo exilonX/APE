@@ -1,7 +1,7 @@
-var express         = require('express'),
-    restful         = require('node-restful'),
-    mongoose        = restful.mongoose,
-	mongoosePaginate = require('mongoose-paginate');
+var express          = require('express'),
+    restful          = require('node-restful'),
+    mongoose         = restful.mongoose,
+	mongoosePaginate = require('mongoose-query-paginate');
 
 GLOBAL.app = express();
 
@@ -13,26 +13,43 @@ module.exports = {
     feed:
         // get all replies to latest challenge
         function (req, res) {
+			// If the user specified the page size then use it, else use a default value
+			var pageSize;
+			if(req.query.pageSize) {
+				pageSize = req.query.pageSize;
+			} else {
+				pageSize = 3;
+			}
+
+			// If the user specified a certain page then return that page, else return the first page
+			var page;
+			if(req.query.page) {
+				page = req.query.page;
+			} else {
+				page = 1;
+			}
+
+			// Options for pagination. Don't know what "delta" means!!!
+			var options = {
+					perPage: pageSize,
+					delta  : 3,
+					page   : page
+			};
+
             Challenge.findOne().sort('-date').exec(
                 function(err, challenge) {
-                    // find replies to it and return them
-                  //  Reply.find({challenge_id : challenge._id}, '-likes -comments',
-                  //      function(err, replies) {
-                  //          if (err) {
-                  //              res.send(err);
-                  //          }
-                  //          res.json(replies);
-                  //  });
-				    // pagination that will always return page 1 with 1 result
-					// TO BE continued when "lenea scade"
-					Reply.paginate({}, 1, 1, function(error, pageCount, paginatedResults, itemCoount) {
+             		// Find the replies to the most recent challenge 
+					var query = Reply.find({challenge_id : challenge._id}, '-likes -comments');
+					
+					// Paginate the results based on the options built above
+					query.paginate(options, function(error, paginatedResults) {
 						if(error) {
 							res.send(error);
 						} else {
                             // Add host prefix to static resources
                             var host = app.get('host');
-                            for (i = 0; i < paginatedResults.length; i++) {
-                                paginatedResults[i].thumb_url = host + paginatedResults[i].thumb_url;
+                            for (i = 0; i < paginatedResults.results.length; i++) {
+                                paginatedResults.results[i].thumb_url = host + paginatedResults.results[i].thumb_url;
                             }
 							res.json(paginatedResults);
 						}
