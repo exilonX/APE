@@ -1,6 +1,7 @@
 // database models
 
 var mongoose    = require('mongoose');
+var mongoosePag = require('mongoose-paginate');
 var Schema      = mongoose.Schema;
 var bcrypt      = require('bcrypt');
 var SALT_FACTOR = 11;
@@ -75,6 +76,9 @@ var Reply = new Schema({
     likes               : [Like],
     comments            : [Comment]
 });
+
+// set up the pagination plugin on the Reply schema
+Reply.plugin(mongoosePag);
 
 // register schemas
 module.exports = mongoose.model('User', User);
