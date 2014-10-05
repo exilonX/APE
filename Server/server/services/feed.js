@@ -1,8 +1,7 @@
 var express         = require('express'),
     app             = express(),
     restful         = require('node-restful'),
-    mongoose        = restful.mongoose,
-	mongoosePaginate = require('mongoose-paginate');
+    mongoose        = restful.mongoose;
 
 var Challenge       = mongoose.model('Challenge');
 var Reply           = mongoose.model('Reply');
@@ -14,23 +13,14 @@ module.exports = {
             Challenge.findOne().sort('-date').exec(
                 function(err, challenge) {
                     // find replies to it and return them
-                  //  Reply.find({challenge_id : challenge._id}, '-likes -comments',
-                  //      function(err, replies) {
-                  //          if (err) {
-                  //              res.send(err);
-                  //          }
-                  //          res.json(replies);
-                  //  });
-					// pagination that will always return page 1 with 1 result
-					// TO BE continued when "lenea scade"
-					Reply.paginate({}, 1, 1, function(error, pageCount, paginatedResults, itemCoount) {
-						if(error) {
-							res.send(error);
-						} else {
-							res.json(paginatedResults);
-						}
-            		});
-			});
+                    Reply.find({challenge_id : challenge._id}, '-likes -comments',
+                        function(err, replies) {
+                            if (err) {
+                                res.send(err);
+                            }
+                            res.json(replies);
+                    });
+            });
         },
 
     createReply:
