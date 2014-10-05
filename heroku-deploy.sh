@@ -19,15 +19,10 @@ mv $server_file_tmp $server_file
 
 # automatically add to git repo
 git add $server_file
-git commit --amend --no-edit
+git commit -m "Change debug to false"
 
 echo "=====================" 
 git push heroku `git subtree split --prefix Server $deployment_branch`:master --force
 echo "====================="
 
-if [ "$is_debug" ]; then
-    sed -e 's/app.set('\''debug.*/app.set('\''debug'\'', true);/' $server_file > $server_file_tmp
-    mv $server_file_tmp $server_file
-    git add $server_file
-    git commit --amend --no-edit
-fi
+git reset --hard HEAD~1
