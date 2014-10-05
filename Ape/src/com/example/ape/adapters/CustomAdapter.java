@@ -13,7 +13,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.activities.FragmentSwitchListener;
 import com.example.activities.MainActivity;
 import com.example.ape.R;
+import com.example.ape.utilsFeed.FeedConst;
 import com.example.ape.utilsFeed.ImageLoader;
+import com.example.ape.volley.request.ConstRequest;
 import com.example.ape.volley.request.VolleyRequests;
 import com.example.ape.volley.request.handlers.LogHandler;
 import com.example.fragments.CommentFragment;
@@ -22,6 +24,7 @@ import com.example.volley.AppController;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -72,16 +75,17 @@ public class CustomAdapter extends BaseAdapter {
 	public long getItemId(int arg0) {
 		return arg0;
 	}
-	
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
-		
+
+
 		// inflate the view and populate the other views inside
 		if(convertView==null)
 			view = inflater.inflate(R.layout.list_row2, null);
-		
+
 		// get each sub-view and populate with coresponding data
 		TextView title = (TextView)view.findViewById(R.id.title); 
 		TextView username = (TextView)view.findViewById(R.id.username); 
@@ -90,41 +94,86 @@ public class CustomAdapter extends BaseAdapter {
 		ImageButton imageBut = (ImageButton)view.findViewById(R.id.addComment);
 		imageBut.setTag(position);
 		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
-		
+
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
 
 		// Setting all values in listview
-		title.setText(item.get("title"));
-		username.setText(item.get("username"));
-		timestamp.setText(item.get("timestamp"));
-		//imageLoader.DisplayImage(item.get("thumbnail"), thumb_image);
-		
+		title.setText(item.get(FeedConst.KEY_TITLE));
+		username.setText(item.get(FeedConst.KEY_USR));
+		timestamp.setText(item.get(FeedConst.KEY_TIMESTAMP));
+		imageLoader.DisplayImage(item.get(FeedConst.KEY_THUMBNAIL), thumb_image);
+
+//		thumb_image.setOnClickListener(new OnImageClickListener(position));
+
 		setOnClickComment(view);
-		
+		setOnClickApe(view);
+
 		return view;
 	}
-	
-	
+
+	class OnImageClickListener implements OnClickListener {
+
+		int _postion;
+
+		// constructor
+		public OnImageClickListener(int position) {
+			this._postion = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			// on selecting grid view image
+			// launch full screen activity
+			//            Intent i = new Intent(activity, FullScreenViewActivity.class);
+			//            i.putExtra("position", _postion);
+			//            activity.startActivity(i);
+		}
+
+	}
+
 	public void setOnClickComment(View view) {
 		final ImageButton btn = (ImageButton)view.findViewById(R.id.addComment);
 		if (btn != null) {
 			btn.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					Log.d("ONCLICK", "I just clicked this shit" + btn.getTag());
-//					FragmentTransaction trans = manager.beginTransaction()
-//									.replace(R.id.feedLayout, new CommentFragment());
-//					trans.addToBackStack(null);
-//					trans.commit();
-					
+					//					FragmentTransaction trans = manager.beginTransaction()
+					//									.replace(R.id.feedLayout, new CommentFragment());
+					//					trans.addToBackStack(null);
+					//					trans.commit();
+
 					FragmentSwitchListener activ = (FragmentSwitchListener)activity;
 					Fragment commentFrag = new CommentFragment();
 					activ.replaceFragment(commentFrag);
-					
+
 					VolleyRequests.feedRequest(new LogHandler());
-					
+
+				}
+			});
+		} else {
+			Log.d("CLICK", "ESTE NULL");
+		}
+	}
+
+
+
+
+
+	public void setOnClickApe(final View view) {
+		final ImageButton btn = (ImageButton)view.findViewById(R.id.increaseApes);
+		if (btn != null) {
+			btn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Log.d("JUST CLICKED", "Clicked");
+					final TextView nrApes = (TextView)view.findViewById(R.id.numberOfApes);
+					int curent = Integer.parseInt(nrApes.getText().toString());
+					String str = String.valueOf(curent + 1);
+					nrApes.setText(str);
 				}
 			});
 		} else {

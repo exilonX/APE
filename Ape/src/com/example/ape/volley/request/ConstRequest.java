@@ -9,10 +9,12 @@ package com.example.ape.volley.request;
  */
 public class ConstRequest {
 	// TAGS
-	public static String TAG_JSON_ARRAY = "json_array_req";
+	public static String TAG_JSON_ARRAY 	= "json_array_req";
+	public static String TAG_JSON_OBJECT	= "json_obj_req";
 	
 	
 	// Service links
-	public static String GET_FEED = "http://10.0.2.2:8080/api/feed";
+	public static String GET_FEED = "http://apeserver.herokuapp.com/api/feed?pageSize=7&page=1";
+	public static String BASE_URL = "http://apeserver.herokuapp.com";
 	
 }

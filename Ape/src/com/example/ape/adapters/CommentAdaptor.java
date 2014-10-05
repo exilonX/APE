@@ -50,25 +50,45 @@ public class CommentAdaptor extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
-		
+		int type = getItemViewType(position);
 		// inflate the view and populate the other views inside
 		if(convertView==null)
-			view = inflater.inflate(R.layout.comment_row, null);
-		
-		// get each sub-view and populate with coresponding data
-		TextView username = (TextView)view.findViewById(R.id.username); 
-		TextView comment = (TextView)view.findViewById(R.id.comment); 
-		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
-		
-		HashMap<String, String> item = new HashMap<String, String>();
-		item = data.get(position);
+			if (type == 0) {
+				view = inflater.inflate(R.layout.comment_row2, null);
+			} else {
+				view = inflater.inflate(R.layout.comment_row, null);
+				
+				// get each sub-view and populate with coresponding data
+				TextView username = (TextView)view.findViewById(R.id.username); 
+				TextView comment = (TextView)view.findViewById(R.id.comment); 
+				TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
+				
+				HashMap<String, String> item = new HashMap<String, String>();
+				item = data.get(position);
 
-		
-		username.setText(item.get("username"));
-		comment.setText(item.get("comment"));
-		timestamp.setText(item.get("timestamp"));
+				
+				username.setText(item.get("username"));
+				comment.setText(item.get("comment"));
+				timestamp.setText(item.get("timestamp"));
+			}
 		
 		return view;
+	}
+	
+	
+	@Override
+	public int getViewTypeCount() {
+		return 2;
+	}
+	
+	
+	@Override
+	public int getItemViewType(int position) {
+		if (position == 0) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 	
 }

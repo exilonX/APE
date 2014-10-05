@@ -6,73 +6,11 @@
     android:orientation="vertical"
     android:background="@color/gray" >
     
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dip"
-        android:background="@color/white" >
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/profilePic"
-            android:text="exilonX"
-            android:textSize="13dip" />
-
-        <ImageView
-            android:id="@+id/profilePic"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="18dp"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:id="@+id/timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/username"
-            android:layout_alignBottom="@+id/username"
-            android:layout_alignParentRight="true"
-            android:text="08-09-2014, 00:00:00"
-            android:textSize="9dp" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/relativeLayout1"
-        android:background="@color/white"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="O descriere titlu"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <ImageView
-            android:id="@+id/list_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/lion" />
-    </LinearLayout>
-
     <ListView
         android:id="@+id/commentList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/editText1"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/thumbnail"
         android:divider="#b5b5b5"
@@ -80,5 +18,15 @@
         android:listSelector="@drawable/list_selector" >
 
     </ListView>
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:ems="10"
+        android:imeOptions="actionSend|normal"
+        android:inputType="text" />
 
 </RelativeLayout>

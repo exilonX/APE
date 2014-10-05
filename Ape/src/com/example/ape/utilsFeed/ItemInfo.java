@@ -4,8 +4,8 @@ public class ItemInfo {
 	
 	private String username;
 	private String title;
-	private String timestamp;
-	private String thumb_image;
+	private String date;
+	private String thumb_url;
 	
 	public ItemInfo() {
 		setUsername("");
@@ -31,19 +31,19 @@ public class ItemInfo {
 	}
 	
 	public String getTimestamp() {
-		return timestamp;
+		return date;
 	}
 	
 	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+		this.date = timestamp;
 	}
 	
 	public String getThumb_image() {
-		return thumb_image;
+		return thumb_url;
 	}
 	
 	public void setThumb_image(String thumb_image) {
-		this.thumb_image = thumb_image;
+		this.thumb_url = thumb_image;
 	}
 
 	public String getUsername() {
