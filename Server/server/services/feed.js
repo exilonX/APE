@@ -59,13 +59,26 @@ module.exports = {
     createReply:
         // create a new reply to latest challenge
         function (req, res) {
-            
+
         },
 
     replyComments:
         // get reply comment (+ number of likes)
         function (req, res) {
-        
+            Reply.findOne({ _id : req.params._reply_id }, function(err, reply) {
+                if (err)
+                    res.send(err);
+
+                // Also add number of likes to each comment
+                comments = [];
+                for (i = 0; i < reply.comments.length; i++) {
+                    comment = JSON.parse(JSON.stringify(reply.comments[i]));
+                    comment['num_likes'] = reply.comments[i].likes.length;
+                    comments.push(comment);
+                }
+                res.json(comments);
+
+            });
         },
 
     replyLike:
