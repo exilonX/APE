@@ -68,7 +68,11 @@ module.exports = {
             Reply.findOne({ _id : req.params._reply_id }, function(err, reply) {
                 if (err)
                     res.send(err);
-
+                if (!reply) {
+                    console.log('no reply');
+                    res.json({ result : 'undefined' });
+                    return;
+                }
                 // Also add number of likes to each comment
                 comments = [];
                 for (i = 0; i < reply.comments.length; i++) {
