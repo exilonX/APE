@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 import com.example.ape.R;
 import com.example.ape.adapters.CommentAdaptor;
-import com.example.ape.utilsFeed.CommentInfo;
+import com.example.ape.helper.CommentInfo;
 import com.google.gson.Gson;
 
 import android.support.v4.app.Fragment;

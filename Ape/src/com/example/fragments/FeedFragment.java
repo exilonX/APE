@@ -21,7 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.ape.R;
 import com.example.ape.adapters.CustomAdapter;
-import com.example.ape.utilsFeed.ItemInfo;
+import com.example.ape.helper.ItemInfo;
 import com.example.ape.volley.request.ConstRequest;
 import com.example.ape.volley.request.VolleyRequests;
 import com.example.ape.volley.request.handlers.PopulateFeedHandler;
@@ -51,32 +51,6 @@ public class FeedFragment extends Fragment {
 	ListView view;			// the list view with the replies
 	CustomAdapter adapter;	// the custom adapter used for populating the view
 
-	public String getJsonString() {
-		// read the data from the JSON 
-		InputStream inStream = getResources().openRawResource(R.raw.input);
-		Writer writer = new StringWriter();
-		char[] buffer = new char[1024];
-		try {
-			Reader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-			int n;
-			while ((n = reader.read(buffer)) != -1) {
-				writer.write(buffer, 0, n);
-			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				inStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return writer.toString();
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -92,6 +66,32 @@ public class FeedFragment extends Fragment {
 		return linear;
 	}
 
+	
+//	public String getJsonString() {
+//	// read the data from the JSON 
+//	InputStream inStream = getResources().openRawResource(R.raw.input);
+//	Writer writer = new StringWriter();
+//	char[] buffer = new char[1024];
+//	try {
+//		Reader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+//		int n;
+//		while ((n = reader.read(buffer)) != -1) {
+//			writer.write(buffer, 0, n);
+//		}
+//	} catch (UnsupportedEncodingException e) {
+//		e.printStackTrace();
+//	} catch (IOException e) {
+//		e.printStackTrace();
+//	} finally {
+//		try {
+//			inStream.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	return writer.toString();
+//}
 
 
 }

@@ -20,8 +20,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.ape.R;
 import com.example.ape.adapters.CustomAdapter;
-import com.example.ape.utilsFeed.FeedConst;
-import com.example.ape.utilsFeed.ItemInfo;
+import com.example.ape.constants.FeedConst;
+import com.example.ape.helper.ItemInfo;
 import com.google.gson.Gson;
 
 public class PopulateFeedHandler implements HandleJsonArrayResponse {

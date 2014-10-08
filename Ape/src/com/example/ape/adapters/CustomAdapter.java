@@ -13,7 +13,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.activities.FragmentSwitchListener;
 import com.example.activities.MainActivity;
 import com.example.ape.R;
-import com.example.ape.utilsFeed.FeedConst;
+import com.example.ape.constants.FeedConst;
+import com.example.ape.helper.CommentTag;
 import com.example.ape.utilsFeed.ImageLoader;
 import com.example.ape.volley.request.ConstRequest;
 import com.example.ape.volley.request.VolleyRequests;
@@ -81,7 +82,6 @@ public class CustomAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 
-
 		// inflate the view and populate the other views inside
 		if(convertView==null)
 			view = inflater.inflate(R.layout.list_row2, null);
@@ -92,12 +92,13 @@ public class CustomAdapter extends BaseAdapter {
 		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
 		ImageView thumb_image=(ImageView)view.findViewById(R.id.list_image);
 		ImageButton imageBut = (ImageButton)view.findViewById(R.id.addComment);
-		imageBut.setTag(position);
 		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
 
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
-
+		
+		imageBut.setTag(new CommentTag(item.get(FeedConst.KEY_ID), position));
+		
 		// Setting all values in listview
 		title.setText(item.get(FeedConst.KEY_TITLE));
 		username.setText(item.get(FeedConst.KEY_USR));
@@ -139,7 +140,7 @@ public class CustomAdapter extends BaseAdapter {
 
 				@Override
 				public void onClick(View v) {
-					Log.d("ONCLICK", "I just clicked this shit" + btn.getTag());
+					Log.d("ONCLICK", "I just clicked this shit" + btn.getTag().toString());
 					//					FragmentTransaction trans = manager.beginTransaction()
 					//									.replace(R.id.feedLayout, new CommentFragment());
 					//					trans.addToBackStack(null);
@@ -158,10 +159,10 @@ public class CustomAdapter extends BaseAdapter {
 		}
 	}
 
-
-
-
-
+	/**
+	 * On click listener on ape image button
+	 * @param view - the main view 
+	 */
 	public void setOnClickApe(final View view) {
 		final ImageButton btn = (ImageButton)view.findViewById(R.id.increaseApes);
 		if (btn != null) {

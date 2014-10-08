@@ -14,7 +14,7 @@ import java.util.HashMap;
 import com.example.ape.R;
 import com.example.ape.activities.SimpleGestureFilter.SimpleGestureListener;
 import com.example.ape.adapters.CustomAdapter;
-import com.example.ape.utilsFeed.ItemInfo;
+import com.example.ape.helper.ItemInfo;
 import com.google.gson.Gson;
 
 import android.app.Activity;

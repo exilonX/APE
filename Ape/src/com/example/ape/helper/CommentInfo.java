@@ -1,4 +1,4 @@
-package com.example.ape.utilsFeed;
+package com.example.ape.helper;
 
 public class CommentInfo {
 	public String username;
