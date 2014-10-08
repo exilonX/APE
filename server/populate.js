@@ -67,11 +67,28 @@ db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', titl
         date : new Date(), thumb_url : 'images/test/lions.jpg', 
         likes : [
             { _id : new ObjectId(), username : 'ionel', date : new Date() },
-            { _id : new ObjectId(), username : 'razvan', date : new Date() }
+            { _id : new ObjectId(), username : 'razvan', date : new Date() },
+            { _id : new ObjectId(), username : 'leona', date : new Date() },
+            { _id : new ObjectId(), username : 'andreea', date : new Date() }
+
         ],
         comments : [
             { _id : new ObjectId(), username : 'ionel', date : new Date(), comment : 'Cool!' },
-            { _id : new ObjectId(), username : 'razvan', date : new Date(), comment : 'You\'re my idol' }
+            { _id : new ObjectId(), username : 'razvan', date : new Date(), comment : 'You\'re my idol' },
+            { _id : new ObjectId(), username : 'marius', date: new Date(), comment : 'I wanna be like me when I grow up!',
+              likes : [
+                { _id : new ObjectId(), username : 'razvan', date : new Date() },
+                { _id : new ObjectId(), username : 'leona', date : new Date() }
+              ]
+            },
+            { _id : new ObjectId(), username : 'marius', date: new Date(), comment : 'But I\'m going to start the change from tomorrow' },
+            { _id : new ObjectId(), username : 'andreea', date : new Date(), comment : 'Good for you!' },
+            { _id : new ObjectId(), username : 'marius', date: new Date(), comment : 'Thank you for the encouragement!',
+              likes : [
+                { _id : new ObjectId(), username : 'andreea', date : new Date() }
+              ]
+            },
+            { _id : new ObjectId(), username : 'marius', date: new Date(), comment : 'I\'m not lying!' }
         ]});
 db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'Stupid pic',
         date : new Date(), thumb_url : 'images/test/lions.jpg',
@@ -82,7 +99,21 @@ db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title:
 db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title : 'Kill me now',
         date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'Truly beatifull',
-        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+        date : new Date(), thumb_url : 'images/test/lions.jpg',
+        likes : [
+            { _id : new ObjectId(), username : 'ionel', date : new Date() },
+            { _id : new ObjectId(), username : 'andreea', date : new Date() }
+        ],
+         comments : [
+            { _id : new ObjectId(), username : 'ionel', date : new Date(), comment : 'Banana!' },
+            { _id : new ObjectId(), username : 'razvan', date : new Date(), comment : 'Baybe I love you!' },
+            { _id : new ObjectId(), username : 'marius', date: new Date(), comment : 'E.T. go home.',
+              likes : [
+                { _id : new ObjectId(), username : 'razvan', date : new Date() },
+                { _id : new ObjectId(), username : 'leona', date : new Date() }
+              ]
+            }]
+        });
 db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title : 'This is all you got?',
         date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'I can do better than that',
@@ -94,6 +125,68 @@ db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title
         date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', title: 'Got lucky',
         date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title: 'Panic at the club',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'Workaholic',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'I want to work for this too',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'I\'m bored',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'Born tired',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title: 'Underground the movie',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', title: 'Its been some time since',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'God give me courage',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title: 'Boiled space',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'Have I been here before ?',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'Sparta is Sparta',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'Visiting the moon',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'I don\'t have a clue...',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'What I\'m doing here',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title : 'Life is ugly',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', title: 'Got unlucky',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title: 'Smoothness at the club',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'Not a slave anymore',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'I want to stay and do nothing',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'I never been bored in my life',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'Full of life',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title: 'Black cat, white cat',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'andreea', title: 'It was yesterday',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'This is Satan',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'razvan', title: 'I had my share',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'Someone like you ?',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'We could stick around',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title: 'This night throut',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'I don\'t care about the young folks',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'I care about talking',
+        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+
+
 
 // print them out
 db.replies.find().forEach(printjson);
