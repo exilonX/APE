@@ -13,7 +13,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.activities.FragmentSwitchListener;
 import com.example.activities.MainActivity;
 import com.example.ape.R;
-import com.example.ape.constants.FeedConst;
+import com.example.ape.constants.Const;
+import com.example.ape.helper.CommentInfo;
 import com.example.ape.helper.CommentTag;
 import com.example.ape.utilsFeed.ImageLoader;
 import com.example.ape.volley.request.ConstRequest;
@@ -97,13 +98,13 @@ public class CustomAdapter extends BaseAdapter {
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
 		
-		imageBut.setTag(new CommentTag(item.get(FeedConst.KEY_ID), position));
+		imageBut.setTag(new CommentTag(item.get(Const.KEY_ID), position));
 		
 		// Setting all values in listview
-		title.setText(item.get(FeedConst.KEY_TITLE));
-		username.setText(item.get(FeedConst.KEY_USR));
-		timestamp.setText(item.get(FeedConst.KEY_TIMESTAMP));
-		imageLoader.DisplayImage(item.get(FeedConst.KEY_THUMBNAIL), thumb_image);
+		title.setText(item.get(Const.KEY_TITLE));
+		username.setText(item.get(Const.KEY_USR));
+		timestamp.setText(item.get(Const.KEY_TIMESTAMP));
+		imageLoader.DisplayImage(item.get(Const.KEY_THUMBNAIL), thumb_image);
 
 //		thumb_image.setOnClickListener(new OnImageClickListener(position));
 
@@ -141,13 +142,9 @@ public class CustomAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					Log.d("ONCLICK", "I just clicked this shit" + btn.getTag().toString());
-					//					FragmentTransaction trans = manager.beginTransaction()
-					//									.replace(R.id.feedLayout, new CommentFragment());
-					//					trans.addToBackStack(null);
-					//					trans.commit();
 
 					FragmentSwitchListener activ = (FragmentSwitchListener)activity;
-					Fragment commentFrag = new CommentFragment();
+					Fragment commentFrag = new CommentFragment((CommentTag)btn.getTag());
 					activ.replaceFragment(commentFrag);
 
 					VolleyRequests.feedRequest(new LogHandler());

@@ -2,20 +2,23 @@ package com.example.ape.helper;
 
 public class ItemInfo {
 	
+	private String _id;
 	private String username;
 	private String title;
 	private String date;
 	private String thumb_url;
 	
 	public ItemInfo() {
+		set_id("");
 		setUsername("");
 		setTimestamp("");
 		setTitle("");
 		setThumb_image("");
 	}
 	
-	public ItemInfo(String username, String title,
+	public ItemInfo(String _id, String username, String title,
 			String timestamp, String thumb_image) {
+		set_id(_id);
 		setUsername(username);
 		setThumb_image(thumb_image);
 		setTitle(title);
@@ -52,5 +55,13 @@ public class ItemInfo {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String get_id() {
+		return _id;
+	}
+
+	public void set_id(String _id) {
+		this._id = _id;
 	}
 }

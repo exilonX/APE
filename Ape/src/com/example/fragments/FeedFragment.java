@@ -1,49 +1,20 @@
 package com.example.fragments;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-
-import com.android.volley.Request.Method;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.ape.R;
 import com.example.ape.adapters.CustomAdapter;
-import com.example.ape.helper.ItemInfo;
 import com.example.ape.volley.request.ConstRequest;
 import com.example.ape.volley.request.VolleyRequests;
-import com.example.ape.volley.request.handlers.PopulateFeedHandler;
 import com.example.ape.volley.request.handlers.PopulateFeedPaginatedHandler;
-import com.example.volley.AppController;
-import com.google.gson.Gson;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class FeedFragment extends Fragment {
 

@@ -20,7 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.ape.R;
 import com.example.ape.adapters.CustomAdapter;
-import com.example.ape.constants.FeedConst;
+import com.example.ape.constants.Const;
 import com.example.ape.helper.ItemInfo;
 import com.google.gson.Gson;
 
@@ -75,10 +75,10 @@ public class PopulateFeedHandler implements HandleJsonArrayResponse {
 		// iterate through the items and create a new hashMap
 		for (ItemInfo item : items) {
 			HashMap<String, String> map = new HashMap<>();
-			map.put(FeedConst.KEY_USR, item.getUsername());
-			map.put(FeedConst.KEY_TITLE, item.getTitle());
-			map.put(FeedConst.KEY_TIMESTAMP, item.getTimestamp());
-			map.put(FeedConst.KEY_THUMBNAIL, item.getThumb_image());
+			map.put(Const.KEY_USR, item.getUsername());
+			map.put(Const.KEY_TITLE, item.getTitle());
+			map.put(Const.KEY_TIMESTAMP, item.getTimestamp());
+			map.put(Const.KEY_THUMBNAIL, item.getThumb_image());
 			data.add(map);
 		}
 

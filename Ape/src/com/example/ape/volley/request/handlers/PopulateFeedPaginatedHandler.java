@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.ape.adapters.CustomAdapter;
-import com.example.ape.constants.FeedConst;
+import com.example.ape.constants.Const;
 import com.example.ape.helper.ItemInfo;
 import com.google.gson.Gson;
 
@@ -85,17 +85,18 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 		Gson gson = new Gson();
 		JSONArray result;
 		try {
-			result = response.getJSONArray(FeedConst.FEED_ARRAY_KEY);
+			result = response.getJSONArray(Const.FEED_ARRAY_KEY);
 			// get a list of ItemInfo from the JSON
+			
 			ItemInfo[] items = gson.fromJson(result.toString(), ItemInfo[].class);
-
 			// iterate through the items and create a new hashMap
 			for (ItemInfo item : items) {
 				HashMap<String, String> map = new HashMap<>();
-				map.put(FeedConst.KEY_USR, item.getUsername());
-				map.put(FeedConst.KEY_TITLE, item.getTitle());
-				map.put(FeedConst.KEY_TIMESTAMP, item.getTimestamp());
-				map.put(FeedConst.KEY_THUMBNAIL, item.getThumb_image());
+				map.put(Const.KEY_ID, item.get_id());
+				map.put(Const.KEY_USR, item.getUsername());
+				map.put(Const.KEY_TITLE, item.getTitle());
+				map.put(Const.KEY_TIMESTAMP, item.getTimestamp());
+				map.put(Const.KEY_THUMBNAIL, item.getThumb_image());
 				data.add(map);
 			}
 
