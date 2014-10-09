@@ -6,7 +6,22 @@ var express          = require('express'),
 GLOBAL.app = express();
 
 var Challenge       = mongoose.model('Challenge');
+var Comment         = mongoose.model('Comment');
+var Like            = mongoose.model('Like');
 var Reply           = mongoose.model('Reply');
+
+
+// Helper functions used below
+function evaluateReplyError(res, err, reply) {
+    if (err) {
+        res.send(err);
+        return true;
+    }
+    if (!reply) {
+        res.send({result : 'failure', errors: ['Invalid reply.']}, 400);
+        return true;
+    }
+}
 
 module.exports = {
     feed:
@@ -62,16 +77,15 @@ module.exports = {
 
         },
 
-    replyComments:
-        // get reply comment (+ number of likes)
+
+    replyGetComments:
+        // get reply comment (+ number of likes for each comment)
         function (req, res) {
             Reply.findOne({ _id : req.params._reply_id }, function(err, reply) {
-                if (err)
-                    res.send(err);
-                if (!reply) {
-                    res.send({result : 'failure' , errors : ['Invalid reply.']}, 400);
+                // Evaluate possible errors
+                if (evaluateReplyError(res, err, reply))
                     return;
-                }
+
                 // Also add number of likes to each comment
                 comments = [];
                 for (i = 0; i < reply.comments.length; i++) {
@@ -84,15 +98,68 @@ module.exports = {
             });
         },
 
-    replyLike:
-        // like a reply
+    replyAddComment:
+        // Add a comment to a reply
         function (req, res) {
+            Reply.findOne({ _id : req.body._reply_id }, function(err, reply) {
+                // Evaluate possible errors
+                if (evaluateReplyError(res, err, reply))
+                    return;
+
+                var comment = new Comment();
+                // TODO: replace with username from registration
+                comment.username = 'gigel';
+                comment.comment = req.body.comment;
+                comment.date = new Date();
+                reply.comments.push(comment);
+                reply.save();
+
+                res.json({result: 'success'});
+            });
+        },
+
+
+    replyGetLikes:
+        // Get likes for a reply
+        function (req, res) {
+            Reply.findOne({ _id : req.params._reply_id }, function(err, reply) {
+                // Evaluate possible errors
+                if (evaluateReplyError(res, err, reply))
+                    return;
+
+                res.json({ likes : reply.likes, num_likes: reply.likes.length });
+            });
+        },
+
+    replyAddLike:
+        // Add a like to a reply
+        function (req, res) {
+            Reply.findOne({ _id : req.body._reply_id }, function(err, reply) {
+                // Evaluate possible errors
+                if (evaluateReplyError(res, err, reply))
+                    return;
+                
+                var like = new Like();
+                // TODO: replace with username from registration
+                like.username = 'gigel';
+
+                // Do not allow multiple likes from the same user
+                for (i = 0; i < reply.likes.length; i++) {
+                    if (reply.likes[i].username == like.username)
+                        res.send({result: 'failure', errors: ['Cannot like multiple times.']}, 400);
+                }
+
+                like.date = new Date();
+                reply.likes.push(like);
+                reply.save();
+
+                res.json({result: 'success'});
+            });
         },
 
     replyCommentLike:
         // like a reply comment
-        function (req, res)
-        {
+        function (req, res) {
         },
 
     canCreateChallenge:
