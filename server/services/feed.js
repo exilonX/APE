@@ -69,8 +69,7 @@ module.exports = {
                 if (err)
                     res.send(err);
                 if (!reply) {
-                    console.log('no reply');
-                    res.json({ result : 'undefined' });
+                    res.send({result : 'failure' , errors : ['Invalid reply.']}, 400);
                     return;
                 }
                 // Also add number of likes to each comment
@@ -113,8 +112,7 @@ module.exports = {
 
     challengeComments:
         // get challenge comments (+ number of likes)
-        function (req, res) {
-                    
+        function (req, res) { 
         },
 
     challengeLike:
