@@ -41,7 +41,13 @@ router.get('/member/*', function(req, res, next) {
 // parameters: none
 router.route('/feed').get(feed.feed);
 // get comments for a given reply
-router.route('/reply_comments/:_reply_id').get(feed.replyComments);
+router.route('/reply_comments/:_reply_id').get(feed.replyGetComments);
+// add comment for a given reply
+router.route('/reply_add_comment').put(feed.replyAddComment);
+// get likes for a given reply
+router.route('/reply_likes/:_reply_id').get(feed.replyGetLikes);
+// add like for a given reply
+router.route('/reply_add_like').put(feed.replyAddLike);
 // sign up new user
 // parameters: name, password, email
 router.route('/signup').post(registration.register);
