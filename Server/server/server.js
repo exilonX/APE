@@ -39,9 +39,9 @@ router.get('/member/*', function(req, res, next) {
 
 // main feed containing replies to latest challenge
 // parameters: none
-router.route('/feed').get(feed.feed);
+router.route('/member/feed').get(feed.feed);
 // get comments for a given reply
-router.route('/reply_comments/:_reply_id').get(feed.replyComments);
+router.route('/member/reply_comments/:_reply_id').get(feed.replyComments);
 // sign up new user
 // parameters: name, password, email
 router.route('/signup').post(registration.register);
