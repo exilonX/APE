@@ -16,9 +16,7 @@ module.exports = {
         function (req, res) {
             // check required fields are filled
             if (!req.body.name || !req.body.email || !req.body.password) {
-                res.json({errors : ['Please complete all fields.']});
-                // TODO: Status doesn't seem to work.
-                res.send(400);
+                res.send({result: 'failure', errors : ['Please complete all fields.']}, 400);
                 return;
             }
             // check username uniqueness
@@ -38,7 +36,7 @@ module.exports = {
 
                     // return error if validation failed
                     if (errors.length != 0) {
-                        res.json({result : 'failure', errors : errors});
+                        res.send({result : 'failure', errors : errors}, 400);
                         return;
                     }
                     // save the object
