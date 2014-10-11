@@ -3,14 +3,19 @@ package com.example.ape.adapters;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.example.ape.R;
 import com.example.ape.constants.Const;
 import com.example.ape.helper.CommentTag;
-import com.example.ape.utilsFeed.ImageLoader;
+import com.example.volley.AppController;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +35,7 @@ public class CommentAdaptor extends BaseAdapter {
 		this.activity 		= a;
 		this.data 			= data;
 		this.inflater 		= (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.imageLoader 	= new ImageLoader(activity.getApplicationContext());
+		this.imageLoader 	= AppController.getInstance().getImageLoader();
 		this.tag 			= tag;
 	}
 
@@ -59,8 +64,23 @@ public class CommentAdaptor extends BaseAdapter {
 		if(convertView==null)
 			if (type == 0) {
 				view = inflater.inflate(R.layout.comment_row2, null);
-				ImageView	thumbImage = (ImageView)view.findViewById(R.id.list_image);
-				imageLoader.DisplayImage(tag.imageUrl, thumbImage);
+				final ImageView	thumbImage = (ImageView)view.findViewById(R.id.list_image);
+//				imageLoader.DisplayImage(tag.imageUrl, thumbImage);
+				
+				imageLoader.get(tag.imageUrl, new ImageListener() {
+					
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Log.e("Volley image Loader", "Image Load Error: " + error.getMessage());
+					}
+					
+					@Override
+					public void onResponse(ImageContainer response, boolean arg1) {
+						if (response.getBitmap() != null) {
+							thumbImage.setImageBitmap(response.getBitmap());
+						}
+					}
+				});
 				
 			} else {
 				view = inflater.inflate(R.layout.comment_row, null);

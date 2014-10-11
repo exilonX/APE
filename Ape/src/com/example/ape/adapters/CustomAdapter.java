@@ -9,14 +9,17 @@ import org.json.JSONArray;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.example.activities.FragmentSwitchListener;
 import com.example.activities.MainActivity;
 import com.example.ape.R;
 import com.example.ape.constants.Const;
 import com.example.ape.helper.CommentInfo;
 import com.example.ape.helper.CommentTag;
-import com.example.ape.utilsFeed.ImageLoader;
 import com.example.ape.volley.request.ConstRequest;
 import com.example.ape.volley.request.VolleyRequests;
 import com.example.ape.volley.request.handlers.LogHandler;
@@ -55,11 +58,12 @@ public class CustomAdapter extends BaseAdapter {
 	FragmentManager manager = null;
 
 	public CustomAdapter(Activity a, ArrayList<HashMap<String, String>> data, FragmentManager manager) {
-		this.activity = a;
-		this.data = data;
-		this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.imageLoader = new ImageLoader(activity.getApplicationContext());
-		this.manager = manager;
+		this.activity 		= a;
+		this.data 			= data;
+		this.inflater 		= (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		this.imageLoader = new ImageLoader(activity.getApplicationContext());
+		this.imageLoader	= AppController.getInstance().getImageLoader();
+		this.manager 		= manager;
 	}
 
 
@@ -91,7 +95,9 @@ public class CustomAdapter extends BaseAdapter {
 		TextView title = (TextView)view.findViewById(R.id.title); 
 		TextView username = (TextView)view.findViewById(R.id.username); 
 		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
-		ImageView thumb_image=(ImageView)view.findViewById(R.id.list_image);
+		
+		final ImageView thumb_image = (ImageView)view.findViewById(R.id.list_image);
+		
 		ImageButton imageBut = (ImageButton)view.findViewById(R.id.addComment);
 		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
 
@@ -105,7 +111,23 @@ public class CustomAdapter extends BaseAdapter {
 		title.setText(item.get(Const.KEY_TITLE));
 		username.setText(item.get(Const.KEY_USR));
 		timestamp.setText(item.get(Const.KEY_TIMESTAMP));
-		imageLoader.DisplayImage(item.get(Const.KEY_THUMBNAIL), thumb_image);
+		
+		imageLoader.get(item.get(Const.KEY_THUMBNAIL), new ImageListener() {
+			
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				Log.e("Volley image Loader", "Image Load Error: " + error.getMessage());
+			}
+			
+			@Override
+			public void onResponse(ImageContainer response, boolean arg1) {
+				if (response.getBitmap() != null) {
+					thumb_image.setImageBitmap(response.getBitmap());
+				}
+			}
+		});
+		
+//		imageLoader.DisplayImage(item.get(Const.KEY_THUMBNAIL), thumb_image);
 
 //		thumb_image.setOnClickListener(new OnImageClickListener(position));
 
