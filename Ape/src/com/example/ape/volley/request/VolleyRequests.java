@@ -1,5 +1,8 @@
 package com.example.ape.volley.request;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,6 +28,12 @@ public class VolleyRequests {
 		jsonArrayRequest(ConstRequest.TAG_JSON_ARRAY, ConstRequest.GET_FEED, handle);
 	}
 
+	/**
+	 * Make a jsonArray request
+	 * @param TAG
+	 * @param URL
+	 * @param handle
+	 */
 	public static void jsonArrayRequest(String TAG, String URL, final HandleJsonArrayResponse handle) {
 		JsonArrayRequest req = new JsonArrayRequest(URL,
 				new Response.Listener<JSONArray>() {
@@ -44,8 +53,14 @@ public class VolleyRequests {
 	}
 
 
+	/**
+	 * Make json object request
+	 * @param TAG
+	 * @param URL
+	 * @param handle
+	 */
 	public static void jsonObjectRequest(String TAG, String URL, final HandleJsonObjectResponse handle) {
-		
+
 
 		JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
 				URL, null,
@@ -66,5 +81,40 @@ public class VolleyRequests {
 		// Adding request to request queue
 		AppController.getInstance().addToRequestQueue(jsonObjReq, TAG);
 	}
+
+	/**
+	 * Send a JSON object request using post params
+	 * @param TAG
+	 * @param URL
+	 * @param handle
+	 * @param params - the post params that will be sent to the server
+	 */
+	public static void jsonPostObjectRequest(String TAG, String URL, final HandleJsonObjectResponse handle,
+			final HashMap<String, String> params) {
+		JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.POST,
+				URL, null,
+				new Response.Listener<JSONObject>() {
+			@Override
+			public void onResponse(JSONObject response) {
+				Log.d("Response POST", response.toString());
+				handle.handleJsonObjectResponse(response);
+			}
+		}, new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				VolleyLog.d("ERROR POST", "Error: " + error.getMessage());
+			}
+		}) {
+			@Override
+			protected Map<String, String> getParams() {
+				return params;
+			}
+		};
+
+		// Adding request to request queue
+		AppController.getInstance().addToRequestQueue(jsonObjReq, TAG);
+	}
+
 
 }

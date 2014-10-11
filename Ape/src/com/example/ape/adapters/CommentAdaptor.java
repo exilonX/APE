@@ -93,7 +93,6 @@ public class CommentAdaptor extends BaseAdapter {
 				HashMap<String, String> item = new HashMap<String, String>();
 				item = data.get(position);
 
-				
 				username.setText(item.get("username"));
 				comment.setText(item.get("comment"));
 				timestamp.setText(item.get("timestamp"));
