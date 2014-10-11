@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.example.ape.adapters.CommentAdaptor;
 import com.example.ape.constants.Const;
 import com.example.ape.helper.CommentInfo;
+import com.example.ape.helper.CommentTag;
 import com.google.gson.Gson;
 
 /**
@@ -23,11 +24,13 @@ public class PopulateCommentHandler implements HandleJsonArrayResponse {
 	CommentAdaptor 	adapter;
 	Activity		activity;
 	ListView		view;
+	CommentTag		info;
 	
-	public PopulateCommentHandler(Activity activity, ListView view) {
+	public PopulateCommentHandler(Activity activity, ListView view, CommentTag info) {
 		this.adapter 	= null;
 		this.activity 	= activity;
 		this.view 		= view;
+		this.info		= info;
 	}
 	
 	@Override
@@ -44,7 +47,7 @@ public class PopulateCommentHandler implements HandleJsonArrayResponse {
 		// get the view, initialize the adapter, populate the view and 
 		// set an onclick listener
 
-		adapter = new CommentAdaptor(activity, data);
+		adapter = new CommentAdaptor(activity, data, info);
 		view.setAdapter(adapter);
 	}
 	

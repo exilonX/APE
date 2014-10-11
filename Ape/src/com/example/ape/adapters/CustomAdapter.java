@@ -98,7 +98,8 @@ public class CustomAdapter extends BaseAdapter {
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
 		
-		imageBut.setTag(new CommentTag(item.get(Const.KEY_ID), position));
+		imageBut.setTag(new CommentTag(item.get(Const.KEY_ID), position,
+				item.get(Const.KEY_THUMBNAIL)));
 		
 		// Setting all values in listview
 		title.setText(item.get(Const.KEY_TITLE));

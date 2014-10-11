@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.ape.R;
+import com.example.ape.constants.Const;
+import com.example.ape.helper.CommentTag;
 import com.example.ape.utilsFeed.ImageLoader;
 
 import android.annotation.SuppressLint;
@@ -18,16 +20,18 @@ import android.widget.TextView;
 
 public class CommentAdaptor extends BaseAdapter {
 	
-	private Activity activity;
-	private ArrayList<HashMap<String, String>> data;
-	private LayoutInflater inflater = null;
-	public ImageLoader imageLoader;
+	private Activity 							activity;
+	private ArrayList<HashMap<String, String>> 	data;
+	private LayoutInflater 						inflater = null;
+	public ImageLoader 							imageLoader;
+	public CommentTag 							tag;
 
-	public CommentAdaptor(Activity a, ArrayList<HashMap<String, String>> data) {
-		this.activity = a;
-		this.data = data;
-		this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.imageLoader = new ImageLoader(activity.getApplicationContext());
+	public CommentAdaptor(Activity a, ArrayList<HashMap<String, String>> data, CommentTag tag) {
+		this.activity 		= a;
+		this.data 			= data;
+		this.inflater 		= (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.imageLoader 	= new ImageLoader(activity.getApplicationContext());
+		this.tag 			= tag;
 	}
 
 
@@ -55,6 +59,9 @@ public class CommentAdaptor extends BaseAdapter {
 		if(convertView==null)
 			if (type == 0) {
 				view = inflater.inflate(R.layout.comment_row2, null);
+				ImageView	thumbImage = (ImageView)view.findViewById(R.id.list_image);
+				imageLoader.DisplayImage(tag.imageUrl, thumbImage);
+				
 			} else {
 				view = inflater.inflate(R.layout.comment_row, null);
 				
