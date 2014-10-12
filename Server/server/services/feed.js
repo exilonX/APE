@@ -14,7 +14,7 @@ var Reply           = mongoose.model('Reply');
 // Helper functions used below
 function evaluateReplyError(res, err, reply) {
     if (err) {
-        res.send(err);
+        res.send(err, 400);
         return true;
     }
     if (!reply) {
@@ -58,7 +58,7 @@ module.exports = {
                     // Paginate the results based on the options built above
                     query.paginate(options, function(error, paginatedResults) {
                         if(error) {
-                            res.send(error);
+                            res.send(error, 400);
                         } else {
                             // Add host prefix to static resources
                             var host = app.get('host');
