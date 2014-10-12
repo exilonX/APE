@@ -47,11 +47,11 @@ module.exports = {
                     // hash password
                     user.hashPassword(req.body.password, function(err, password) {
                         if (err)
-                            res.send(err);
+                            res.send(err, 400);
                         user.password = password;
                         user.save(function(err) {
                             if (err)
-                                res.send(err);
+                                res.send(err, 400);
                             res.json({result : 'success'});
                         });
                     });
@@ -72,7 +72,7 @@ module.exports = {
                     var decoded = jwt.decode(token, app.get('jwt_token_secret'));
                 }
                 catch (err) {
-                    res.send(401);
+                    res.send({result: 'failure', erros: ['Error on authentication.']}, 401);
                     return;
                 }
             }
@@ -82,8 +82,9 @@ module.exports = {
             }
 
             if (decoded.exp <= Date.now()) {
-                res.end('Access token has expired.', 400);
+                res.end({result: 'failure', errors: ['Access token has expired.']}, 400);
             }
+            // add username in request. parameter will be passed on to other routes
             User.findOne({ name : decoded.iss }, '-password -email', function(err, user) {
                 req.user = user;
             });
@@ -95,25 +96,23 @@ module.exports = {
             var name = req.body.name;
             var password = req.body.password;
             if (!name || !password) {
-                return res.send('Both fields are required.', 400);
+                return res.send({result: 'failure', errors: ['Both fields are required.']}, 400);
             }
 
             User.findOne({ name: name }, function(err, user) {
-                if (err) {
-                    // user not found
-                    return res.send(401);
-                }
+                if (err)
+                    return res.send(err, 400);
 
                 if (!user) {
                     // incorrect username
-                    return res.send(401);
+                    return res.send({result: 'failure', errors: ['Username does not exist.']}, 401);
                 }
 
                 // verify password
                 user.isValidPassword(password, function(err, matches) {
                     if (err || !matches) {
                         // incorrect password
-                        return res.send(401);
+                        return res.send({result: 'failure', errors: ['Wrong password.']}, 401);
                     }
                     else { 
                         var expires     = moment().add(1, 'years');
@@ -129,7 +128,7 @@ module.exports = {
                         });
 
                         // User has authenticated OK
-                        res.send(200);
+                        res.send({result: 'success'}, 200);
                     }
                 });
             });
@@ -141,7 +140,7 @@ module.exports = {
             // do not expose password and email
             User.findOne({name : req.params.name}, '-password -email', function(err, user) {
                 if (err)
-                    res.send(err);
+                    res.send(err, 400);
                 res.json(user);
             });
         }
