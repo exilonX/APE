@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.activities.MainActivity;
+import com.example.ape.login.LoginActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,9 +12,9 @@ import android.content.Intent;
 import android.util.Log;
 
 public class LoginHandler implements HandleJsonObjectResponse {
-	Context context;
+	LoginActivity context;
 	
-	public LoginHandler(Context context) {
+	public LoginHandler(LoginActivity context) {
 		this.context = context;
 	}
 
@@ -25,8 +26,7 @@ public class LoginHandler implements HandleJsonObjectResponse {
 			String user = response.getString("user");
 			Log.d("Login response", token + ", " + expires + ", " + user);
 			
-			Intent i = new Intent(this.context, MainActivity.class);
-			this.context.startActivity(i);
+			this.context.switchToMain();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

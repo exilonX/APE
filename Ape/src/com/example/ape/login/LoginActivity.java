@@ -47,17 +47,23 @@ public class LoginActivity extends Activity {
 				//Switch to feed
 //				Intent i = new Intent(getApplicationContext(), MainActivity.class);
 //				startActivity(i);
-				LoginHandler loginHandler = new LoginHandler(getApplicationContext());
+				LoginHandler loginHandler = new LoginHandler(LoginActivity.this);
 				
 				HashMap<String, String> params = new HashMap<>();
+//				params.put("Content-Type","application/x-www-form-urlencoded");
 				params.put("name", name.getText().toString());
 				params.put("password", password.getText().toString());
 				
-				VolleyRequests.jsonPostObjectRequest(ConstRequest.TAG_JSON_OBJECT, 
+				VolleyRequests.jsonPostObjectReq(ConstRequest.TAG_JSON_OBJECT, 
 						ConstRequest.POST_LOGIN_URL, 
 						loginHandler, 
 						params);
 			}
 		});
+	}
+	
+	public void switchToMain() {
+		Intent i = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(i);
 	}
 }
