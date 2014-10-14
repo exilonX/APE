@@ -7,7 +7,7 @@ var express         = require('express'),
     path            = require('path'),
     router          = express.Router(),
     models          = require('./models/models'),
-    registration    = require('./services/registration');
+    registration    = require('./services/registration'),
     feed            = require('./services/feed');
 
 GLOBAL.app = express();
@@ -41,13 +41,18 @@ router.get('/member/*', function(req, res, next) {
 // parameters: none
 router.route('/feed').get(feed.feed);
 // get comments for a given reply
-router.route('/reply_comments/:_reply_id').get(feed.replyGetComments);
+router.route('/reply/comments/:_reply_id').get(feed.replyGetComments);
 // add comment for a given reply
-router.route('/reply_add_comment').put(feed.replyAddComment);
+// parameters: _reply_id, comment
+router.route('/reply/comment/add').put(feed.replyAddComment);
 // get likes for a given reply
-router.route('/reply_likes/:_reply_id').get(feed.replyGetLikes);
+router.route('/reply/likes/:_reply_id').get(feed.replyGetLikes);
 // add like for a given reply
-router.route('/reply_add_like').put(feed.replyAddLike);
+// parameters: _reply_id
+router.route('/reply/like/add').put(feed.replyAddLike);
+// add like for a reply comment
+// parameters: _reply_id, _comment_id
+router.route('/reply/comment/like/add').put(feed.replyCommentAddLike);
 // sign up new user
 // parameters: name, password, email
 router.route('/signup').post(registration.register);

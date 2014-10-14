@@ -15,7 +15,8 @@
         "bcrypt": "*",
         "url": "*",
         "validator": "*",
-		"mongoose-query-paginate": "*"
+		"mongoose-query-paginate": "*",
+        "lockfile": "*"
     },
     "devDependencies": {
         "bower": "*",
