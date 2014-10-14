@@ -1,7 +1,8 @@
 var express          = require('express'),
     restful          = require('node-restful'),
     mongoose         = restful.mongoose,
-    mongoosePaginate = require('mongoose-query-paginate');
+    mongoosePaginate = require('mongoose-query-paginate'),
+    lockFile         = require('lockfile');
 
 GLOBAL.app = express();
 
@@ -118,7 +119,6 @@ module.exports = {
             });
         },
 
-
     replyGetLikes:
         // Get likes for a reply
         function (req, res) {
@@ -138,28 +138,99 @@ module.exports = {
                 // Evaluate possible errors
                 if (evaluateReplyError(res, err, reply))
                     return;
+
+                var lockFileName = reply._id + '.lock';
+                var errors = [];
+
+                // Do not allow multiple likes from the same user.
+                // Acquire a lock for this reply until like is saved.
+                lockFile.lock(lockFileName, {}, function(err) {
+                    for (i = 0; i < reply.likes.length; i++) {
+                        if (reply.likes[i].username == 'gigel') {
+                            errors.push('Cannot like multiple times.');
+                            break;
+                        }
+                    }
+
+                    if (errors.length == 0) {
+                        var like = new Like();
+                        // TODO: replace with username from registration
+                        like.username = 'gigel';
+                        like.date = new Date();
+                        reply.likes.push(like);
+                        reply.save();
+                        res.json({result: 'success'});
+                    }
+                    else {
+                        res.send({result: 'failure', errors: errors}, 400);
+                    }
+
+                    // Release lock
+                    lockFile.unlock(lockFileName, function (err) {
+                        if (err)
+                            console.log(lockFileName + ' unlocking error.');
+                    });
+                });
                 
-                var like = new Like();
-                // TODO: replace with username from registration
-                like.username = 'gigel';
-
-                // Do not allow multiple likes from the same user
-                for (i = 0; i < reply.likes.length; i++) {
-                    if (reply.likes[i].username == like.username)
-                        res.send({result: 'failure', errors: ['Cannot like multiple times.']}, 400);
-                }
-
-                like.date = new Date();
-                reply.likes.push(like);
-                reply.save();
-
-                res.json({result: 'success'});
             });
         },
 
-    replyCommentLike:
+    replyCommentAddLike:
         // like a reply comment
         function (req, res) {
+            Reply.findOne({ _id : req.body._reply_id }, function(err, reply) {
+                // Evaluate possible errors
+                if (evaluateReplyError(res, err, reply))
+                    return;
+
+                var errors = [];
+
+                // Search for comment
+                var found = false;
+                for (i = 0; i < reply.comments.length; i++) {
+                    if (reply.comments[i]._id == req.body._comment_id) {
+                        found = true;
+                        var lockFileName = reply.comments[i]._id + '.lock';
+                        // Do not allow multiple likes from the same user.
+                        // Acquire a lock for this comment, until like is saved.
+                        var index = i;
+                        lockFile.lock(lockFileName, function(err) {
+                            for (var j = 0; j < reply.comments[index].likes.length; j++) {
+                                if (reply.comments[index].likes[j].username == 'gigel') {
+                                    errors.push('Cannot like multiple times.');
+                                    break;
+                                }
+                            }
+
+                            if (errors.length == 0) {
+                                var like = new Like();
+
+                                // TODO: replace with username from registration
+                                like.username = 'gigel';
+
+                                like.date = new Date();
+                                reply.comments[index].likes.push(like);
+                                reply.save();
+                                res.json({result: 'success'});
+                            }
+                            else {
+                                res.send({result: 'failure', errors: errors }, 400);
+                            }
+
+                            // Release lock
+                            lockFile.unlock(lockFileName, function (err) {
+                                if (err)
+                                    console.log(lockFileName + ' unlocking error.');
+                            });
+                        });
+                    }
+                }
+
+                if (!found) {
+                    errors.push('Comment does not exist.');
+                    res.send({result: 'failure', errors: errors }, 400);
+                }
+            });
         },
 
     canCreateChallenge:
