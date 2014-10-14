@@ -32,7 +32,7 @@ public class FeedFragment extends Fragment {
 		PopulateFeedPaginatedHandler feed = new PopulateFeedPaginatedHandler(inflater, container,
 				savedInstanceState, getFragmentManager(), view, adapter, getActivity(), 
 				linear, this);
-		VolleyRequests.jsonObjectRequest(ConstRequest.TAG_JSON_OBJECT, 
+		VolleyRequests.jsonObjectGetRequest(ConstRequest.TAG_JSON_OBJECT, 
 				ConstRequest.GET_FEED, feed);
 		return linear;
 	}

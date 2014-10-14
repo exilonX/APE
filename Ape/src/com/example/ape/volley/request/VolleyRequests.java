@@ -1,7 +1,6 @@
 package com.example.ape.volley.request;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,13 +8,11 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import com.android.volley.Request.Method;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.ape.volley.request.handlers.HandleJsonArrayResponse;
 import com.example.ape.volley.request.handlers.HandleJsonObjectResponse;
 import com.example.volley.AppController;
@@ -27,16 +24,16 @@ import com.example.volley.AppController;
  */
 public class VolleyRequests {
 	public static void feedRequest(HandleJsonArrayResponse handle) {
-		jsonArrayRequest(ConstRequest.TAG_JSON_ARRAY, ConstRequest.GET_FEED, handle);
+		jsonArrayGetRequest(ConstRequest.TAG_JSON_ARRAY, ConstRequest.GET_FEED, handle);
 	}
 
 	/**
-	 * Make a jsonArray request
+	 * Make a GET request which is expected to answer with a JSON array.
 	 * @param TAG
 	 * @param URL
 	 * @param handle
 	 */
-	public static void jsonArrayRequest(String TAG, String URL, final HandleJsonArrayResponse handle) {
+	public static void jsonArrayGetRequest(String TAG, String URL, final HandleJsonArrayResponse handle) {
 		JsonArrayRequest req = new JsonArrayRequest(URL,
 				new Response.Listener<JSONArray>() {
 			@Override
@@ -46,7 +43,7 @@ public class VolleyRequests {
 		}, new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				Log.d("VOLLEY ERROR", error.getMessage());
+				VolleyLog.d("Object response erorr: " + error.getMessage());
 			}
 		});
 
@@ -56,12 +53,12 @@ public class VolleyRequests {
 
 
 	/**
-	 * Make json object request
+	 * Make a GET request which is expected to answer with a JSON.
 	 * @param TAG
 	 * @param URL
 	 * @param handle
 	 */
-	public static void jsonObjectRequest(String TAG, String URL, final HandleJsonObjectResponse handle) {
+	public static void jsonObjectGetRequest(String TAG, String URL, final HandleJsonObjectResponse handle) {
 
 
 		JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
@@ -76,7 +73,7 @@ public class VolleyRequests {
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				Log.d("OBJECT REQ", "ERROR in object request");
+				VolleyLog.d("Object response erorr: " + error.getMessage());
 			}
 		});
 
@@ -85,52 +82,15 @@ public class VolleyRequests {
 	}
 
 	/**
-	 * Send a JSON object request using post params
-	 * @param TAG
-	 * @param URL
-	 * @param handle
-	 * @param params - the post params that will be sent to the server
-	 */
-	public static void jsonPostObjectRequest(String TAG, String URL, final HandleJsonObjectResponse handle,
-			final HashMap<String, String> params) {
-		JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.POST,
-				URL, new JSONObject(params),
-				new Response.Listener<JSONObject>() {
-			@Override
-			public void onResponse(JSONObject response) {
-				Log.d("Response POST", response.toString());
-				handle.handleJsonObjectResponse(response);
-			}
-		}, new Response.ErrorListener() {
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				VolleyLog.d("ERROR POST", "Error: " + error.getMessage());
-			}
-		}) {
-			@Override
-			public Map<String, String> getHeaders() throws AuthFailureError {
-				Map<String,String> params = new HashMap<String, String>();
-				params.put("Content-Type","application/x-www-form-urlencoded");
-				return params;
-			}
-
-		};
-
-		// Adding request to request queue
-		AppController.getInstance().addToRequestQueue(jsonObjReq, TAG);
-	}
-
-	/**
-	 * 
+	 * Send a x-www-form-urlencoded POST request with the given parameters.
 	 * @param TAG
 	 * @param URL
 	 * @param handle
 	 * @param params
 	 */
-	public static void jsonPostObjectReq(String TAG, String URL, final HandleJsonObjectResponse handle,
+	public static void jsonObjectPostRequest(String TAG, String URL, final HandleJsonObjectResponse handle,
 			final HashMap<String, String> params) {
-		LoginRequest jsonObjReq = new LoginRequest(
+		WWWFormRequest request = new WWWFormRequest(
 				Method.POST,
 				URL, 
 				params,
@@ -144,19 +104,12 @@ public class VolleyRequests {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						VolleyLog.d("ERROR POST", "Error: " + error.getMessage());
+						VolleyLog.d("Post Error: " + error.getMessage());
 					}
-				}) {
-			@Override
-			public Map<String, String> getHeaders() throws AuthFailureError {
-				Map<String,String> params = new HashMap<String, String>();
-				params.put("Content-Type","application/x-www-form-urlencoded");
-				return params;
-			}
-		};
+				});
 
 		// Adding request to request queue
-		AppController.getInstance().addToRequestQueue(jsonObjReq, TAG);
+		AppController.getInstance().addToRequestQueue(request, TAG);
 	}
 
 

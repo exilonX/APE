@@ -49,7 +49,7 @@ public class CommentFragment extends Fragment {
 		
 		PopulateCommentHandler handler = new PopulateCommentHandler(getActivity(), view, info);
 		String url = ConstRequest.GET_COMMENTS + info._id;
-		VolleyRequests.jsonArrayRequest(ConstRequest.TAG_JSON_ARRAY, url, handler);
+		VolleyRequests.jsonArrayGetRequest(ConstRequest.TAG_JSON_ARRAY, url, handler);
 		
        return relative;
 	}

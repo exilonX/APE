@@ -15,27 +15,26 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 
 
-public class LoginRequest extends Request<JSONObject> {
+public class WWWFormRequest extends Request<JSONObject> {
 
 	private Listener<JSONObject> listener;
     private Map<String, String> params;
 	
-    public LoginRequest(String url, Map<String, String> params,
+    public WWWFormRequest(String url, Map<String, String> params,
             Listener<JSONObject> reponseListener, ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
         this.listener = reponseListener;
         this.params = params;
     }
 
-    public LoginRequest(int method, String url, Map<String, String> params,
+    public WWWFormRequest(int method, String url, Map<String, String> params,
             Listener<JSONObject> reponseListener, ErrorListener errorListener) {
         super(method, url, errorListener);
         this.listener = reponseListener;
         this.params = params;
     }
     
-    protected Map<String, String> getParams()
-            throws com.android.volley.AuthFailureError {
+    protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
         return params;
     };
 

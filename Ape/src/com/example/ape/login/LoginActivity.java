@@ -54,7 +54,7 @@ public class LoginActivity extends Activity {
 				params.put("name", name.getText().toString());
 				params.put("password", password.getText().toString());
 				
-				VolleyRequests.jsonPostObjectReq(ConstRequest.TAG_JSON_OBJECT, 
+				VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT, 
 						ConstRequest.POST_LOGIN_URL, 
 						loginHandler, 
 						params);
