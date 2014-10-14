@@ -67,6 +67,13 @@ module.exports = {
                 (req.query && req.query.access_token) ||
                 req.headers['x-access-token'];
 
+            // Debug output
+            if (req.body && req.body.access_token)
+                console.log("Auth token POST parameter");
+            else if (req.query && req.query.access_token)
+                console.log("Auth token GET ? parameter");
+            console.log("token=" + token);
+
             if (token) {
                 try {
                     var decoded = jwt.decode(token, app.get('jwt_token_secret'));
