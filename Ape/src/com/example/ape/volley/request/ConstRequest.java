@@ -16,7 +16,7 @@ public class ConstRequest {
 	// If running under emulator then localhost == 10.0.2.2
 	public static String GET_FEED 		= "http://apeserver.herokuapp.com/api/feed?pageSize=7&page=1";
 	public static String BASE_URL 		= "http://apeserver.herokuapp.com";
-	public static String GET_COMMENTS 	= "http://apeserver.herokuapp.com/api/reply_comments/";
-	public static String POST_LOGIN_URL	= "http://10.0.2.2:8080/api/login";
+	public static String GET_COMMENTS 	= "http://apeserver.herokuapp.com/api/reply/comments/";
+	public static String POST_LOGIN_URL	= "http://apeserver.herokuapp.com/api/login";
 	
 }
