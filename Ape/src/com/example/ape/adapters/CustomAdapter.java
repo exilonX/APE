@@ -20,6 +20,7 @@ import com.example.ape.R;
 import com.example.ape.constants.Const;
 import com.example.ape.helper.CommentInfo;
 import com.example.ape.helper.CommentTag;
+import com.example.ape.views.FeedImageView;
 import com.example.ape.volley.request.ConstRequest;
 import com.example.ape.volley.request.VolleyRequests;
 import com.example.ape.volley.request.handlers.LogHandler;
@@ -33,6 +34,8 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,64 +85,132 @@ public class CustomAdapter extends BaseAdapter {
 		return arg0;
 	}
 
-	@SuppressLint("InflateParams")
+//	@SuppressLint("InflateParams")
+//	@Override
+//	public View getView(int position, View convertView, ViewGroup parent) {
+//		View view = convertView;
+//
+//		// inflate the view and populate the other views inside
+//		if(convertView==null)
+//			view = inflater.inflate(R.layout.list_row2, null);
+//
+//		// get each sub-view and populate with coresponding data
+//		TextView title = (TextView)view.findViewById(R.id.title); 
+//		TextView username = (TextView)view.findViewById(R.id.username); 
+//		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
+//		
+//		final ImageView thumb_image = (ImageView)view.findViewById(R.id.list_image);
+//		
+//		ImageButton imageBut = (ImageButton)view.findViewById(R.id.addComment);
+//		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
+//
+//		HashMap<String, String> item = new HashMap<String, String>();
+//		item = data.get(position);
+//		
+//		imageBut.setTag(new CommentTag(item.get(Const.KEY_ID), position,
+//				item.get(Const.KEY_THUMBNAIL)));
+//		
+//		// Setting all values in listview
+//		title.setText(item.get(Const.KEY_TITLE));
+//		username.setText(item.get(Const.KEY_USR));
+//		timestamp.setText(item.get(Const.KEY_TIMESTAMP));
+//		
+//		imageLoader.get(item.get(Const.KEY_THUMBNAIL), new ImageListener() {
+//			
+//			@Override
+//			public void onErrorResponse(VolleyError error) {
+//				Log.e("Volley image Loader", "Image Load Error: " + error.getMessage());
+//			}
+//			
+//			@Override
+//			public void onResponse(ImageContainer response, boolean arg1) {
+//				if (response.getBitmap() != null) {
+//					thumb_image.setImageBitmap(response.getBitmap());
+//				}
+//			}
+//		});
+//		
+////		imageLoader.DisplayImage(item.get(Const.KEY_THUMBNAIL), thumb_image);
+//
+//		setOnClickComment(view);
+//		setOnClickApe(view);
+//
+//		return view;
+//	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = convertView;
-
-		// inflate the view and populate the other views inside
-		if(convertView==null)
-			view = inflater.inflate(R.layout.list_row2, null);
-
-		// get each sub-view and populate with coresponding data
-		TextView title = (TextView)view.findViewById(R.id.title); 
-		TextView username = (TextView)view.findViewById(R.id.username); 
-		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
+		if (convertView == null)
+            convertView = inflater.inflate(R.layout.feed_item, null);
 		
-		final ImageView thumb_image = (ImageView)view.findViewById(R.id.list_image);
-		
-		ImageButton imageBut = (ImageButton)view.findViewById(R.id.addComment);
-		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
-
+		TextView name = (TextView) convertView.findViewById(R.id.name);
+        TextView timestamp = (TextView) convertView
+                .findViewById(R.id.timestamp);
+        TextView statusMsg = (TextView) convertView
+                .findViewById(R.id.txtStatusMsg);
+        TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
+        NetworkImageView profilePic = (NetworkImageView) convertView
+                .findViewById(R.id.profilePic);
+        FeedImageView feedImageView = (FeedImageView) convertView
+                .findViewById(R.id.feedImage1);
+        
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
 		
-		imageBut.setTag(new CommentTag(item.get(Const.KEY_ID), position,
-				item.get(Const.KEY_THUMBNAIL)));
+		name.setText(item.get(Const.KEY_USR));
+//		CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
+//                Long.parseLong(item.getTimeStamp()),
+//                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+		timestamp.setText(Const.KEY_TIMESTAMP);
 		
-		// Setting all values in listview
-		title.setText(item.get(Const.KEY_TITLE));
-		username.setText(item.get(Const.KEY_USR));
-		timestamp.setText(item.get(Const.KEY_TIMESTAMP));
-		
-		imageLoader.get(item.get(Const.KEY_THUMBNAIL), new ImageListener() {
+		if (!TextUtils.isEmpty(item.get(Const.KEY_TITLE))) {
+			statusMsg.setText(item.get(Const.KEY_TITLE));
+			statusMsg.setVisibility(View.VISIBLE);
+		} else {
+			statusMsg.setVisibility(View.GONE);
+		}
+		String urlPic = "http://www.insidefacebook.com/wp-content/uploads/2013/01/profile-150x150.png";
+		profilePic.setImageUrl(urlPic, imageLoader);
+//		if (item.getUrl() != null) {
+//            url.setText(Html.fromHtml("<a href=\"" + item.getUrl() + "\">"
+//                    + item.getUrl() + "</a> "));
+// 
+//            // Making url clickable
+//            url.setMovementMethod(LinkMovementMethod.getInstance());
+//            url.setVisibility(View.VISIBLE);
+//        } else {
+            // url is null, remove from the view
+            url.setVisibility(View.GONE);
+//        }
+        
+		if (item.get(Const.KEY_THUMBNAIL) != null) {
+			feedImageView.setImageUrl(item.get(Const.KEY_THUMBNAIL), imageLoader);
+			feedImageView.setVisibility(View.VISIBLE);
+			feedImageView.setResponseObserver(new FeedImageView.ResponseObserver() {
+                        @Override
+                        public void onError() {
+                        }
+ 
+                        @Override
+                        public void onSuccess() {
+                        }
+                    });
 			
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e("Volley image Loader", "Image Load Error: " + error.getMessage());
-			}
-			
-			@Override
-			public void onResponse(ImageContainer response, boolean arg1) {
-				if (response.getBitmap() != null) {
-					thumb_image.setImageBitmap(response.getBitmap());
-				}
-			}
-		});
+		} else {
+			feedImageView.setVisibility(View.GONE);
+		}
 		
-//		imageLoader.DisplayImage(item.get(Const.KEY_THUMBNAIL), thumb_image);
-
-//		thumb_image.setOnClickListener(new OnImageClickListener(position));
-
-		setOnClickComment(view);
-		setOnClickApe(view);
-
-		return view;
+		setOnClickComment(convertView);
+		setOnClickApe(convertView);
+		
+		return convertView;
 	}
-
+	
+	
 	class OnImageClickListener implements OnClickListener {
 
 		int _postion;
+		
 
 		// constructor
 		public OnImageClickListener(int position) {
