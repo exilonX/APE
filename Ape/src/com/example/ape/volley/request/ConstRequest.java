@@ -18,5 +18,6 @@ public class ConstRequest {
 	public static String BASE_URL 		= "http://apeserver.herokuapp.com";
 	public static String GET_COMMENTS 	= "http://apeserver.herokuapp.com/api/reply/comments/";
 	public static String POST_LOGIN_URL	= "http://apeserver.herokuapp.com/api/login";
+	public static String POST_COMM_ADD	= "http://apeserver.herokuapp.com/api/reply/comment/add";
 	
 }

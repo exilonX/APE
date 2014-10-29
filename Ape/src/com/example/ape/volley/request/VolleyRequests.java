@@ -90,8 +90,41 @@ public class VolleyRequests {
 	 */
 	public static void jsonObjectPostRequest(String TAG, String URL, final HandleJsonObjectResponse handle,
 			final HashMap<String, String> params) {
+		
 		WWWFormRequest request = new WWWFormRequest(
 				Method.POST,
+				URL, 
+				params,
+				new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						Log.d("Response POST", response.toString());
+						handle.handleJsonObjectResponse(response);
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						VolleyLog.d("Post Error: " + error.getMessage());
+					}
+				});
+
+		// Adding request to request queue
+		AppController.getInstance().addToRequestQueue(request, TAG);
+	}
+	
+	/**
+	 * Send a x-www-form-urlencoded POST request with the given parameters.
+	 * @param TAG
+	 * @param URL
+	 * @param handle
+	 * @param params
+	 */
+	public static void jsonObjectPutRequest(String TAG, String URL, final HandleJsonObjectResponse handle,
+			final HashMap<String, String> params) {
+		
+		WWWFormRequest request = new WWWFormRequest(
+				Method.PUT,
 				URL, 
 				params,
 				new Response.Listener<JSONObject>() {
