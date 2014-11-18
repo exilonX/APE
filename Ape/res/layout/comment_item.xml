@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/feed_bg"
+    android:background="@color/green"
     android:orientation="vertical" >
  
     <LinearLayout
@@ -62,65 +62,14 @@
             android:paddingRight="@dimen/feed_item_status_pad_left_right"
             android:paddingTop="@dimen/feed_item_status_pad_top" />
  
-        <TextView
-            android:id="@+id/txtUrl"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:linksClickable="true"
-            android:paddingBottom="10dp"
-            android:paddingLeft="@dimen/feed_item_status_pad_left_right"
-            android:paddingRight="@dimen/feed_item_status_pad_left_right"
-            android:textColorLink="@color/link" />
  
         <com.example.ape.views.FeedImageView
             android:id="@+id/feedImage1"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:scaleType="fitXY"
             android:visibility="visible" />
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp" >
-
-            <ImageButton
-                android:id="@+id/addComment"
-                android:layout_width="27dp"
-                android:layout_height="21dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="66dp"
-                android:background="@drawable/monkeycomment" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="32dp"
-                android:orientation="horizontal" >
-
-                <ImageButton
-                    android:id="@+id/increaseApes"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/monkeyface" />
-
-                <TextView
-                    android:id="@+id/numberOfApes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:text="100"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </RelativeLayout>
 
     </LinearLayout>
 </LinearLayout>

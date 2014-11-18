@@ -188,7 +188,8 @@ public class CustomAdapter extends BaseAdapter {
 		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
 
 		imageBut.setTag(new CommentTag(item.get(Const.KEY_ID), position,
-				item.get(Const.KEY_THUMBNAIL)));
+				item.get(Const.KEY_THUMBNAIL), item.get(Const.KEY_USR), 
+				item.get(Const.KEY_DATE_COMM), item.get(Const.KEY_TITLE)));
 
 		if (item.get(Const.KEY_THUMBNAIL) != null) {
 			feedImageView.setImageUrl(item.get(Const.KEY_THUMBNAIL), imageLoader);

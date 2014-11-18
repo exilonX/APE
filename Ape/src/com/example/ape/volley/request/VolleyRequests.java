@@ -59,8 +59,6 @@ public class VolleyRequests {
 	 * @param handle
 	 */
 	public static void jsonObjectGetRequest(String TAG, String URL, final HandleJsonObjectResponse handle) {
-
-
 		JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
 				URL, null,
 				new Response.Listener<JSONObject>() {
