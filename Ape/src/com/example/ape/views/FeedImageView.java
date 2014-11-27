@@ -260,4 +260,19 @@ public class FeedImageView extends ImageView {
         params.height = new_height;
         setLayoutParams(params);
     }
+    
+    
+
+    @Override
+    public void setAdjustViewBounds(boolean adjustViewBounds) {
+    	
+    	super.setAdjustViewBounds(adjustViewBounds);
+    }
+
+	@Override
+	public void setLayoutParams(android.view.ViewGroup.LayoutParams params) {
+		// TODO Auto-generated method stub
+		super.setLayoutParams(params);
+	}
+    
 }

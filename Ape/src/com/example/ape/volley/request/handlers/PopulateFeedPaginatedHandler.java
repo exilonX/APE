@@ -36,6 +36,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 	private CustomAdapter 	adapter;
 	private Activity		activity;
 	private LinearLayout 	linear;
+	ArrayList<HashMap<String, String>> data;
 
 	public LinearLayout getLinearLayout() {
 		return linear;
@@ -54,6 +55,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 		this.activity			= activity;
 		this.linear 			= linear;
 		this.fragment 			= fragment;
+		this.data				= new ArrayList<>();
 	}
 
 
@@ -75,11 +77,10 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 
 	@Override
 	public void handleJsonObjectResponse(JSONObject response) {
-		
 		getFragmetManager().beginTransaction().add(fragment, "FeedFragment");
 
 		// the data that contains row element information
-		ArrayList<HashMap<String, String>> data = new ArrayList<>();
+		this.data = new ArrayList<>();
 
 		// google's GSON library used to map a JSON into a Java Object
 		Gson gson = new Gson();
@@ -99,22 +100,20 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 				map.put(Const.KEY_THUMBNAIL, item.getThumb_image());
 				data.add(map);
 			}
-
+			
 			// get the view, initialize the adapter, populate the view and 
 			// set an onclick listener
-
-			adapter = new CustomAdapter(activity, data, getFragmetManager());
+			int currentPosition = view.getFirstVisiblePosition();
+			if (adapter == null)
+				adapter = new CustomAdapter(activity, data, getFragmetManager());
+			else {
+				// add data to the listview and notify dataset changed 
+				adapter.addData(data);
+				adapter.notifyDataSetChanged();
+			}
 			view.setAdapter(adapter);
-
-			// set listener on comment click
-
-			view.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-						long arg3) {
-
-				}
-			});
+			
+			view.setSelectionFromTop(currentPosition+1, 0);
 		} catch (JSONException e) {
 			Log.d("POPULATE_FEED", "Result doesn't have a good format");
 			e.printStackTrace();

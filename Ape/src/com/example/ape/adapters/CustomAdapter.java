@@ -25,6 +25,7 @@ import com.example.ape.volley.request.ConstRequest;
 import com.example.ape.volley.request.VolleyRequests;
 import com.example.ape.volley.request.handlers.LogHandler;
 import com.example.fragments.CommentFragment;
+import com.example.fragments.FullImageFragment;
 import com.example.volley.AppController;
 
 import android.annotation.SuppressLint;
@@ -44,8 +45,10 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 /**
  * Custom Adapter used for populating the feed view
@@ -59,6 +62,7 @@ public class CustomAdapter extends BaseAdapter {
 	private LayoutInflater inflater = null;
 	public ImageLoader imageLoader;
 	FragmentManager manager = null;
+	public boolean isImageFitToScreen;
 
 	public CustomAdapter(Activity a, ArrayList<HashMap<String, String>> data, FragmentManager manager) {
 		this.activity 		= a;
@@ -67,6 +71,7 @@ public class CustomAdapter extends BaseAdapter {
 		//		this.imageLoader = new ImageLoader(activity.getApplicationContext());
 		this.imageLoader	= AppController.getInstance().getImageLoader();
 		this.manager 		= manager;
+		this.isImageFitToScreen = false;
 	}
 
 
@@ -84,59 +89,6 @@ public class CustomAdapter extends BaseAdapter {
 	public long getItemId(int arg0) {
 		return arg0;
 	}
-
-	//	@SuppressLint("InflateParams")
-	//	@Override
-	//	public View getView(int position, View convertView, ViewGroup parent) {
-	//		View view = convertView;
-	//
-	//		// inflate the view and populate the other views inside
-	//		if(convertView==null)
-	//			view = inflater.inflate(R.layout.list_row2, null);
-	//
-	//		// get each sub-view and populate with coresponding data
-	//		TextView title = (TextView)view.findViewById(R.id.title); 
-	//		TextView username = (TextView)view.findViewById(R.id.username); 
-	//		TextView timestamp = (TextView)view.findViewById(R.id.timestamp);
-	//		
-	//		final ImageView thumb_image = (ImageView)view.findViewById(R.id.list_image);
-	//		
-	//		ImageButton imageBut = (ImageButton)view.findViewById(R.id.addComment);
-	//		//thumb_image.setScaleType(ScaleType.FIT_CENTER);
-	//
-	//		HashMap<String, String> item = new HashMap<String, String>();
-	//		item = data.get(position);
-	//		
-	//		imageBut.setTag(new CommentTag(item.get(Const.KEY_ID), position,
-	//				item.get(Const.KEY_THUMBNAIL)));
-	//		
-	//		// Setting all values in listview
-	//		title.setText(item.get(Const.KEY_TITLE));
-	//		username.setText(item.get(Const.KEY_USR));
-	//		timestamp.setText(item.get(Const.KEY_TIMESTAMP));
-	//		
-	//		imageLoader.get(item.get(Const.KEY_THUMBNAIL), new ImageListener() {
-	//			
-	//			@Override
-	//			public void onErrorResponse(VolleyError error) {
-	//				Log.e("Volley image Loader", "Image Load Error: " + error.getMessage());
-	//			}
-	//			
-	//			@Override
-	//			public void onResponse(ImageContainer response, boolean arg1) {
-	//				if (response.getBitmap() != null) {
-	//					thumb_image.setImageBitmap(response.getBitmap());
-	//				}
-	//			}
-	//		});
-	//		
-	////		imageLoader.DisplayImage(item.get(Const.KEY_THUMBNAIL), thumb_image);
-	//
-	//		setOnClickComment(view);
-	//		setOnClickApe(view);
-	//
-	//		return view;
-	//	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -210,8 +162,30 @@ public class CustomAdapter extends BaseAdapter {
 
 		setOnClickComment(convertView);
 		setOnClickApe(convertView);
-
+		setOnClickImage(feedImageView, item.get(Const.KEY_THUMBNAIL));
+		
 		return convertView;
+	}
+	
+	public void setOnClickImage(final FeedImageView feedImg, final String url) {
+		Log.d("CLICK", "in set on click " + isImageFitToScreen);
+		feedImg.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO AICISEA CONTINUARE CU FULL SCREEN IMAGE VIEW
+				FragmentSwitchListener activ = (FragmentSwitchListener)activity;
+				Fragment commentFrag = new FullImageFragment(url);
+				activ.replaceFragment(commentFrag);
+			}
+		});
+	}
+	
+	public void addData(ArrayList<HashMap<String, String>> data) {
+		if (this.data != null) {
+			this.data.addAll(data);
+		} else {
+			this.data = data;
+		}
 	}
 
 

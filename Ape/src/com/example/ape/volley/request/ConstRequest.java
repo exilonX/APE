@@ -14,10 +14,14 @@ public class ConstRequest {
 	
 	// Service links
 	// If running under emulator then localhost == 10.0.2.2
-	public static String GET_FEED 		= "http://apeserver.herokuapp.com/api/feed?pageSize=7&page=1";
+	public static String GET_FEED 		= "http://apeserver.herokuapp.com/api/feed?";
 	public static String BASE_URL 		= "http://apeserver.herokuapp.com";
 	public static String GET_COMMENTS 	= "http://apeserver.herokuapp.com/api/reply/comments/";
 	public static String POST_LOGIN_URL	= "http://apeserver.herokuapp.com/api/login";
 	public static String POST_COMM_ADD	= "http://apeserver.herokuapp.com/api/reply/comment/add";
+	
+	public static String getFeedLink(int pageSize, int pageNumber) {
+		return GET_FEED + "pageSize=" + pageSize + "&page=" + pageNumber;
+	}
 	
 }

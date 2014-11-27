@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class CommentAdaptor extends BaseAdapter {
@@ -33,6 +35,7 @@ public class CommentAdaptor extends BaseAdapter {
 	private LayoutInflater 						inflater = null;
 	public ImageLoader 							imageLoader;
 	public CommentTag 							tag;
+	public boolean								isImageFitToScreen;
 
 	public CommentAdaptor(Activity a, ArrayList<HashMap<String, String>> data,
 			CommentTag tag) {
@@ -41,6 +44,7 @@ public class CommentAdaptor extends BaseAdapter {
 		this.inflater 		= (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.imageLoader 	= AppController.getInstance().getImageLoader();
 		this.tag 			= tag;
+		this.isImageFitToScreen	= false;
 	}
 
 
@@ -106,6 +110,8 @@ public class CommentAdaptor extends BaseAdapter {
 				feedImageView.setVisibility(View.GONE);
 			}
 			
+			setOnClick(feedImageView);
+			
 		} else {
 			view = inflater.inflate(R.layout.comment_row, null);
 			
@@ -123,6 +129,16 @@ public class CommentAdaptor extends BaseAdapter {
 		}
 		
 		return view;
+	}
+	
+	public void setOnClick(final FeedImageView feedImg) {
+		Log.d("CLICK", "in set on click " + isImageFitToScreen);
+		feedImg.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+			}
+		});
 	}
 	
 	
