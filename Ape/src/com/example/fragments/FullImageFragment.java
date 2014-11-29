@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class FullImageFragment extends Fragment {
 	
@@ -28,7 +29,7 @@ public class FullImageFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		LinearLayout linear = (LinearLayout) inflater.inflate(R.layout.full_image, container, false);
+		RelativeLayout linear = (RelativeLayout) inflater.inflate(R.layout.full_image, container, false);
 		
 		FeedImageView feedImgView = (FeedImageView) linear.findViewById(R.id.feedImage2);
 		feedImgView.setImageUrl(imageUrl, imageLoader);
