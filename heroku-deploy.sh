@@ -2,7 +2,7 @@
 
 # will push the Server subdirectory to the heroku platform
 # does local branch switching if needed. To run, simply
-# execute the script like this: ./heroku-deploy.js
+# execute the script like this: ./heroku-deploy.sh
 
 # author: Marius Avram 2014
 
