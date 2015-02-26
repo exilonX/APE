@@ -14,7 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements FragmentSwitchListener {
 
 	ViewPager tab;
     TabPaggerAdapter tabAdapter;
@@ -72,5 +72,15 @@ public class MainActivity extends FragmentActivity {
 		actionBar.addTab(actionBar.newTab().setText("Challenge").setTabListener(tabListener));
 		actionBar.addTab(actionBar.newTab().setText("Feed").setTabListener(tabListener));
 	}
-	
+
+    public void replaceFragment(Fragment newFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(android.R.id.content, newFragment, newFragment.toString());
+        fragmentTransaction.addToBackStack(newFragment.toString());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+    }
+
+
 }

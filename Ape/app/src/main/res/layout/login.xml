@@ -77,16 +77,25 @@
                 android:text="Login"
                 android:textAlignment="center" />
 
-            <TextView
+            <LinearLayout
+              android:id="@+id/LinkToRegisterLayout"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center"
+              android:orientation="vertical" >
+
+                <TextView
                 android:id="@+id/link_to_register"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dip"
                 android:layout_marginTop="40dip"
                 android:text="New to Ape? Register here"
-                android:textAlignment="center"
+
                 android:textColor="#0b84aa"
                 android:textSize="20dip" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
