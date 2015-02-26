@@ -14,22 +14,22 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 
-public class MainActivity extends FragmentActivity implements FragmentSwitchListener {
+public class MainActivity extends FragmentActivity {
 
 	ViewPager tab;
     TabPaggerAdapter tabAdapter;
 	ActionBar actionBar;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		// remove the title and icon of the app
 		actionBar = getActionBar();
 		if (actionBar == null)
-			Log.d("ONCREATE", "MATA");
+			Log.d("onCreate", "Action bar cannot be created.");
 		
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
@@ -54,44 +54,23 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 
 			@Override
-			public void onTabReselected(Tab arg0,
-					android.app.FragmentTransaction arg1) {
-				// TODO Auto-generated method stub
-				System.out.println("onTabReselected");
+			public void onTabReselected(Tab currentTab, android.app.FragmentTransaction ft) {
 			}
 
 			@Override
-			public void onTabSelected(Tab arg0,
-					android.app.FragmentTransaction arg1) {
-				// TODO Auto-generated method stub
-				System.out.println("onTabSelected");
-			}
+			public void onTabSelected(Tab currentTab, android.app.FragmentTransaction ft) {
+                ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
+                viewPager.setCurrentItem(currentTab.getPosition());
+            }
 
 			@Override
-			public void onTabUnselected(Tab arg0,
-					android.app.FragmentTransaction arg1) {
-				// TODO Auto-generated method stub
-				System.out.println("onTabUnselected");
+			public void onTabUnselected(Tab currentTab, android.app.FragmentTransaction ft) {
 			}
 		};
 		
 		actionBar.addTab(actionBar.newTab().setText("Reply").setTabListener(tabListener));
 		actionBar.addTab(actionBar.newTab().setText("Challenge").setTabListener(tabListener));
 		actionBar.addTab(actionBar.newTab().setText("Feed").setTabListener(tabListener));
-	}
-
-	@Override
-	public void replaceFragment(Fragment newFragment) {
-		FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(android.R.id.content, newFragment, newFragment.toString());
-        fragmentTransaction.addToBackStack(newFragment.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
-        
-
-        
-        
 	}
 	
 }

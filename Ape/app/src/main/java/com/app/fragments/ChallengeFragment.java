@@ -30,7 +30,7 @@ public class ChallengeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		View challenge = inflater.inflate(R.layout.challenge, container, false);
 
         ChallengeHandler challengeHandler = new ChallengeHandler(challenge, imageLoader);
