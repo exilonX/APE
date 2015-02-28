@@ -54,7 +54,7 @@ module.exports = {
             Challenge.findOne().sort('-date').exec(
                 function(err, challenge) {
                      // Find the replies to the most recent challenge 
-                    var query = Reply.find({challenge_id : challenge._id}, 'likes -comments');
+                    var query = Reply.find({challenge_id : challenge._id}, '-likes -comments');
                     
                     // Paginate the results based on the options built above
                     query.paginate(options, function(error, paginatedResults) {
