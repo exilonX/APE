@@ -54,19 +54,25 @@ module.exports = {
             Challenge.findOne().sort('-date').exec(
                 function(err, challenge) {
                      // Find the replies to the most recent challenge 
-                    var query = Reply.find({challenge_id : challenge._id}, '-likes -comments');
+                    var query = Reply.find({challenge_id : challenge._id}, '-comments');
                     
                     // Paginate the results based on the options built above
                     query.paginate(options, function(error, paginatedResults) {
                         if(error) {
                             res.send(error, 400);
                         } else {
+                            var paginated = [];
                             // Add host prefix to static resources
                             var host = app.get('host');
                             for (i = 0; i < paginatedResults.results.length; i++) {
                                 paginatedResults.results[i].thumb_url = host + paginatedResults.results[i].thumb_url;
+                                paginated[i]            = paginatedResults.results[i].toObject();
+                                paginated[i].noOfLikes  = paginatedResults.results[i].likes.length;
+                                paginatedResults.results[i].likes.forEach(function(like) {
+                                    paginated[i].isMyLike |= like.username == "ionel";
+                                })
                             }
-                            res.json(paginatedResults);
+                            res.json(paginated);
                         }
                     });
             });
@@ -136,6 +142,7 @@ module.exports = {
         function (req, res) {
             Reply.findOne({ _id : req.body._reply_id }, function(err, reply) {
                 // Evaluate possible errors
+                console.log("svsvdvcd")
                 if (evaluateReplyError(res, err, reply))
                     return;
 

@@ -19,6 +19,7 @@ public class ConstRequest {
 	public static String GET_COMMENTS 	= "http://apeserver.herokuapp.com/api/reply/comments/";
 	public static String POST_LOGIN_URL	= "http://apeserver.herokuapp.com/api/login";
 	public static String POST_COMM_ADD	= "http://apeserver.herokuapp.com/api/reply/comment/add";
+    public static String PUT_LIKE_ADD   = "http://apeserver.herokuapp.com/api/reply/like/add";
 	
 	public static String getFeedLink(int pageSize, int pageNumber) {
 		return GET_FEED + "pageSize=" + pageSize + "&page=" + pageNumber;
