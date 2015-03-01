@@ -14,6 +14,7 @@ db.likes.drop();
 db.users.drop();
 db.replies.drop();
 db.challenges.drop();
+db.onechallenges.drop();
 
 // insert some users ---------------------------------------------
 // clear text password for following users is '123456'
@@ -30,6 +31,22 @@ db.users.insert({name : 'razvan', email: 'razvan.florea@gmail.com',
 
 // print them out
 db.users.find().forEach(printjson);
+
+//  create the main challenge
+var mainChallengeDate = new Date();
+db.onechallenges.insert({
+    username : 'marius', date : mainChallengeDate, title : 'I woke up like this!',
+    thumb_url: 'images/mainChallenge/landofapes.jpg',
+    likes : [
+        { _id : new ObjectId(), username : 'marius', date : new Date() },
+        { _id : new ObjectId(), username : 'leona', date : new Date() },
+        { _id : new ObjectId(), username : 'razvan', date : new Date() }
+    ], 
+    comments : [
+        { _id : new ObjectId(), username : 'ionel'._id, date : new Date(), comment : 'I want to be like you when I grow up!' },
+        { _id : new ObjectId(), username : 'leona'._id, date : new Date(), comment : 'I\'m addicted to this.' },
+        { _id : new ObjectId(), username : 'razvan'._id, date : new Date(), comment : 'Booooo! Go away.' }
+    ]});
 
 // create two challenges -----------------------------------------
 var user = db.users.findOne({name: 'marius'});

@@ -65,6 +65,16 @@ var Challenge = new Schema({
     comments            : [Comment]
 });
 
+var OneChallenge = new Schema({
+    username            : String,
+    date                : Date,
+    title               : String,
+    thumb_url           : String,
+    content_url         : String,
+    likes               : [Like],
+    comments            : [Comment]
+});
+
 var Reply = new Schema({
     challenge_id        : Schema.Types.ObjectId,
     username            : String,
@@ -81,4 +91,5 @@ module.exports = mongoose.model('User', User);
 module.exports = mongoose.model('Comment', Comment);
 module.exports = mongoose.model('Like', Like);
 module.exports = mongoose.model('Challenge', Challenge);
+module.exports = mongoose.model('OneChallenge', OneChallenge);
 module.exports = mongoose.model('Reply', Reply);

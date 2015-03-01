@@ -9,6 +9,7 @@ var express         = require('express'),
     models          = require('./models/models'),
     registration    = require('./services/registration'),
     feed            = require('./services/feed');
+    onechallenge    = require('./services/mainChallenge');
 
 GLOBAL.app = express();
 
@@ -21,6 +22,7 @@ app.use(methodOverride());
 
 // connect to local database
 mongoose.connect('mongodb://ape:m0nk3y@ds043350.mongolab.com:43350/ape');
+// mongoose.connect('mongodb://localhost:27017/ape');
 
 
 // set debug mode
@@ -62,6 +64,8 @@ router.route('/login').post(registration.authenticate);
 // get user info
 // parameters: name
 router.route('/user/:name').get(registration.userInfo);
+
+router.route('/challenge').get(onechallenge.mainchallenge);
 
 // register routes -------------------------------
 // all of our routes will be prefixed with /api
