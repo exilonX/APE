@@ -61,15 +61,17 @@ module.exports = {
                         if(error) {
                             res.send(error, 400);
                         } else {
-                            var paginated = [];
+                            var paginated = {};
+                            paginated.results = [];
                             // Add host prefix to static resources
                             var host = app.get('host');
                             for (i = 0; i < paginatedResults.results.length; i++) {
                                 paginatedResults.results[i].thumb_url = host + paginatedResults.results[i].thumb_url;
-                                paginated[i]            = paginatedResults.results[i].toObject();
-                                paginated[i].noOfLikes  = paginatedResults.results[i].likes.length;
+                                paginated.results[i]            = paginatedResults.results[i].toObject();
+                                paginated.results[i].noOfLikes  = paginatedResults.results[i].likes.length;
+                                paginated.results[i].isMyLike   = 0;
                                 paginatedResults.results[i].likes.forEach(function(like) {
-                                    paginated[i].isMyLike |= like.username == "ionel";
+                                    paginated.results[i].isMyLike |= like.username == "ionel";
                                 })
                             }
                             res.json(paginated);

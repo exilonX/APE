@@ -241,7 +241,8 @@ public class CustomAdapter extends BaseAdapter {
                     params.put("_reply_id", data.get(position).get(Const.KEY_ID));
                     params.put("username", data.get(position).get(Const.KEY_USR));
 
-                    VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
+                    data.get(position).put(Const.KEY_ISMYLIKE, "true");
+                    VolleyRequests.jsonObjectPutRequest(ConstRequest.TAG_JSON_OBJECT,
                             ConstRequest.PUT_LIKE_ADD,
                             new AddApeHandler(),
                             params);

@@ -11,9 +11,9 @@ public class ItemInfo {
 	private String title;
 	private String date;
 	private String thumb_url;
-    private List<LikeInfo> likes;
-    private Integer noOfLikes;
-    private Boolean isMyLike;
+    //private List<LikeInfo> likes;
+    private String noOfLikes;
+    private String isMyLike;
 	
 	public ItemInfo() {
 		set_id("");
@@ -21,19 +21,19 @@ public class ItemInfo {
 		setTimestamp("");
 		setTitle("");
 		setThumb_image("");
-        setLikes(new ArrayList<LikeInfo>());
-        setNoOfLikes(0);
-        setMyLike(false);
+        //setLikes(new ArrayList<LikeInfo>());
+        setNoOfLikes("0");
+        setMyLike("false");
 	}
 	
 	public ItemInfo(String _id, String username, String title,
-			String timestamp, String thumb_image, List<LikeInfo> likes, int noOfLikes, boolean isMyLike) {
+			String timestamp, String thumb_image, List<LikeInfo> likes, String noOfLikes, String isMyLike) {
 		set_id(_id);
 		setUsername(username);
 		setThumb_image(thumb_image);
 		setTitle(title);
 		setTimestamp(timestamp);
-        setLikes(likes);
+       // setLikes(likes);
         setNoOfLikes(noOfLikes);
         setMyLike(isMyLike);
 	}
@@ -78,27 +78,27 @@ public class ItemInfo {
 		this._id = _id;
 	}
 
-    public List<LikeInfo> getLikes() {
-        return likes;
-    }
+//    public List<LikeInfo> getLikes() {
+//        return likes;
+//    }
 
-    public void setLikes(List<LikeInfo> likes) {
-        this.likes = likes;
-    }
+//    public void setLikes(List<LikeInfo> likes) {
+//        this.likes = likes;
+//    }
 
-    public Integer getNoOfLikes() {
+    public String getNoOfLikes() {
         return noOfLikes;
     }
 
-    public void setNoOfLikes(Integer noOfLikes) {
+    public void setNoOfLikes(String noOfLikes) {
         this.noOfLikes = noOfLikes;
     }
 
-    public Boolean isMyLike() {
+    public String isMyLike() {
         return isMyLike;
     }
 
-    public void setMyLike(Boolean isMyLike) {
+    public void setMyLike(String isMyLike) {
         this.isMyLike = isMyLike;
     }
 }

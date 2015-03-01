@@ -85,8 +85,10 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 		try {
 			result = response.getJSONArray(Const.FEED_ARRAY_KEY);
 			// get a list of ItemInfo from the JSON
-			
+
+            Log.d("log", "inainte");
 			ItemInfo[] items = gson.fromJson(result.toString(), ItemInfo[].class);
+            Log.d("log", "trece");
 			// iterate through the items and create a new hashMap
 			for (ItemInfo item : items) {
 				HashMap<String, String> map = new HashMap<>();
@@ -95,8 +97,8 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 				map.put(Const.KEY_TITLE, item.getTitle());
 				map.put(Const.KEY_TIMESTAMP, item.getTimestamp());
 				map.put(Const.KEY_THUMBNAIL, item.getThumb_image());
-                map.put(Const.KEY_NOOFLIKES, item.getNoOfLikes().toString());
-                map.put(Const.KEY_ISMYLIKE, item.isMyLike().toString());
+                map.put(Const.KEY_NOOFLIKES, item.getNoOfLikes());
+                map.put(Const.KEY_ISMYLIKE, item.isMyLike());
 				data.add(map);
 			}
 			
