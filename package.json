@@ -1,0 +1,28 @@
+{
+    "name": "application-name",
+    "version": "0.0.1",
+    "main": "server/server.js",
+    "dependencies": {
+        "express": "~4.0.0",
+        "mongoose": "*",
+        "body-parser": "*",
+        "jwt-simple": "*",
+        "node-restful": "*",
+        "method-override": "*",
+        "path": "*",
+        "moment": "*",
+        "underscore": "*",
+        "bcrypt": "*",
+        "url": "*",
+        "validator": "*",
+		"mongoose-query-paginate": "*",
+        "lockfile": "*"
+    },
+    "devDependencies": {
+        "bower": "*",
+        "grunt-bower-install": "*"
+    },
+    "engines": {
+        "node": ">=0.10.19"
+    }
+}
