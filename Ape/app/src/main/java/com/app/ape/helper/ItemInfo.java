@@ -1,5 +1,9 @@
 package com.app.ape.helper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class ItemInfo {
 	
 	private String _id;
@@ -7,6 +11,9 @@ public class ItemInfo {
 	private String title;
 	private String date;
 	private String thumb_url;
+    private List<LikeInfo> likes;
+    private Integer noOfLikes;
+    private Boolean isMyLike;
 	
 	public ItemInfo() {
 		set_id("");
@@ -14,15 +21,21 @@ public class ItemInfo {
 		setTimestamp("");
 		setTitle("");
 		setThumb_image("");
+        setLikes(new ArrayList<LikeInfo>());
+        setNoOfLikes(0);
+        setMyLike(false);
 	}
 	
 	public ItemInfo(String _id, String username, String title,
-			String timestamp, String thumb_image) {
+			String timestamp, String thumb_image, List<LikeInfo> likes, int noOfLikes, boolean isMyLike) {
 		set_id(_id);
 		setUsername(username);
 		setThumb_image(thumb_image);
 		setTitle(title);
 		setTimestamp(timestamp);
+        setLikes(likes);
+        setNoOfLikes(noOfLikes);
+        setMyLike(isMyLike);
 	}
 	
 	public String getTitle() {
@@ -64,4 +77,28 @@ public class ItemInfo {
 	public void set_id(String _id) {
 		this._id = _id;
 	}
+
+    public List<LikeInfo> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<LikeInfo> likes) {
+        this.likes = likes;
+    }
+
+    public Integer getNoOfLikes() {
+        return noOfLikes;
+    }
+
+    public void setNoOfLikes(Integer noOfLikes) {
+        this.noOfLikes = noOfLikes;
+    }
+
+    public Boolean isMyLike() {
+        return isMyLike;
+    }
+
+    public void setMyLike(Boolean isMyLike) {
+        this.isMyLike = isMyLike;
+    }
 }

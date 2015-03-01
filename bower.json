@@ -1,0 +1,20 @@
+{
+    "name": "rest",
+    "version": "0.0.0",
+    "dependencies": {
+        "bootstrap": "*",
+        "jquery": "*",
+        "jquery-ui": "*",
+        "angular": "*",
+        "angular-route": "*",
+        "angular-resource": "*",
+        "angular-cookies": "*",
+        "angular-sanitize": "*",
+        "underscore": "*",
+        "angular-ui-date": "*"
+    },
+    "devDependencies": {
+        "angular-mocks": "*",
+        "angular-scenario": "*"
+    }
+}

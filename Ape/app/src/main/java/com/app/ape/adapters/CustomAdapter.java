@@ -3,7 +3,7 @@ package com.app.ape.adapters;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+import com.app.ape.volley.request.ConstRequest;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.app.activities.FragmentSwitchListener;
@@ -12,6 +12,7 @@ import com.app.ape.constants.Const;
 import com.app.ape.helper.CommentTag;
 import com.app.ape.views.FeedImageView;
 import com.app.ape.volley.request.VolleyRequests;
+import com.app.ape.volley.request.handlers.AddApeHandler;
 import com.app.ape.volley.request.handlers.LogHandler;
 import com.app.fragments.CommentFragment;
 import com.app.fragments.FullImageFragment;
@@ -86,6 +87,7 @@ public class CustomAdapter extends BaseAdapter {
 				.findViewById(R.id.profilePic);
 		FeedImageView feedImageView = (FeedImageView) convertView
 				.findViewById(R.id.feedImage1);
+        TextView nrApes = (TextView)convertView.findViewById(R.id.numberOfApes);
 
 		HashMap<String, String> item = new HashMap<String, String>();
 		item = data.get(position);
@@ -141,8 +143,10 @@ public class CustomAdapter extends BaseAdapter {
 			feedImageView.setVisibility(View.GONE);
 		}
 
+        nrApes.setText(item.get(Const.KEY_NOOFLIKES));
+
 		setOnClickComment(convertView);
-		setOnClickApe(convertView);
+		setOnClickApe(convertView, position);
 		setOnClickImage(feedImageView, item.get(Const.KEY_THUMBNAIL));
 		
 		return convertView;
@@ -216,18 +220,31 @@ public class CustomAdapter extends BaseAdapter {
 	 * On click listener on ape image button
 	 * @param view - the main view 
 	 */
-	public void setOnClickApe(final View view) {
+	public void setOnClickApe(final View view, final int position) {
 		final ImageButton btn = (ImageButton)view.findViewById(R.id.increaseApes);
 		if (btn != null) {
 			btn.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
+                   // ((ImageButton)view.findViewById(R.id.increaseApes)).setEnabled(false);
 					Log.d("JUST CLICKED", "Clicked");
+                    if (Boolean.valueOf(data.get(position).get(Const.KEY_ISMYLIKE))) {
+                        return;
+                    }
 					final TextView nrApes = (TextView)view.findViewById(R.id.numberOfApes);
 					int curent = Integer.parseInt(nrApes.getText().toString());
 					String str = String.valueOf(curent + 1);
 					nrApes.setText(str);
+
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("_reply_id", data.get(position).get(Const.KEY_ID));
+                    params.put("username", data.get(position).get(Const.KEY_USR));
+
+                    VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
+                            ConstRequest.PUT_LIKE_ADD,
+                            new AddApeHandler(),
+                            params);
 				}
 			});
 		} else {

@@ -95,6 +95,8 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 				map.put(Const.KEY_TITLE, item.getTitle());
 				map.put(Const.KEY_TIMESTAMP, item.getTimestamp());
 				map.put(Const.KEY_THUMBNAIL, item.getThumb_image());
+                map.put(Const.KEY_NOOFLIKES, item.getNoOfLikes().toString());
+                map.put(Const.KEY_ISMYLIKE, item.isMyLike().toString());
 				data.add(map);
 			}
 			

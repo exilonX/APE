@@ -20,9 +20,10 @@ public class ConstRequest {
     public static String GET_COMMENTS 	= BASE_URL + "/api/reply/comments/";
     public static String POST_LOGIN_URL	= BASE_URL + "/api/login";
     public static String POST_COMM_ADD	= BASE_URL + "/api/reply/comment/add";
+    public static String PUT_LIKE_ADD   = BASE_URL + "/api/reply/like/add";
+
 
     public static String getFeedLink(int pageSize, int pageNumber) {
         return GET_FEED + "pageSize=" + pageSize + "&page=" + pageNumber;
     }
-
 }

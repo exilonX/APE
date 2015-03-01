@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+<<<<<<< HEAD
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Description"
         android:id="@+id/challengeTextView" />
 
+=======
+>>>>>>> 719554305cd48c2352ccc58085b1ec0e354c742c
     <com.app.ape.views.FeedImageView
         android:id="@+id/challengeImage"
         android:layout_width="match_parent"
@@ -15,6 +18,7 @@
         android:background="@color/white"
         android:scaleType="fitXY"
         android:visibility="visible" />
+<<<<<<< HEAD
 
     <Button
         android:layout_width="wrap_content"
@@ -23,4 +27,6 @@
         android:id="@+id/challengeReply" />
 
 
+=======
+>>>>>>> 719554305cd48c2352ccc58085b1ec0e354c742c
 </LinearLayout>
