@@ -26,7 +26,7 @@ mongoose.connect('mongodb://ape:m0nk3y@ds043350.mongolab.com:43350/ape');
 
 
 // set debug mode
-app.set('debug', true);
+app.set('debug', false);
 // set host prefix
 app.set('host', 'http://apeserver.herokuapp.com/');
 
