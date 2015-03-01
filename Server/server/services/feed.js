@@ -128,7 +128,8 @@ module.exports = {
     replyGetLikes:
         // Get likes for a reply
         function (req, res) {
-            Reply.findOne({ _id : req.params._reply_id }, function(err, reply) {
+            console.log(new require('mongoose').Types.ObjectId(req.params._reply_id));
+            Reply.findOne({ _id : require('mongoose').Types.ObjectId(req.params._reply_id) }, function(err, reply) {
                 // Evaluate possible errors
                 if (evaluateReplyError(res, err, reply))
                     return;
