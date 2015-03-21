@@ -1,6 +1,0 @@
-Here is a temporary TODO list:
-
-- separate functions from routes. Ideally the server.js should contain
-only the routes. Even better it would be if the routes would be defined
-in a separate file.
-- more to come...
