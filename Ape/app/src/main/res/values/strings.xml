@@ -4,4 +4,8 @@
     <string name="comment">This is the challenge</string>
     <string name="app_name">Ape</string>
     <string name="commentTextField">Comment</string>
+    <string name="title_activity_first">FirstActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -15,4 +15,9 @@ public class Const {
 	public static final String KEY_USR_COMM 		= "username"; 			// username key
 	public static final String KEY_COMMENT_COMM 	= "comment";  			// title key
 	public static final String KEY_DATE_COMM	 	= "date";	// timestamp key
+
+    public static final String KEY_USR_SHARED = "username";
+    public static final String KEY_TOKEN_SHARED = "token";
+    public static final String KEY_EXP_SHARED = "expDate";
+
 }
