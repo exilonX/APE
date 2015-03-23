@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,21 +22,32 @@ public class FirstActivity extends Activity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
+        Log.d("FIRST ACTIVITY", "INCEPUT");
+
         String username = pref.getString(Const.KEY_USR_SHARED, null);
         String token = pref.getString(Const.KEY_TOKEN_SHARED, null);
+
+        Log.d("FIRST ACTIVITY", "MIJLOC " + username);
+        Log.d("FIRST ACTIVITY", "MIJLOC " + token);
 
         if (username != null && token != null) {
             // Start the main activity
             if (this.checkAuth(username, token)) {
+                Log.d("FIRST ACTIVITY", "INTRA AICI");
                 Intent i = new Intent(this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
+                finish();
                 return;
             }
         }
+        Log.d("FIRST ACTIVITY", "INTRA SFARSIT");
 
         // Start the login activity
         Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+        finish();
     }
 
     public boolean checkAuth(String username, String token) {

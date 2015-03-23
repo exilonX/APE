@@ -45,8 +45,7 @@ public class LoginActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				//TODO check if the credentials are correct
-				//Switch to feed
+                //Switch to feed
 //				Intent i = new Intent(getApplicationContext(), MainActivity.class);
 //				startActivity(i);
 				LoginHandler loginHandler = new LoginHandler(LoginActivity.this);
@@ -55,7 +54,9 @@ public class LoginActivity extends Activity {
 //				params.put("Content-Type","application/x-www-form-urlencoded");
 				params.put("name", name.getText().toString());
 				params.put("password", password.getText().toString());
-				
+
+                Log.d("LOGIN ACTIVITY", "SE FACE REQUEST ASYNC");
+
 				VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT, 
 						ConstRequest.POST_LOGIN_URL, 
 						loginHandler, 
@@ -66,6 +67,8 @@ public class LoginActivity extends Activity {
 	
 	public void switchToMain() {
 		Intent i = new Intent(getApplicationContext(), MainActivity.class);
-		startActivity(i);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+        finish();
 	}
 }

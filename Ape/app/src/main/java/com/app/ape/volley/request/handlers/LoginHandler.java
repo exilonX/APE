@@ -29,6 +29,7 @@ public class LoginHandler implements HandleJsonObjectResponse {
             editor.putString(Const.KEY_USR_SHARED, user);
             editor.putString(Const.KEY_TOKEN_SHARED, token);
             editor.putString(Const.KEY_EXP_SHARED, expires);
+            editor.apply();
 
 			this.context.switchToMain();
 		} catch (JSONException e) {
