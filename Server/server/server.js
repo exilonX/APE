@@ -19,16 +19,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.query());
 app.use(methodOverride());
+app.use(require('morgan')('combined'));
 
 // connect to local database
-mongoose.connect('mongodb://ape:m0nk3y@ds043350.mongolab.com:43350/ape');
-// mongoose.connect('mongodb://localhost:27017/ape');
+//mongoose.connect('mongodb://ape:m0nk3y@ds043350.mongolab.com:43350/ape');
+mongoose.connect('mongodb://localhost:27017/ape');
 
 
 // set debug mode
 app.set('debug', true);
 // set host prefix
-app.set('host', 'http://apeserver.herokuapp.com/');
+app.set('host', 'http://192.168.0.103:8080/');
 
 // routes
 
@@ -66,6 +67,8 @@ router.route('/login').post(registration.authenticate);
 router.route('/user/:name').get(registration.userInfo);
 
 router.route('/challenge').get(onechallenge.mainchallenge);
+
+app.use(express.static(path.join(__dirname , '/static')));
 
 // register routes -------------------------------
 // all of our routes will be prefixed with /api

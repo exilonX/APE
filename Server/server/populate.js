@@ -1,11 +1,12 @@
 // to repopulate the databse use the following command:
 // mongo populate.js
 
-var conn    = new Mongo('ds043350.mongolab.com:43350');
+//var conn    = new Mongo('ds043350.mongolab.com:43350');
+var conn = new Mongo('localhost');
 var db      = conn.getDB('ape');
 
 // authenticate
-db.auth('ape', 'm0nk3y');
+//db.auth('ape', 'm0nk3y');
 
 // clear database
 // remove collecitons individualy

@@ -101,4 +101,9 @@ public class ItemInfo {
     public void setMyLike(String isMyLike) {
         this.isMyLike = isMyLike;
     }
+
+    @Override
+    public String toString() {
+        return this.title + "  " + this.thumb_url;
+    }
 }

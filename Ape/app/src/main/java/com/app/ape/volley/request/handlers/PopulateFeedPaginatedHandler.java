@@ -92,6 +92,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 			// iterate through the items and create a new hashMap
 			for (ItemInfo item : items) {
 				HashMap<String, String> map = new HashMap<>();
+                Log.d("REQ " , item.toString());
 				map.put(Const.KEY_ID, item.get_id());
 				map.put(Const.KEY_USR, item.getUsername());
 				map.put(Const.KEY_TITLE, item.getTitle());
