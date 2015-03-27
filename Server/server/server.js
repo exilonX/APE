@@ -9,14 +9,15 @@ var express         = require('express'),
     models          = require('./models/models'),
     registration    = require('./services/registration'),
     feed            = require('./services/feed');
+    challengeReply  = require('./services/challengeReply'),
     onechallenge    = require('./services/mainChallenge');
 
 GLOBAL.app = express();
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.query());
 app.use(methodOverride());
 app.use(require('morgan')('combined'));
@@ -29,7 +30,7 @@ mongoose.connect('mongodb://localhost:27017/ape');
 // set debug mode
 app.set('debug', true);
 // set host prefix
-app.set('host', 'http://192.168.0.103:8080/');
+app.set('host', 'http://192.168.0.105:8080/');
 
 // routes
 
@@ -39,6 +40,9 @@ router.get('/member/*', function(req, res, next) {
     registration.loggedOn(req, res);
     next();
 });
+
+// save a challenge reply
+router.route('/challenge_reply').post(challengeReply.saveReply);
 
 // main feed containing replies to latest challenge
 // parameters: none
