@@ -2,7 +2,14 @@ package com.app.fragments;
 
 
 import com.app.ape.R;
+import com.app.ape.constants.Const;
+import com.app.ape.volley.request.ConstRequest;
+import com.app.ape.volley.request.VolleyRequests;
+import com.app.ape.volley.request.handlers.HandleJsonObjectResponse;
+import com.app.ape.volley.request.handlers.ReplyHandler;
+import com.app.ape.volley.request.multipart.UploadFileToServer;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.hardware.Camera;
@@ -20,6 +27,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -29,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class CameraFragment extends Fragment {
@@ -42,11 +52,19 @@ public class CameraFragment extends Fragment {
     // Reference to the containing view.
     private View mCameraView;
 
+    private Button sendButton;
+
+    private HashMap<String, String> userInfo;
+
+    private ProgressBar progressBar;
+    private TextView progressText;
+
     /**
      * Default empty constructor.
      */
     public CameraFragment(){
         super();
+        this.userInfo = new HashMap<>();
     }
 
     /**
@@ -74,6 +92,10 @@ public class CameraFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_native_camera, container, false);
 
+        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        userInfo.put(Const.KEY_USR_SHARED, pref.getString(Const.KEY_USR_SHARED, null));
+        userInfo.put(Const.KEY_TOKEN_SHARED, pref.getString(Const.KEY_TOKEN_SHARED, null));
+
         // Create our Preview view and set it as the content of our activity.
         boolean opened = safeCameraOpenInView(view);
 
@@ -94,7 +116,28 @@ public class CameraFragment extends Fragment {
                 }
         );
 
+        this.sendButton = (Button) view.findViewById(R.id.button_next);
+        this.progressBar = (ProgressBar) view.findViewById(R.id.upload_progress);
+        this.progressText = (TextView) view.findViewById(R.id.upload_text);
+
         return view;
+    }
+
+    private void onClickSendButton(final File data) {
+        sendButton.setVisibility(View.VISIBLE);
+        this.sendButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO
+                        HandleJsonObjectResponse handler = new ReplyHandler();
+
+                        UploadFileToServer upload =
+                                new UploadFileToServer(progressBar, progressText, data);
+
+                    }
+                }
+        );
     }
 
     /**
@@ -158,6 +201,63 @@ public class CameraFragment extends Fragment {
             mPreview.destroyDrawingCache();
             mPreview.mCamera = null;
         }
+    }
+
+
+    /**
+     * Picture Callback for handling a picture capture and saving it out to a file.
+     */
+    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+
+            File pictureFile = getOutputMediaFile();
+            if (pictureFile == null){
+                Toast.makeText(getActivity(), "Image retrieval failed.", Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+            // Post the data to the server
+            onClickSendButton(pictureFile);
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
+
+                // Restart the camera preview.
+                safeCameraOpenInView(mCameraView);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /**
+     * Used to return the camera File output.
+     * @return
+     */
+    private File getOutputMediaFile(){
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "UltimateCameraGuideApp");
+
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("Camera Guide", "Required media storage does not exist");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+
+        return mediaFile;
     }
 
     /**
@@ -401,58 +501,4 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    /**
-     * Picture Callback for handling a picture capture and saving it out to a file.
-     */
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
-
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-
-            File pictureFile = getOutputMediaFile();
-            if (pictureFile == null){
-                Toast.makeText(getActivity(), "Image retrieval failed.", Toast.LENGTH_SHORT)
-                        .show();
-                return;
-            }
-
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-
-                // Restart the camera preview.
-                safeCameraOpenInView(mCameraView);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    /**
-     * Used to return the camera File output.
-     * @return
-     */
-    private File getOutputMediaFile(){
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "UltimateCameraGuideApp");
-
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("Camera Guide", "Required media storage does not exist");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
-
-        return mediaFile;
-    }
 }

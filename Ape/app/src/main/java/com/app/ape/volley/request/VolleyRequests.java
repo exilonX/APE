@@ -1,7 +1,12 @@
 package com.app.ape.volley.request;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,9 +18,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.app.ape.volley.request.handlers.HandleJsonArrayResponse;
 import com.app.ape.volley.request.handlers.HandleJsonObjectResponse;
 import com.app.volley.AppController;
+import org.apache.http.entity.mime.MultipartEntity;
 
 /**
  * A set of static methods that get data from the webService
@@ -143,5 +150,49 @@ public class VolleyRequests {
 		AppController.getInstance().addToRequestQueue(request, TAG);
 	}
 
+
+//    public static void jsonMultiPartRequest(String TAG, String URL, final HandleJsonObjectResponse handle,
+//                                            File file, String stringPart) {
+////        MultiPartRequest request = new MultiPartRequest(Method.POST, ConstRequest.POST_REPLY, null,
+////                new Response.Listener<JSONObject>() {
+////                    @Override
+////                    public void onResponse(JSONObject response) {
+////                        Log.d("Response POST", response.toString());
+////                        handle.handleJsonObjectResponse(response);
+////                    }
+////                },
+////                new Response.ErrorListener() {
+////
+////                    @Override
+////                    public void onErrorResponse(VolleyError error) {
+////                        VolleyLog.d("Post Error: " + error.getMessage());
+////                    }
+////                });
+////
+////        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+////
+////        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+////        Map<String, File> fileUpload = request.getFileUploads();
+//
+//        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        Log.d("Response POST", response.toString());
+//                        handle.handleJsonObjectResponse(response);
+//                    }
+//                };
+//
+//        Response.ErrorListener errorListener = new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        VolleyLog.d("Post Error: " + error.getMessage());
+//                    }
+//                };
+//
+//        MultiRequest request = new MultiRequest(URL, file, stringPart, errorListener, listener);
+//
+//        // Adding request to request queue
+//        AppController.getInstance().addToRequestQueue(request, TAG);
+//    }
 
 }

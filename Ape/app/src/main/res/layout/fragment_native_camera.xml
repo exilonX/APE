@@ -32,21 +32,78 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        />
+        >
+        <ProgressBar
+            android:id="@+id/upload_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.ProgressBar.Large"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="100dp"
+            android:visibility="invisible"/>
+        <TextView
+            android:id="@+id/upload_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="100dp"
+            android:visibility="invisible"/>
+    </FrameLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/innerRelativeLayout"
-        android:layout_width="wrap_content"
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/innerRelativeLayout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true" >-->
+        <!--<Button-->
+            <!--android:id="@+id/button_capture"-->
+            <!--android:text="Capture"-->
+            <!--android:layout_width="30%"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--/>-->
+    <!--</RelativeLayout>-->
+    
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
-        <Button
-            android:id="@+id/button_capture"
-            android:text="Capture"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:layout_gravity="bottom"
-            />
-    </RelativeLayout>
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/button_capture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_gravity="bottom"
+                android:text="Capture" />
+
+        </LinearLayout>
+        <!-- Right side spacer -->
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+            <Button
+                android:id="@+id/button_next"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_gravity="bottom"
+                android:visibility="invisible"
+                android:text="Reply" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>
