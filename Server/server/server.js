@@ -10,7 +10,8 @@ var express         = require('express'),
     registration    = require('./services/registration'),
     feed            = require('./services/feed');
     challengeReply  = require('./services/challengeReply'),
-    onechallenge    = require('./services/mainChallenge');
+    onechallenge    = require('./services/mainChallenge'),
+    multer          = require('multer');
 
 GLOBAL.app = express();
 
@@ -21,6 +22,8 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.query());
 app.use(methodOverride());
 app.use(require('morgan')('combined'));
+app.use(multer({ dest: './uploads/'}));
+
 
 // connect to local database
 //mongoose.connect('mongodb://ape:m0nk3y@ds043350.mongolab.com:43350/ape');

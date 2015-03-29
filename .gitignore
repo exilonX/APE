@@ -61,6 +61,7 @@ local.properties
 Server/node_modules
 Server/client/lib
 
+Server/uploads
 
 Server/.idea
 Ape/.idea

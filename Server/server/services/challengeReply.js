@@ -37,15 +37,20 @@ module.exports = {
             console.log(data);
 
             //TODO save the image to a file - in the static directory
-            var imageData = data.image;
-            var base64Data = imageData.replace(/^data:image\/gif;base64,/, "");
-
-            //fs.writeFile("server/static/images/challengeReply/out.gif", base64Data, 'base64', function(err) {
+            //var imageData = data.image;
+            //var base64Data = imageData.replace(/^data:image\/gif;base64,/, "");
+            //
+            ////fs.writeFile("server/static/images/challengeReply/out.gif", base64Data, 'base64', function(err) {
+            ////    console.log(err);
+            ////});
+            //fs.writeFile("server/static/images/challengeReply/out.gif", new Buffer(base64Data, "base64"), function(err) {
             //    console.log(err);
             //});
-            fs.writeFile("server/static/images/challengeReply/out.gif", new Buffer(base64Data, "base64"), function(err) {
-                console.log(err);
-            });
+
+            console.log(req.files);
+            console.log("+======================+");
+            console.log(req.body);
+            //res.send(200);
 
             // save the path to the file and the additional info to mongo
             Reply.create({}, function(err, reply) {
@@ -64,5 +69,8 @@ module.exports = {
 
                 res.json({result: 'success'});
             });
+
+
+
         }
 }

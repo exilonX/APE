@@ -17,7 +17,8 @@
     "validator": "*",
     "mongoose-query-paginate": "*",
     "lockfile": "*",
-    "morgan": "~1.5.2"
+    "morgan": "~1.5.2",
+    "multer": "~0.1.8"
   },
   "devDependencies": {
     "bower": "*",

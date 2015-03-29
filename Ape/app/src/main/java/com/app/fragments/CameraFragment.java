@@ -134,6 +134,7 @@ public class CameraFragment extends Fragment {
 
                         UploadFileToServer upload =
                                 new UploadFileToServer(progressBar, progressText, data);
+                        upload.execute();
 
                     }
                 }
