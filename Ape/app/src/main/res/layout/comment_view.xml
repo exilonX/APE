@@ -8,13 +8,13 @@
 
     <ListView
         android:id="@+id/commentList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/feed_bg"
-        android:divider="#b5b5b5"
-        android:dividerHeight="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="50dp"
+        android:background="@color/green"
         android:listSelector="@drawable/list_selector"
-         >
+        android:dividerHeight="0dp"
+        android:divider="@null">
     </ListView>
     
     

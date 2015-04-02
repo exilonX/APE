@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="green">#72ED7600</color>
+    <color name="green">#FABE82</color>
     <color name="gray">#EAF2E6</color>
     <color name="white"> #FFFFFF</color>
     <color name="feed_bg">#d3d6db</color>
@@ -10,5 +10,6 @@
     <color name="link">#0a80d1</color>
     <color name="timestamp">#a0a3a7</color>
     <color name="black">#000000</color>
+    <color name="comment_bg">#FAFAFA</color>
 
 </resources>

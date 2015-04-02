@@ -56,7 +56,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 	}
 
 
-	public FragmentManager getFragmetManager() {
+	public FragmentManager getFragmentManager() {
 		return fragmetManager;
 	}
 
@@ -74,7 +74,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 
 	@Override
 	public void handleJsonObjectResponse(JSONObject response) {
-		getFragmetManager().beginTransaction().add(fragment, "FeedFragment");
+		getFragmentManager().beginTransaction().add(fragment, "FeedFragment");
 
 		// the data that contains row element information
 		this.data = new ArrayList<>();
@@ -107,7 +107,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 			// set an onclick listener
 			int currentPosition = view.getFirstVisiblePosition();
 			if (adapter == null)
-				adapter = new CustomAdapter(activity, data, getFragmetManager());
+				adapter = new CustomAdapter(activity, data, getFragmentManager());
 			else {
 				// add data to the listview and notify dataset changed 
 				adapter.addData(data);
@@ -115,7 +115,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 			}
 			view.setAdapter(adapter);
 			
-			view.setSelectionFromTop(currentPosition+1, 0);
+			view.setSelectionFromTop(currentPosition, 0);
 		} catch (JSONException e) {
 			Log.d("POPULATE_FEED", "Result doesn't have a good format");
 			e.printStackTrace();
