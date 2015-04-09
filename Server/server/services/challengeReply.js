@@ -58,12 +58,12 @@ module.exports = {
                 if (evaluateReplyError(res, err, reply))
                     return;
 
-                reply.challenge_id = mongoose.Types.ObjectId('55146985d0aa52e3f70219e3');
+                reply.challenge_id = mongoose.Types.ObjectId('54f2827d2df7aaf529fe39a0');
                 reply.username = 'dummy';
                 reply.date = new Date();
                 reply.title = 'dummyTitle';
-                reply.thumb_url = req.files.image.path;
-                reply.content_url = req.files.image.path;
+                reply.thumb_url = req.files.image.path.substring(7);
+                reply.content_url = req.files.image.path.substring(7);
 
                 reply.save();
 
