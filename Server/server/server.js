@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.query());
 app.use(methodOverride());
 app.use(require('morgan')('combined'));
-app.use(multer({ dest: './uploads/'}));
+app.use(multer({ dest: './static/images/challengeReply/'}));
 
 
 // connect to local database
