@@ -3,8 +3,6 @@ package com.app.fragments;
 
 import com.app.ape.R;
 import com.app.ape.constants.Const;
-import com.app.ape.volley.request.ConstRequest;
-import com.app.ape.volley.request.VolleyRequests;
 import com.app.ape.volley.request.handlers.HandleJsonObjectResponse;
 import com.app.ape.volley.request.handlers.ReplyHandler;
 import com.app.ape.volley.request.multipart.UploadFileToServer;
@@ -26,7 +24,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class CameraFragment extends Fragment {
+public class CameraFragmentOld extends Fragment {
 
     // Native camera.
     private Camera mCamera;
@@ -62,7 +59,7 @@ public class CameraFragment extends Fragment {
     /**
      * Default empty constructor.
      */
-    public CameraFragment(){
+    public CameraFragmentOld(){
         super();
         this.userInfo = new HashMap<>();
     }
@@ -72,8 +69,8 @@ public class CameraFragment extends Fragment {
      * @param sectionNumber
      * @return
      */
-    public static CameraFragment newInstance(int sectionNumber) {
-        CameraFragment fragment = new CameraFragment();
+    public static CameraFragmentOld newInstance(int sectionNumber) {
+        CameraFragmentOld fragment = new CameraFragmentOld();
         Bundle args = new Bundle();
         args.putInt("ARG_SECTION_NUMBER", sectionNumber);
         fragment.setArguments(args);
@@ -116,10 +113,11 @@ public class CameraFragment extends Fragment {
                 }
         );
 
+        /*
         this.sendButton = (Button) view.findViewById(R.id.button_next);
         this.progressBar = (ProgressBar) view.findViewById(R.id.upload_progress);
         this.progressText = (TextView) view.findViewById(R.id.upload_text);
-
+        */
         return view;
     }
 
@@ -153,7 +151,7 @@ public class CameraFragment extends Fragment {
         mCameraView = view;
         qOpened = (mCamera != null);
 
-        if(qOpened == true){
+        if(qOpened == true) {
             mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera,view);
             FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
             preview.addView(mPreview);
@@ -393,6 +391,8 @@ public class CameraFragment extends Fragment {
                     parameters.setPreviewSize(previewSize.width, previewSize.height);
                 }
 
+                setCameraDisplayOrientation(mCamera, Camera.CameraInfo.CAMERA_FACING_BACK);
+
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
             } catch (Exception e){
@@ -500,6 +500,50 @@ public class CameraFragment extends Fragment {
 
             return optimalSize;
         }
+
+        // For now use it only with CameraInfo.CAMERA_FACING_FRONT
+        private void setCameraDisplayOrientation(Camera camera, int facing) {
+            // Get cameraInfo
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            int numberOfCameras = Camera.getNumberOfCameras();
+            for (int i=0; i<numberOfCameras; i++) {
+                Camera.getCameraInfo(i, info);
+                if (info.facing == facing) {
+                    break;
+                }
+            }
+
+            Display display = ((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            int rotation = display.getRotation();
+            int degrees = 0;
+            // Convert defines to actual values
+            switch (rotation) {
+                case Surface.ROTATION_0:
+                    degrees = 0;
+                    break;
+                case Surface.ROTATION_90:
+                    degrees = 90;
+                    break;
+                case Surface.ROTATION_180:
+                    degrees = 180;
+                    break;
+                case Surface.ROTATION_270:
+                    degrees = 270;
+                    break;
+            }
+            // Do necessary conversion (black-magic)
+            // Adding support for front-camera ?
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                degrees = (info.orientation + degrees) % 360;
+                degrees = (360 - degrees) % 360;
+            }
+            else {
+                degrees = (info.orientation - degrees + 360) % 360;
+            }
+
+            camera.setDisplayOrientation(degrees);
+        }
+
     }
 
 }
