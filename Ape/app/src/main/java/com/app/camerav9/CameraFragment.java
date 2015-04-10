@@ -46,10 +46,11 @@ public class CameraFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater,
                            ViewGroup container,
                            Bundle savedInstanceState) {
-    cameraView=new CameraView(getActivity());
-    cameraView.setHost(getHost());
-
-    return(cameraView);
+//    cameraView=new CameraView(getActivity());
+//    cameraView.setHost(getHost());
+//
+//    return(cameraView);
+      return null;
   }
 
   /*

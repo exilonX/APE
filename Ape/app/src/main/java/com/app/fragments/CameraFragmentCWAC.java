@@ -1,18 +1,26 @@
 package com.app.fragments;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.ape.R;
+import com.app.camera.src.cwac.CameraView;
 import com.app.camerav9.CameraFragment;
 import com.app.camera.src.cwac.CameraHost;
 import com.app.camera.src.cwac.PictureTransaction;
 import com.app.camera.src.cwac.SimpleCameraHost;
+
+import java.io.File;
 
 public class CameraFragmentCWAC extends CameraFragment {
     /*
@@ -27,10 +35,39 @@ public class CameraFragmentCWAC extends CameraFragment {
     }
     */
 
-    private static final String KEY_USE_FFC=
-            "com.commonsware.cwac.camera.demo.USE_FFC";
+    private static final String KEY_USE_FFC = "com.commonsware.cwac.camera.demo.USE_FFC";
 
     private boolean singleShotProcessing=false;
+    private Button captureButton = null;
+    private ImageView preview = null;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+        View content = inflater.inflate(R.layout.cwac_camera_layout, container, false);
+
+        CameraView cameraView = (CameraView) content.findViewById(R.id.camera);
+        cameraView.setHost(getHost());
+
+        Button captureButton = (Button) content.findViewById(R.id.capture_button);
+
+        captureButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        takePicture();
+                    }
+                }
+        );
+
+        preview = (ImageView) content.findViewById(R.id.picture_preview);
+
+        setCameraView(cameraView);
+        return content;
+    }
+
+
+
     static CameraFragmentCWAC newInstance(boolean useFFC) {
         CameraFragmentCWAC f=new CameraFragmentCWAC();
         Bundle args=new Bundle();
@@ -38,6 +75,7 @@ public class CameraFragmentCWAC extends CameraFragment {
         f.setArguments(args);
         return(f);
     }
+
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -45,16 +83,21 @@ public class CameraFragmentCWAC extends CameraFragment {
         setHost(new DemoCameraHost(getActivity()));
     }
 
+
+
     boolean isSingleShotProcessing() {
         return(singleShotProcessing);
     }
+
     Contract getContract() {
         return((Contract)getActivity());
     }
+
     interface Contract {
         boolean isSingleShotMode();
         void setSingleShotMode(boolean mode);
     }
+
     class DemoCameraHost extends SimpleCameraHost {
         boolean frontFacing = false;
         boolean singleShotMode;
@@ -84,8 +127,14 @@ public class CameraFragmentCWAC extends CameraFragment {
                         takePicture = true;
                     }
                 });
-                //DisplayActivity.imageToShow=image;
-                //startActivity(new Intent(getActivity(), DisplayActivity.class));
+
+                Log.d("SAVING", "Saved the image");
+                final BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 8;
+
+                Bitmap bm = BitmapFactory.decodeByteArray(image, 0, image.length,options);
+                preview.setImageBitmap(bm);
+                preview.setVisibility(View.VISIBLE);
             }
             else {
                 super.saveImage(xact, image);
@@ -112,6 +161,11 @@ public class CameraFragmentCWAC extends CameraFragment {
             super.onAutoFocus(success, camera);
             takePicture = true;
         }
+
+//        @Override
+//        public void saveImage(PictureTransaction xact, byte[] bitmap) {
+//        }
+
     }
 
 }

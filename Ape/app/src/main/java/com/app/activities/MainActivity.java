@@ -1,6 +1,9 @@
 package com.app.activities;
 
 import com.app.ape.R;
+import com.app.camera.src.cwac.CameraHost;
+import com.app.camera.src.cwac.CameraHostProvider;
+import com.app.camera.src.cwac.SimpleCameraHost;
 import com.app.fragments.adapter.TabPaggerAdapter;
 
 import android.app.ActionBar;
@@ -14,11 +17,12 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 
-public class MainActivity extends FragmentActivity implements FragmentSwitchListener {
+public class MainActivity extends FragmentActivity implements FragmentSwitchListener , CameraHostProvider{
 
 	ViewPager tab;
     TabPaggerAdapter tabAdapter;
 	ActionBar actionBar;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,5 +86,10 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
         fragmentTransaction.commit();
     }
 
+
+    @Override
+    public CameraHost getCameraHost() {
+        return new SimpleCameraHost(this);
+    }
 
 }
