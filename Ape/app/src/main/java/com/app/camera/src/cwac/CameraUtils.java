@@ -100,6 +100,8 @@ public class CameraUtils {
 
       if (Math.abs(ratio - targetRatio) < minDiff) {
         optimalSize=size;
+        android.util.Log.d("Best ratio",
+                  String.format("%d x %d", size.width, size.height));
         minDiff=Math.abs(ratio - targetRatio);
       }
 
@@ -123,8 +125,8 @@ public class CameraUtils {
 
     for (Camera.Size size : parameters.getSupportedPictureSizes()) {
 
-      // android.util.Log.d("CWAC-Camera",
-      // String.format("%d x %d", size.width, size.height));
+      android.util.Log.d("CWAC-Camera",
+      String.format("%d x %d", size.width, size.height));
 
       if (!enforceProfile
           || (size.height <= host.getDeviceProfile()
@@ -144,7 +146,11 @@ public class CameraUtils {
       }
     }
 
-    if (result == null && enforceProfile) {
+      android.util.Log.d("Result CWAC-Camera",
+              String.format("%d x %d", result.width, result.height));
+
+
+      if (result == null && enforceProfile) {
       result=getLargestPictureSize(host, parameters, false);
     }
 

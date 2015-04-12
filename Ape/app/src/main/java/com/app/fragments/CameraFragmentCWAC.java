@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,51 +15,65 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.ape.R;
+import com.app.ape.volley.request.handlers.HandleJsonObjectResponse;
+import com.app.ape.volley.request.handlers.ReplyHandler;
+import com.app.ape.volley.request.multipart.UploadFileToServer;
 import com.app.camera.src.cwac.CameraView;
 import com.app.camerav9.CameraFragment;
 import com.app.camera.src.cwac.CameraHost;
 import com.app.camera.src.cwac.PictureTransaction;
 import com.app.camera.src.cwac.SimpleCameraHost;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CameraFragmentCWAC extends CameraFragment {
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
-        View content=inflater.inflate(R.layout.fragment_native_camera, container, false);
-        CameraView cameraView=(CameraView)content.findViewById(R.id.camera_preview);
-        setCameraView(cameraView);
-        return(content);
-    }
-    */
 
-    private static final String KEY_USE_FFC = "com.commonsware.cwac.camera.demo.USE_FFC";
+    private static final String KEY_USE_FFC = "USE_FFC";
 
     private boolean singleShotProcessing=false;
     private Button captureButton = null;
+    private Button sendButton = null;
     private ImageView preview = null;
+    private boolean shotTaken = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         View content = inflater.inflate(R.layout.cwac_camera_layout, container, false);
 
         CameraView cameraView = (CameraView) content.findViewById(R.id.camera);
         cameraView.setHost(getHost());
 
-        Button captureButton = (Button) content.findViewById(R.id.capture_button);
+        captureButton = (Button) content.findViewById(R.id.capture_button);
+        sendButton = (Button) content.findViewById(R.id.send_button);
 
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        takePicture();
+                        if (!shotTaken) {
+                            takePicture();
+                            shotTaken = true;
+                        }
                     }
                 }
         );
+
+        sendButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }
+        );
+
 
         preview = (ImageView) content.findViewById(R.id.picture_preview);
 
@@ -66,6 +81,19 @@ public class CameraFragmentCWAC extends CameraFragment {
         return content;
     }
 
+
+    private void onClickSendButton(final File data) {
+        sendButton.setVisibility(View.VISIBLE);
+        this.sendButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        UploadFileToServer upload = new UploadFileToServer(data);
+                        upload.execute();
+                    }
+                }
+        );
+    }
 
 
     static CameraFragmentCWAC newInstance(boolean useFFC) {
@@ -80,10 +108,8 @@ public class CameraFragmentCWAC extends CameraFragment {
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setHasOptionsMenu(true);
-        setHost(new DemoCameraHost(getActivity()));
+        setHost(new CurrentCameraHost(getActivity()));
     }
-
-
 
     boolean isSingleShotProcessing() {
         return(singleShotProcessing);
@@ -98,48 +124,112 @@ public class CameraFragmentCWAC extends CameraFragment {
         void setSingleShotMode(boolean mode);
     }
 
-    class DemoCameraHost extends SimpleCameraHost {
-        boolean frontFacing = false;
-        boolean singleShotMode;
-        boolean takePicture;
-        boolean autoFocus;
+    class CurrentCameraHost extends SimpleCameraHost {
+        private String className = "CurrentCameraHost";
+        private boolean frontFacing = false;
+        private boolean singleShotMode;
+        private boolean takePicture;
+        private boolean autoFocus;
+        private Bitmap bitmap;
+        private File pictureFile;
 
-        public DemoCameraHost(Context _ctxt) {
+        public CurrentCameraHost(Context _ctxt) {
             super(_ctxt);
             singleShotMode = true;
             takePicture = false;
         }
+
         @Override
         public boolean useFrontFacingCamera() {
             return frontFacing;
         }
+
         @Override
         public boolean useSingleShotMode() {
             return true;
         }
+
         @Override
         public void saveImage(PictureTransaction xact, byte[] image) {
+
             if (useSingleShotMode()) {
                 singleShotProcessing=false;
+                takePicture = true;
+
+                Log.d(className, "Saved the image");
+                final BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 8;
+                // TO DO: Do the proper scaling with inJustDecodeBonds
+                bitmap = BitmapFactory.decodeByteArray(image, 0, image.length,options);
+
+                // Update the UI on its own Thread
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        takePicture = true;
+                        preview.setImageBitmap(bitmap);
+                        preview.setVisibility(View.VISIBLE);
                     }
                 });
 
-                Log.d("SAVING", "Saved the image");
-                final BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 8;
+                // Save to file
+                pictureFile = getOutputMediaFile();
+                if (pictureFile == null){
+                    Toast.makeText(getActivity(), "Image retrieval failed.", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                try {
+                    // Convert bitmap back to byte array (as there might be resize operations done)
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream);
+                    byte[] bitmapData = outputStream.toByteArray();
 
-                Bitmap bm = BitmapFactory.decodeByteArray(image, 0, image.length,options);
-                preview.setImageBitmap(bm);
-                preview.setVisibility(View.VISIBLE);
+                    FileOutputStream fos = new FileOutputStream(pictureFile);
+                    fos.write(bitmapData);
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onClickSendButton(pictureFile);
+                    }
+                });
             }
             else {
                 super.saveImage(xact, image);
             }
         }
+
+        /**
+         * Used to return the camera File output.
+         * @return
+         */
+        private File getOutputMediaFile(){
+
+            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES), "UltimateCameraGuideApp");
+
+            if (! mediaStorageDir.exists()){
+                if (! mediaStorageDir.mkdirs()){
+                    Log.d("Camera Guide", "Required media storage does not exist");
+                    return null;
+                }
+            }
+
+            // Create a media file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            File mediaFile;
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_"+ timeStamp + ".jpg");
+
+            return mediaFile;
+        }
+
         @Override
         public void autoFocusAvailable() {
             autoFocus = true;

@@ -13,15 +13,43 @@
         android:visibility="invisible"
         android:id="@+id/picture_preview"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dip"
-        android:layout_marginRight="16dip"
-        android:text="Hi!"
-        android:id="@+id/capture_button">
-    </Button>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/capture_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_gravity="bottom"
+                android:text="Capture" />
+
+        </LinearLayout>
+        <!-- Right side spacer -->
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+            <Button
+                android:id="@+id/send_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_gravity="bottom"
+                android:visibility="invisible"
+                android:text="Reply" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>

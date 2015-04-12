@@ -33,12 +33,14 @@ public class ImageCleanupTask extends Thread {
   private int cameraId;
   private PictureTransaction xact=null;
   private boolean applyMatrix=true;
+  private Camera.Size previewSize;
 
   ImageCleanupTask(Context ctxt, byte[] data, int cameraId,
-                   PictureTransaction xact) {
+                   PictureTransaction xact, Camera.Size previewSize) {
     this.data=data;
     this.cameraId=cameraId;
     this.xact=xact;
+    this.previewSize = previewSize;
 
     float heapPct=(float)data.length / calculateHeapSize(ctxt);
 
@@ -118,9 +120,23 @@ public class ImageCleanupTask extends Thread {
         Bitmap original=
             BitmapFactory.decodeByteArray(data, 0, data.length);
 
-        cleaned=
-            Bitmap.createBitmap(original, 0, 0, original.getWidth(),
-                                original.getHeight(), matrix, true);
+        //cleaned=
+        //    Bitmap.createBitmap(original, 0, 0, original.getWidth(),
+        //                        original.getHeight(), matrix, true);
+
+          final int scaledChildHeight =
+                  previewSize.height * original.getWidth() / previewSize.width;
+          Log.d("three", "scaledChildWidth" + scaledChildHeight);
+          Log.d("three", "something " + previewSize.width + "x" + previewSize.height + "height " + original.getHeight());
+          /*
+          child.layout((width - scaledChildWidth) / 2, 0,
+                  (width + scaledChildWidth) / 2, height);
+          */
+
+        cleaned =
+            Bitmap.createBitmap(original, 0, (original.getHeight() - scaledChildHeight) / 2,
+                    original.getWidth(),
+                    (original.getHeight() + scaledChildHeight)/ 2, matrix, true);
         original.recycle();
       }
     }

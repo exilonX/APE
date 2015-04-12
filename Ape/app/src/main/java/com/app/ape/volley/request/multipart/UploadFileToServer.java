@@ -27,14 +27,14 @@ import java.io.UnsupportedEncodingException;
  * */
 public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
 
-    ProgressBar progressBar;
-    TextView txtPercentage;
+    //ProgressBar progressBar;
+    //TextView txtPercentage;
     long totalSize;
     File sourceFile;
 
-    public UploadFileToServer(ProgressBar prgBar, TextView txt, File file) {
-        progressBar = prgBar;
-        txtPercentage = txt;
+    public UploadFileToServer(/* ProgressBar prgBar, TextView txt, */ File file) {
+        //progressBar = prgBar;
+        //txtPercentage = txt;
         totalSize = 0;
         sourceFile = file;
     }
@@ -42,13 +42,14 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     @Override
     protected void onPreExecute() {
         // setting progress bar to zero
-        progressBar.setProgress(0);
+        // progressBar.setProgress(0);
         super.onPreExecute();
     }
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
         // Making progress bar visible
+        /*
         progressBar.setVisibility(View.VISIBLE);
 
         // updating progress bar value
@@ -56,6 +57,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
 
         // updating percentage value
         txtPercentage.setText(String.valueOf(progress[0]) + "%");
+        */
     }
 
     @Override
@@ -120,7 +122,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         Log.e("TAG", "Response from server: " + result);
 
         // showing the server response in an alert dialog
-//        showAlert(result);
+        // showAlert(result);
 
         super.onPostExecute(result);
     }

@@ -175,12 +175,12 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
             // }
           }
 
-          if (newSize == null || newSize.width * newSize.height < 65536) {
+          //if (newSize == null || newSize.width * newSize.height < 65536) {
             newSize=
                 getHost().getPreviewSize(getDisplayOrientation(),
                                          width, height,
                                          camera.getParameters());
-          }
+          //}
         }
         catch (Exception e) {
           android.util.Log.e(getClass().getSimpleName(),
@@ -240,6 +240,8 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
           || (!useFirstStrategy && useFullBleed)) {
         final int scaledChildWidth=
             previewWidth * height / previewHeight;
+        Log.d("one", "scaledChildWidth" + scaledChildWidth);
+        Log.d("one", "something " + previewWidth + "x" + previewHeight + "height " + height);
         child.layout((width - scaledChildWidth) / 2, 0,
                      (width + scaledChildWidth) / 2, height);
       }
@@ -248,6 +250,8 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
             previewHeight * width / previewWidth;
         child.layout(0, (height - scaledChildHeight) / 2, width,
                      (height + scaledChildHeight) / 2);
+        Log.d("two", "scaledChildWidth" + scaledChildHeight);
+        Log.d("one", "something " + previewWidth + "x" + previewHeight + "height " + height);
       }
     }
   }
@@ -289,13 +293,20 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
       else {
         previewParams=camera.getParameters();
 
-        Camera.Parameters pictureParams=camera.getParameters();
-        Camera.Size pictureSize=
-            xact.host.getPictureSize(xact, pictureParams);
 
-        pictureParams.setPictureSize(pictureSize.width,
-                                     pictureSize.height);
-        pictureParams.setPictureFormat(ImageFormat.JPEG);
+        Camera.Parameters pictureParams=camera.getParameters();
+
+
+        //Camera.Size pictureSize = host.getPreviewSize(getDisplayOrientation(), previewSize.width,
+        //        previewSize.width, pictureParams);
+        //pictureParams.setPreviewSize(pictureSize.width, pictureSize.height);
+
+        //Camera.Size pictureSize=
+        //    xact.host.getPictureSize(xact, pictureParams);
+
+        //pictureParams.setPictureSize(pictureSize.width,
+        //                             pictureSize.height);
+        //pictureParams.setPictureFormat(ImageFormat.JPEG);
 
         if (xact.flashMode != null) {
           pictureParams.setFlashMode(xact.flashMode);
@@ -705,7 +716,7 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
       camera.setParameters(previewParams);
 
       if (data != null) {
-        new ImageCleanupTask(getContext(), data, cameraId, xact).start();
+        //new ImageCleanupTask(getContext(), data, cameraId, xact, previewSize).start();
       }
 
       if (!xact.useSingleShotMode()) {

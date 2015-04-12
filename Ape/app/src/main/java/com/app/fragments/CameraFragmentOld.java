@@ -131,7 +131,7 @@ public class CameraFragmentOld extends Fragment {
                         HandleJsonObjectResponse handler = new ReplyHandler();
 
                         UploadFileToServer upload =
-                                new UploadFileToServer(progressBar, progressText, data);
+                                new UploadFileToServer(data);
                         upload.execute();
 
                     }

@@ -407,7 +407,6 @@ public class SimpleCameraHost implements CameraHost {
 
     public Builder useFullBleedPreview(boolean useFullBleedPreview) {
       host.useFullBleedPreview=useFullBleedPreview;
-
       return(this);
     }
 
