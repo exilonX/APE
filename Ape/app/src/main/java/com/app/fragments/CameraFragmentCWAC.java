@@ -39,19 +39,22 @@ public class CameraFragmentCWAC extends CameraFragment {
     private boolean singleShotProcessing=false;
     private Button captureButton = null;
     private Button sendButton = null;
+    private Button cancelButton = null;
     private ImageView preview = null;
     private boolean shotTaken = false;
+    private CameraView cameraView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View content = inflater.inflate(R.layout.cwac_camera_layout, container, false);
 
-        CameraView cameraView = (CameraView) content.findViewById(R.id.camera);
+        cameraView = (CameraView) content.findViewById(R.id.camera);
         cameraView.setHost(getHost());
 
         captureButton = (Button) content.findViewById(R.id.capture_button);
         sendButton = (Button) content.findViewById(R.id.send_button);
+        cancelButton = (Button) content.findViewById(R.id.cancel_button);
 
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -65,20 +68,18 @@ public class CameraFragmentCWAC extends CameraFragment {
                 }
         );
 
-        sendButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
 
-                    }
-                }
-        );
-
-
-        preview = (ImageView) content.findViewById(R.id.picture_preview);
+        //preview = (ImageView) content.findViewById(R.id.picture_preview);
 
         setCameraView(cameraView);
         return content;
+    }
+
+    private void restartFragmentPreview() {
+        sendButton.setVisibility(View.INVISIBLE);
+        cancelButton.setVisibility(View.INVISIBLE);
+        cameraView.restartPreview();
+        shotTaken = false;
     }
 
 
@@ -90,9 +91,20 @@ public class CameraFragmentCWAC extends CameraFragment {
                     public void onClick(View view) {
                         UploadFileToServer upload = new UploadFileToServer(data);
                         upload.execute();
+                        restartFragmentPreview();
                     }
                 }
         );
+    }
+
+    private void onClickCancelButton() {
+        cancelButton.setVisibility(View.VISIBLE);
+        this.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restartFragmentPreview();
+            }
+        });
     }
 
 
@@ -162,15 +174,6 @@ public class CameraFragmentCWAC extends CameraFragment {
                 // TO DO: Do the proper scaling with inJustDecodeBonds
                 bitmap = BitmapFactory.decodeByteArray(image, 0, image.length,options);
 
-                // Update the UI on its own Thread
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        preview.setImageBitmap(bitmap);
-                        preview.setVisibility(View.VISIBLE);
-                    }
-                });
-
                 // Save to file
                 pictureFile = getOutputMediaFile();
                 if (pictureFile == null){
@@ -197,6 +200,7 @@ public class CameraFragmentCWAC extends CameraFragment {
                     @Override
                     public void run() {
                         onClickSendButton(pictureFile);
+                        onClickCancelButton();
                     }
                 });
             }

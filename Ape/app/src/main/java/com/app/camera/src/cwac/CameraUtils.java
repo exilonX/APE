@@ -16,9 +16,16 @@ package com.app.camera.src.cwac;
 
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
+import android.util.Log;
+
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class CameraUtils {
   // based on ApiDemos
@@ -97,11 +104,11 @@ public class CameraUtils {
 
     for (Size size : sizes) {
       double ratio=(double)size.width / size.height;
-
+      android.util.Log.d("Best ratio",
+            String.format("%d x %d", size.width, size.height));
       if (Math.abs(ratio - targetRatio) < minDiff) {
         optimalSize=size;
-        android.util.Log.d("Best ratio",
-                  String.format("%d x %d", size.width, size.height));
+
         minDiff=Math.abs(ratio - targetRatio);
       }
 
@@ -109,7 +116,6 @@ public class CameraUtils {
         break;
       }
     }
-
     return(optimalSize);
   }
 
@@ -195,6 +201,55 @@ public class CameraUtils {
     return(match);
   }
 
+
+  public static CameraSizes getHighestSimilarSizes(Camera.Parameters parameters, int width, int height) {
+      Map<Double, Camera.Size> pictureRatios = new LinkedHashMap<Double, Camera.Size>();
+      Map<Double, Camera.Size> previewRatios = new LinkedHashMap<Double, Camera.Size>();
+      double layoutRatio = (double)width/height;
+      CameraSizes cameraSizes = null;
+
+      List<Size> pictureSizes=parameters.getSupportedPictureSizes();
+
+      Collections.sort(pictureSizes,
+              Collections.reverseOrder(new SizeComparator()));
+
+      for (Camera.Size size : pictureSizes) {
+        double ratio = (double)size.width / size.height;
+        if (!pictureRatios.containsKey(ratio)) {
+            pictureRatios.put(ratio, size);
+        }
+      }
+
+      List<Size> previewSizes=parameters.getSupportedPreviewSizes();
+
+      for (Camera.Size size : previewSizes) {
+          double ratio = (double)size.width / size.height;
+          if (!previewRatios.containsKey(ratio)) {
+              previewRatios.put(ratio, size);
+          }
+      }
+
+      // We search for a preview with a ratio similar to the ratio of the picture with
+      // the highest resolution
+      Camera.Size previewSize = null;
+      for(Map.Entry<Double, Camera.Size> pictureRatioEntry : pictureRatios.entrySet()) {
+        for (Map.Entry<Double, Camera.Size> previewRatioEntry: previewRatios.entrySet()) {
+            if (Math.abs(pictureRatioEntry.getKey() - previewRatioEntry.getKey()) < 0.001f) {
+                previewSize = previewRatioEntry.getValue();
+                break;
+            }
+        }
+        if (previewSize != null) {
+            cameraSizes = new CameraSizes();
+            cameraSizes.setPictureSize(pictureRatioEntry.getValue());
+            cameraSizes.setPreviewSize(previewSize);
+            break;
+        }
+      }
+
+      return cameraSizes;
+  }
+
   private static class SizeComparator implements
       Comparator<Camera.Size> {
     @Override
@@ -211,5 +266,26 @@ public class CameraUtils {
 
       return(0);
     }
+  }
+
+   public static class CameraSizes {
+      private Size pictureSize;
+      private Size previewSize;
+
+      public Size getPictureSize(){
+          return pictureSize;
+      }
+
+      public Size getPreviewSize() {
+          return previewSize;
+      }
+
+      public void setPictureSize(Size size) {
+          pictureSize = size;
+      }
+
+      public void setPreviewSize(Size size) {
+          previewSize = size;
+      }
   }
 }

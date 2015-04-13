@@ -15,6 +15,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 
 public class MainActivity extends FragmentActivity implements FragmentSwitchListener , CameraHostProvider{
@@ -52,7 +54,6 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 		tab.setAdapter(tabAdapter);
 		
 		actionBar = getActionBar();
-		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
