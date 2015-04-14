@@ -1,6 +1,6 @@
 package com.app.ape.volley.request.handlers;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -33,7 +33,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 	private CustomAdapter 	adapter;
 	private Activity		activity;
 	private LinearLayout 	linear;
-	ArrayList<HashMap<String, String>> data;
+	LinkedList<HashMap<String, String>> data;
 
 	public LinearLayout getLinearLayout() {
 		return linear;
@@ -52,7 +52,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 		this.activity			= activity;
 		this.linear 			= linear;
 		this.fragment 			= fragment;
-		this.data				= new ArrayList<>();
+		this.data				= new LinkedList<>();
 	}
 
 
@@ -77,7 +77,7 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 		getFragmentManager().beginTransaction().add(fragment, "FeedFragment");
 
 		// the data that contains row element information
-		this.data = new ArrayList<>();
+		this.data = new LinkedList<>();
 
 		// google's GSON library used to map a JSON into a Java Object
 		Gson gson = new Gson();
@@ -86,13 +86,10 @@ public class PopulateFeedPaginatedHandler implements HandleJsonObjectResponse {
 			result = response.getJSONArray(Const.FEED_ARRAY_KEY);
 			// get a list of ItemInfo from the JSON
 
-            Log.d("log", "inainte");
 			ItemInfo[] items = gson.fromJson(result.toString(), ItemInfo[].class);
-            Log.d("log", "trece");
 			// iterate through the items and create a new hashMap
 			for (ItemInfo item : items) {
 				HashMap<String, String> map = new HashMap<>();
-                Log.d("REQ " , item.toString());
 				map.put(Const.KEY_ID, item.get_id());
 				map.put(Const.KEY_USR, item.getUsername());
 				map.put(Const.KEY_TITLE, item.getTitle());

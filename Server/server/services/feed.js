@@ -55,7 +55,7 @@ module.exports = {
                 function(err, challenge) {
                      // Find the replies to the most recent challenge 
                     var query = Reply.find({challenge_id : challenge._id}, '-comments').sort({'_id' : -1});
-                    
+
                     // Paginate the results based on the options built above
                     query.paginate(options, function(error, paginatedResults) {
                         if(error) {
@@ -71,7 +71,7 @@ module.exports = {
                                 paginated.results[i].noOfLikes  = paginatedResults.results[i].likes.length;
                                 paginated.results[i].isMyLike   = 0;
                                 paginatedResults.results[i].likes.forEach(function(like) {
-                                    paginated.results[i].isMyLike |= like.username == "ionel";
+                                    paginated.results[i].isMyLike |= like.username == req.query.user;
                                 })
                             }
                             res.json(paginated);
@@ -156,7 +156,7 @@ module.exports = {
                 // Acquire a lock for this reply until like is saved.
                 lockFile.lock(lockFileName, {}, function(err) {
                     for (i = 0; i < reply.likes.length; i++) {
-                        if (reply.likes[i].username == 'gigel') {
+                        if (reply.likes[i].username == req.query.user) {
                             errors.push('Cannot like multiple times.');
                             break;
                         }
@@ -164,8 +164,7 @@ module.exports = {
 
                     if (errors.length == 0) {
                         var like = new Like();
-                        // TODO: replace with username from registration
-                        like.username = 'gigel';
+                        like.username = req.body.user;
                         like.date = new Date();
                         reply.likes.push(like);
                         reply.save();

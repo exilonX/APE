@@ -202,7 +202,12 @@ db.replies.insert({challenge_id : last_challenge._id, username : 'leona', title:
 db.replies.insert({challenge_id : last_challenge._id, username : 'marius', title: 'I don\'t care about the young folks',
         date : new Date(), thumb_url : 'images/test/ostrich.jpg', likes : [], comments : []});
 db.replies.insert({challenge_id : last_challenge._id, username : 'ionel', title: 'I care about talking',
-        date : new Date(), thumb_url : 'images/test/lions.jpg', likes : [], comments : []});
+        date : new Date(), thumb_url : 'images/test/lions.jpg', 
+        likes : [
+            { _id : new ObjectId(), username : 'ionel', date : new Date() },
+            { _id : new ObjectId(), username : 'andreea', date : new Date() }
+        ],
+        comments : []});
 
 
 

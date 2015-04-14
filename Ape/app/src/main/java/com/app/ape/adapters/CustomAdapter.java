@@ -2,6 +2,7 @@ package com.app.ape.adapters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.app.ape.volley.request.ConstRequest;
 import com.android.volley.toolbox.ImageLoader;
@@ -20,6 +21,7 @@ import com.app.volley.AppController;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -40,13 +42,13 @@ import android.widget.TextView;
 public class CustomAdapter extends BaseAdapter {
 
 	private Activity activity;
-	private ArrayList<HashMap<String, String>> data;
+	private LinkedList<HashMap<String, String>> data;
 	private LayoutInflater inflater = null;
 	public ImageLoader imageLoader;
 	FragmentManager manager = null;
 	public boolean isImageFitToScreen;
 
-	public CustomAdapter(Activity a, ArrayList<HashMap<String, String>> data, FragmentManager manager) {
+	public CustomAdapter(Activity a, LinkedList<HashMap<String, String>> data, FragmentManager manager) {
 		this.activity 		= a;
 		this.data 			= data;
 		this.inflater 		= (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -165,7 +167,7 @@ public class CustomAdapter extends BaseAdapter {
 		});
 	}
 	
-	public void addData(ArrayList<HashMap<String, String>> data) {
+	public void addData(LinkedList<HashMap<String, String>> data) {
 		if (this.data != null) {
 			this.data.addAll(data);
 		} else {
@@ -228,20 +230,21 @@ public class CustomAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
                    // ((ImageButton)view.findViewById(R.id.increaseApes)).setEnabled(false);
-					Log.d("JUST CLICKED", "Clicked");
-                    if (Boolean.valueOf(data.get(position).get(Const.KEY_ISMYLIKE))) {
+                    if (Integer.parseInt(data.get(position).get(Const.KEY_ISMYLIKE)) != 0) {
                         return;
                     }
 					final TextView nrApes = (TextView)view.findViewById(R.id.numberOfApes);
-					int curent = Integer.parseInt(nrApes.getText().toString());
-					String str = String.valueOf(curent + 1);
+					int current = Integer.parseInt(nrApes.getText().toString());
+					String str = String.valueOf(current + 1);
 					nrApes.setText(str);
+
+                    SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
 
                     HashMap<String, String> params = new HashMap<>();
                     params.put("_reply_id", data.get(position).get(Const.KEY_ID));
-                    params.put("username", data.get(position).get(Const.KEY_USR));
+                    params.put("user", pref.getString(Const.KEY_USR_SHARED, null));
 
-                    data.get(position).put(Const.KEY_ISMYLIKE, "true");
+                    data.get(position).put(Const.KEY_ISMYLIKE, "1");
                     VolleyRequests.jsonObjectPutRequest(ConstRequest.TAG_JSON_OBJECT,
                             ConstRequest.PUT_LIKE_ADD,
                             new AddApeHandler(),

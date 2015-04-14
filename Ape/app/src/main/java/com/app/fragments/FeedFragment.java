@@ -5,10 +5,12 @@ package com.app.fragments;
 import com.app.ape.R;
 
 import com.app.ape.adapters.CustomAdapter;
+import com.app.ape.constants.Const;
 import com.app.ape.volley.request.ConstRequest;
 import com.app.ape.volley.request.VolleyRequests;
 import com.app.ape.volley.request.handlers.PopulateFeedPaginatedHandler;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,12 +42,14 @@ public class FeedFragment extends Fragment {
 		btnLoadMore.setText("LoadMore");
 		view.addFooterView(btnLoadMore);
 		final Fragment sup = this;
-		
+
+        final String user = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0).getString(Const.KEY_USR_SHARED, null);
+
 		final PopulateFeedPaginatedHandler feed = new PopulateFeedPaginatedHandler(inflater, container,
 				savedInstanceState, getFragmentManager(), view, adapter, getActivity(), 
 				linear, this);
 		VolleyRequests.jsonObjectGetRequest(ConstRequest.TAG_JSON_OBJECT, 
-				ConstRequest.getFeedLink(7, currentPage), feed);
+				ConstRequest.getFeedLink(7, currentPage, user), feed);
 		currentPage++;
 		
 		btnLoadMore.setOnClickListener(new OnClickListener() {	
@@ -53,7 +57,7 @@ public class FeedFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				VolleyRequests.jsonObjectGetRequest(ConstRequest.TAG_JSON_OBJECT, 
-						ConstRequest.getFeedLink(7, currentPage), feed);
+						ConstRequest.getFeedLink(7, currentPage, user), feed);
 				currentPage++;
 			}
 		});

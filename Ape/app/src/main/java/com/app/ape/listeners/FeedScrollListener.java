@@ -73,10 +73,10 @@ public class FeedScrollListener implements OnScrollListener {
     				savedInstanceState, fragmetManager, this.view, adapter, this.activity, 
     				linear, this.fragment);
     		VolleyRequests.jsonObjectGetRequest(ConstRequest.TAG_JSON_OBJECT, 
-    				ConstRequest.getFeedLink(7, currentPage+1), feed);
+    				ConstRequest.getFeedLink(7, currentPage+1, "x"/* TODO change this with real user name when using scroll*/), feed);
             loading = true;
         }
-		
+
 
 	}
 

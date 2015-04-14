@@ -1,6 +1,6 @@
 package com.app.ape.volley.request.handlers;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -63,7 +63,7 @@ public class PopulateFeedHandler implements HandleJsonArrayResponse {
 		getFragmetManager().beginTransaction().add(fragment, "FeedFragment");
 
 		// the data that contains row element information
-		ArrayList<HashMap<String, String>> data = new ArrayList<>();
+		LinkedList<HashMap<String, String>> data = new LinkedList<>();
 
 		// google's GSON library used to map a JSON into a Java Object
 		Gson gson = new Gson();
