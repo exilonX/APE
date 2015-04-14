@@ -1,6 +1,9 @@
 package com.app.fragments;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -11,10 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.ape.R;
+import com.app.ape.constants.Const;
+import com.app.ape.helper.ChallengeItem;
 import com.app.ape.volley.request.handlers.HandleJsonObjectResponse;
 import com.app.ape.volley.request.handlers.ReplyHandler;
 import com.app.ape.volley.request.multipart.UploadFileToServer;
@@ -61,7 +67,9 @@ public class CameraFragmentCWAC extends CameraFragment {
                     @Override
                     public void onClick(View view) {
                         if (!shotTaken) {
-                            takePicture();
+                            PictureTransaction xact = new PictureTransaction(getHost());
+                            takePicture(xact);
+
                             shotTaken = true;
                         }
                     }
@@ -89,9 +97,44 @@ public class CameraFragmentCWAC extends CameraFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        UploadFileToServer upload = new UploadFileToServer(data);
-                        upload.execute();
-                        restartFragmentPreview();
+                        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("Title");
+                        alert.setMessage("The title of the reply");
+
+                        final EditText input = new EditText(getActivity());
+                        alert.setView(input);
+
+                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String title = input.getText().toString();
+
+                                Toast toast = Toast.makeText(getActivity(), title, Toast.LENGTH_LONG);
+                                toast.show();
+
+                                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                                SharedPreferences.Editor editor = pref.edit();
+
+                                String username = pref.getString(Const.KEY_USR_SHARED, null);
+                                String token = pref.getString(Const.KEY_TOKEN_SHARED, null);
+
+                                ChallengeItem item = new ChallengeItem(null, username, title, null, null);
+
+                                UploadFileToServer upload = new UploadFileToServer(item, data);
+                                upload.execute();
+                                restartFragmentPreview();
+                            }
+                        });
+
+                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+                        alert.show();
                     }
                 }
         );
@@ -120,7 +163,9 @@ public class CameraFragmentCWAC extends CameraFragment {
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setHasOptionsMenu(true);
-        setHost(new CurrentCameraHost(getActivity()));
+        CurrentCameraHost host = new CurrentCameraHost(getActivity());
+        host.useSingleShotMode();
+        setHost(host);
     }
 
     boolean isSingleShotProcessing() {

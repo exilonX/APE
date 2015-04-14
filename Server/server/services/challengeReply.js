@@ -59,9 +59,9 @@ module.exports = {
                     return;
 
                 reply.challenge_id = mongoose.Types.ObjectId('54f2827d2df7aaf529fe39a0');
-                reply.username = 'dummy';
+                reply.username = req.body.username;
                 reply.date = new Date();
-                reply.title = 'dummyTitle';
+                reply.title = req.body.title;
                 reply.thumb_url = req.files.image.path.substring(7);
                 reply.content_url = req.files.image.path.substring(7);
 
