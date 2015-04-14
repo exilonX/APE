@@ -16,10 +16,10 @@ public class ConstRequest {
     // If running under emulator then localhost == 10.0.2.2
 
     /* server IP from Amazon */
-    //public static String BASE_URL 		= "http://52.11.44.10:8080";
+    public static String BASE_URL 		= "http://52.11.44.10:8080";
 
     /* personal IP for local testing */
-    public static String BASE_URL       = "http://192.168.0.105:8080";
+    //public static String BASE_URL       = "http://192.168.0.105:8080";
 
     public static String GET_FEED 		= BASE_URL + "/api/feed?";
     public static String GET_COMMENTS 	= BASE_URL + "/api/reply/comments/";
