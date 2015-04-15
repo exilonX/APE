@@ -47,6 +47,7 @@ public class CustomAdapter extends BaseAdapter {
 	public ImageLoader imageLoader;
 	FragmentManager manager = null;
 	public boolean isImageFitToScreen;
+    SharedPreferences pref;
 
 	public CustomAdapter(Activity a, LinkedList<HashMap<String, String>> data, FragmentManager manager) {
 		this.activity 		= a;
@@ -56,6 +57,7 @@ public class CustomAdapter extends BaseAdapter {
 		this.imageLoader	= AppController.getInstance().getImageLoader();
 		this.manager 		= manager;
 		this.isImageFitToScreen = false;
+        this.pref = activity.getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
 	}
 
 
@@ -207,7 +209,12 @@ public class CustomAdapter extends BaseAdapter {
 					Log.d("ONCLICK", "I just clicked this shit" + btn.getTag().toString());
 
 					FragmentSwitchListener activ = (FragmentSwitchListener)activity;
-					Fragment commentFrag = new CommentFragment((CommentTag)btn.getTag());
+                    CommentTag tag = (CommentTag)btn.getTag();
+                    tag.username = pref.getString(Const.KEY_USR_SHARED, null);
+                    Log.d("TAG", tag.toString());
+
+					Fragment commentFrag = CommentFragment.newInstance(tag);
+
 					activ.replaceFragment(commentFrag);
 
 					VolleyRequests.feedRequest(new LogHandler());
@@ -237,8 +244,6 @@ public class CustomAdapter extends BaseAdapter {
 					int current = Integer.parseInt(nrApes.getText().toString());
 					String str = String.valueOf(current + 1);
 					nrApes.setText(str);
-
-                    SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
 
                     HashMap<String, String> params = new HashMap<>();
                     params.put("_reply_id", data.get(position).get(Const.KEY_ID));

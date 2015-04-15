@@ -8,7 +8,8 @@ public class Const {
 	public static final String KEY_ID			= "_id";
     public static final String KEY_NOOFLIKES    = "noOfLikes";
     public static final String KEY_ISMYLIKE     = "isMyLike";
-	
+	public static final String KEY_POSITION     = "position";
+
 	// JSON Handling constants
 	public static final String FEED_ARRAY_KEY	= "results";
 	
