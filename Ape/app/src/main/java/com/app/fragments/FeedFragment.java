@@ -10,6 +10,7 @@ import com.app.ape.volley.request.ConstRequest;
 import com.app.ape.volley.request.VolleyRequests;
 import com.app.ape.volley.request.handlers.PopulateFeedPaginatedHandler;
 
+import com.app.ape.listeners.FeedScrollListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ public class FeedFragment extends Fragment {
 	private ListView view;			// the list view with the replies
 	private CustomAdapter adapter = null;	// the custom adapter used for populating the view
 	private int currentPage = 1;
+    private int pageSize    = 7;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -35,13 +37,6 @@ public class FeedFragment extends Fragment {
 				container, 
 				false);
 		view = (ListView) linear.getChildAt(0);
-//		view.setOnScrollListener(new FeedScrollListener(7, inflater, container,
-//				savedInstanceState, getFragmentManager(), view, adapter, getActivity(), 
-//				linear, this));
-		Button btnLoadMore = new Button(getActivity());
-		btnLoadMore.setText("LoadMore");
-		view.addFooterView(btnLoadMore);
-		final Fragment sup = this;
 
         final String user = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0).getString(Const.KEY_USR_SHARED, null);
 
@@ -49,19 +44,12 @@ public class FeedFragment extends Fragment {
 				savedInstanceState, getFragmentManager(), view, adapter, getActivity(), 
 				linear, this);
 		VolleyRequests.jsonObjectGetRequest(ConstRequest.TAG_JSON_OBJECT, 
-				ConstRequest.getFeedLink(7, currentPage, user), feed);
-		currentPage++;
-		
-		btnLoadMore.setOnClickListener(new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				VolleyRequests.jsonObjectGetRequest(ConstRequest.TAG_JSON_OBJECT, 
-						ConstRequest.getFeedLink(7, currentPage, user), feed);
-				currentPage++;
-			}
-		});
-		
+				ConstRequest.getFeedLink(pageSize, currentPage, user), feed);
+
+        view.setOnScrollListener(new FeedScrollListener(pageSize, currentPage, inflater, container,
+                savedInstanceState, getFragmentManager(), view, adapter, getActivity(),
+                linear, this, feed));
+
 		return linear;
 	}
 	
