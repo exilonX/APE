@@ -4,9 +4,11 @@ import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Comment;
 
 import com.app.ape.R;
 import com.app.ape.adapters.CommentAdaptor;
+import com.app.ape.constants.Const;
 import com.app.ape.helper.CommentTag;
 import com.app.ape.volley.request.ConstRequest;
 import com.app.ape.volley.request.VolleyRequests;
@@ -32,9 +34,14 @@ public class CommentFragment extends Fragment {
 	CommentAdaptor 	adapter;	// the custom adapter used for populating the view
 	CommentTag		info;
 
-	public CommentFragment(CommentTag info) {
-		this.info	= info;
-	}
+    public static CommentFragment newInstance(CommentTag tag) {
+        CommentFragment fragment = new CommentFragment();
+
+        Bundle args = tag.toBundle();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +49,8 @@ public class CommentFragment extends Fragment {
 		RelativeLayout relative = (RelativeLayout) inflater.inflate(R.layout.comment_view,
 				container, false);
 		view = (ListView) relative.findViewById(R.id.commentList);
+
+        this.info = new CommentTag(getArguments());
 
 		getFragmentManager().beginTransaction().add(this, "CommentFragment");
 
@@ -98,6 +107,7 @@ public class CommentFragment extends Fragment {
 		final EditText textComment 	= (EditText)relative.findViewById(R.id.editTextComment);
 		final Button addComment 	= (Button)relative.findViewById(R.id.addCommentButton);
 		final String id = this.info._id;
+        final String username = this.info.username;
 		final AddCommentHandler handler = new AddCommentHandler(this);
 		
 		addComment.setOnClickListener(new OnClickListener() {
@@ -106,20 +116,16 @@ public class CommentFragment extends Fragment {
 			public void onClick(View v) {
 				String comment = textComment.getText().toString();
 				textComment.getText().clear();
-				
-				
-				
+
 				HashMap<String, String> params = new HashMap<>();
 				params.put("_reply_id", id);
 				params.put("comment", comment);
+                params.put("username", username);
 				
-				Log.d("AddComm", params.toString());
-
-				VolleyRequests.jsonObjectPutRequest(ConstRequest.TAG_JSON_OBJECT, 
+				VolleyRequests.jsonObjectPutRequest(ConstRequest.TAG_JSON_OBJECT,
 						ConstRequest.POST_COMM_ADD, 
 						handler, 
 						params);
-				
 			}
 		});
 		

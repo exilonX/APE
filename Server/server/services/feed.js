@@ -117,7 +117,7 @@ module.exports = {
 
                 var comment = new Comment();
                 // TODO: replace with username from registration
-                comment.username = 'gigel';
+                comment.username = req.body.username;
                 comment.comment = req.body.comment;
                 comment.date = new Date();
                 reply.comments.push(comment);

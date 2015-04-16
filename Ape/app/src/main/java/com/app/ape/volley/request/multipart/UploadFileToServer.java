@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.app.ape.helper.ChallengeItem;
 import com.app.ape.volley.request.ConstRequest;
 
 import org.apache.http.HttpEntity;
@@ -29,14 +30,20 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
 
     //ProgressBar progressBar;
     //TextView txtPercentage;
-    long totalSize;
-    File sourceFile;
+    private long totalSize;
+    private File sourceFile;
+    private ChallengeItem replyInfo = null;
 
     public UploadFileToServer(/* ProgressBar prgBar, TextView txt, */ File file) {
         //progressBar = prgBar;
         //txtPercentage = txt;
         totalSize = 0;
         sourceFile = file;
+    }
+
+    public UploadFileToServer(ChallengeItem info, File file) {
+        this.sourceFile = file;
+        this.replyInfo = info;
     }
 
     @Override
@@ -86,10 +93,17 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
             // Adding file data to http body
             entity.addPart("image", new FileBody(sourceFile));
 
-            // Extra parameters if you want to pass to server
-            entity.addPart("website",
-                    new StringBody("www.androidhive.info"));
-            entity.addPart("email", new StringBody("abc@gmail.com"));
+            if (replyInfo == null) {
+                // Extra parameters if you want to pass to server
+                entity.addPart("username",
+                        new StringBody("dummy"));
+                entity.addPart("title", new StringBody("Dummy title"));
+            } else {
+                // Extra parameters if you want to pass to server
+                entity.addPart("username",
+                        new StringBody(replyInfo.getUsername()));
+                entity.addPart("title", new StringBody(replyInfo.getTitle()));
+            }
 
             totalSize = entity.getContentLength();
             httppost.setEntity(entity);

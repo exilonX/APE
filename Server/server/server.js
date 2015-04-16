@@ -33,7 +33,7 @@ mongoose.connect('mongodb://localhost:27017/ape');
 // set debug mode
 app.set('debug', true);
 // set host prefix
-app.set('host', 'http://192.168.0.105:8080/');
+app.set('host', 'http://52.11.44.10:8080/');
 
 // routes
 
