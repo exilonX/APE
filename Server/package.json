@@ -5,6 +5,7 @@
   "dependencies": {
     "bcrypt": "*",
     "body-parser": "*",
+    "cron": "^1.0.9",
     "express": "~4.0.0",
     "jwt-simple": "*",
     "lockfile": "*",

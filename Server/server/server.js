@@ -13,6 +13,22 @@ var express         = require('express'),
     onechallenge    = require('./services/mainChallenge'),
     multer          = require('multer');
 
+var CronJob = require('cron').CronJob;
+
+// Sec Min Hour DayOfMonth Month DayOfWeek
+new CronJob('0 22 1 * * *', function() {
+    console.log("Se executa cron job");
+    // get the best reply (if more have the same number of likes) get one random
+    challengeReply.bestReply(function(err, data) {
+        if (err) return console.log("Error while executing job");
+        challengeReply.createChallenge(data.username, function(err, data) {
+            if (err) return console.log("Error in creating the challenge");
+            return data;
+        })
+    });
+    // add a new challenge with the username of the one that had the best reply
+})
+
 GLOBAL.app = express();
 
 // configure app to use bodyParser()
@@ -66,6 +82,8 @@ router.route('/reply/comment/like/add').put(feed.replyCommentAddLike);
 
 // check if the user has already replied to the current challenge
 router.route('/reply/hasReplied').post(challengeReply.hasReplied)
+
+router.route('/reply/bestReply').get(challengeReply.bestReply);
 
 // sign up new user
 // parameters: name, password, email

@@ -75,5 +75,44 @@ module.exports = {
                 })
             }
         );
+    },
+
+    bestReply : function(cb) {
+        Reply.find({}).sort('-likes.length').exec(function(err, challenge) {
+            if (err) return cb(err, null);
+            console.log(challenge[0]);
+            var maxNumberOfLikes = challenge[0].likes.length;
+
+            Reply.find({'likes' : {$size : maxNumberOfLikes}}, function(err, data) {
+                if (err) return cb(err, null);
+
+                if (data.length == 0) return cb(null, {bestReply : 'none'});
+                if (data.length == 1) {
+                    return cb(null, {bestReply : data[0]});
+                }
+
+                var randomIndex = Math.floor(Math.random() * data.length);
+
+                cb(null, {bestReply : data[randomIndex]});
+            })
+        })
+    },
+
+    createChallenge : function(bestReplyUser, cb) {
+        Challenge.create({},
+            function(err, challenge) {
+                // Evaluate possible errors
+                if (err) return cb(err, null);
+                challenge.username = bestReplyUser;
+                challenge.date = new Date();
+                challenge.title = 'This is the newest challenge from' + bestReplyUser;
+                challenge.thumb_url = 'http://52.11.44.10:8080/images/test/sparta.jpg';
+                challenge.content_url = 'http://52.11.44.10:8080/images/test/sparta.jpg';
+
+                challenge.save();
+                cb(null, {response: 'ok'});
+            });
     }
+
+
 }
