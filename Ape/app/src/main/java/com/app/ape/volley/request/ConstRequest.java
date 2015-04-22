@@ -27,6 +27,7 @@ public class ConstRequest {
     public static String POST_COMM_ADD	= BASE_URL + "/api/reply/comment/add";
     public static String PUT_LIKE_ADD   = BASE_URL + "/api/reply/like/add";
     public static String POST_REPLY     = BASE_URL + "/api/challenge_reply";
+    public static String GET_HAS_REPLIED = BASE_URL + "/api/reply/hasReplied";
 
 
     public static String getFeedLink(int pageSize, int pageNumber, String user) {

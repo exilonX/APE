@@ -23,6 +23,8 @@ public class LoginHandler implements HandleJsonObjectResponse {
 			String expires = response.getString("expires");
 			String user = response.getString("user");
 
+            Log.d("LOGIN", response.toString());
+
             SharedPreferences pref = context.getSharedPreferences("MyPref", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
 

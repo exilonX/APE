@@ -63,6 +63,10 @@ router.route('/reply/like/add').put(feed.replyAddLike);
 // add like for a reply comment
 // parameters: _reply_id, _comment_id
 router.route('/reply/comment/like/add').put(feed.replyCommentAddLike);
+
+// check if the user has already replied to the current challenge
+router.route('/reply/hasReplied').get(challengeReply.hasReplied)
+
 // sign up new user
 // parameters: name, password, email
 router.route('/signup').post(registration.register);

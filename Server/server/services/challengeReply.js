@@ -8,6 +8,8 @@ var express          = require('express'),
     lockFile         = require('lockfile'),
     fs               = require('fs');
 
+var mainChallenge = require('./mainChallenge');
+
 GLOBAL.app = express();
 
 var Challenge       = mongoose.model('Challenge');
@@ -34,43 +36,44 @@ module.exports = {
     // Add a comment to a reply
         function (req, res) {
             var data = req.body;
-            console.log(data);
-
-            //TODO save the image to a file - in the static directory
-            //var imageData = data.image;
-            //var base64Data = imageData.replace(/^data:image\/gif;base64,/, "");
-            //
-            ////fs.writeFile("server/static/images/challengeReply/out.gif", base64Data, 'base64', function(err) {
-            ////    console.log(err);
-            ////});
-            //fs.writeFile("server/static/images/challengeReply/out.gif", new Buffer(base64Data, "base64"), function(err) {
-            //    console.log(err);
-            //});
-
-            console.log(req.files);
-            console.log("+======================+");
-            console.log(req.body);
-            //res.send(200);
 
             // save the path to the file and the additional info to mongo
             Reply.create({}, function(err, reply) {
                 // Evaluate possible errors
                 if (evaluateReplyError(res, err, reply))
                     return;
+                mainChallenge.getMainChallenge(function(err, data) {
+                    if (evaluateReplyError(res, err, data))
+                        return;
 
-                reply.challenge_id = mongoose.Types.ObjectId('54f2827d2df7aaf529fe39a0');
-                reply.username = req.body.username;
-                reply.date = new Date();
-                reply.title = req.body.title;
-                reply.thumb_url = req.files.image.path.substring(7);
-                reply.content_url = req.files.image.path.substring(7);
+                    reply.challenge_id = data._id;
+                    reply.username = req.body.username;
+                    reply.date = new Date();
+                    reply.title = req.body.title;
+                    reply.thumb_url = req.files.image.path.substring(7);
+                    reply.content_url = req.files.image.path.substring(7);
 
-                reply.save();
+                    reply.save();
 
-                res.json({result: 'success'});
+                    res.json({result: 'success'});
+
+                })
+
             });
+        },
 
-
-
-        }
+    hasReplied : function(req, res) {
+        Challenge.findOne().sort('-date').exec(
+            function(err, challenge) {
+                if (evaluateReplyError(res, err, challenge))
+                    return;
+                Reply.findOne({username: req.body.username, challenge_id : challenge._id}, function (err, reply) {
+                    if (evaluateReplyError(res, err, reply))
+                        return;
+                    if (reply.length > 0) return res.json({hasReplied: true});
+                    res.json({hasReplied: false});
+                })
+            }
+        );
+    }
 }

@@ -21,6 +21,9 @@ import android.widget.Toast;
 import com.app.ape.R;
 import com.app.ape.constants.Const;
 import com.app.ape.helper.ChallengeItem;
+import com.app.ape.volley.request.ConstRequest;
+import com.app.ape.volley.request.VolleyRequests;
+import com.app.ape.volley.request.handlers.HandleHasReplied;
 import com.app.ape.volley.request.handlers.HandleJsonObjectResponse;
 import com.app.ape.volley.request.handlers.ReplyHandler;
 import com.app.ape.volley.request.multipart.UploadFileToServer;
@@ -37,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class CameraFragmentCWAC extends CameraFragment {
 
@@ -49,6 +53,9 @@ public class CameraFragmentCWAC extends CameraFragment {
     private ImageView preview = null;
     private boolean shotTaken = false;
     private CameraView cameraView;
+
+    private SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+    private SharedPreferences.Editor editor = pref.edit();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +82,18 @@ public class CameraFragmentCWAC extends CameraFragment {
                     }
                 }
         );
+
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put(Const.KEY_USR, pref.getString(Const.KEY_USR_SHARED, null));
+
+        // if the user has already replied then deactivate the capture button
+        HandleHasReplied handler = new HandleHasReplied(captureButton);
+
+        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
+                ConstRequest.GET_HAS_REPLIED,
+                handler,
+                params);
 
 
         //preview = (ImageView) content.findViewById(R.id.picture_preview);
@@ -112,9 +131,6 @@ public class CameraFragmentCWAC extends CameraFragment {
 
                                 Toast toast = Toast.makeText(getActivity(), title, Toast.LENGTH_LONG);
                                 toast.show();
-
-                                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-                                SharedPreferences.Editor editor = pref.edit();
 
                                 String username = pref.getString(Const.KEY_USR_SHARED, null);
                                 String token = pref.getString(Const.KEY_TOKEN_SHARED, null);

@@ -6,7 +6,7 @@ var express          = require('express'),
 
 GLOBAL.app = express();
 
-var OneChallenge    = mongoose.model('OneChallenge');
+var Challenge       = mongoose.model('Challenge');
 var Comment         = mongoose.model('Comment');
 var Like            = mongoose.model('Like');
 var Reply           = mongoose.model('Reply');
@@ -35,7 +35,7 @@ module.exports = {
             //         page   : page
             // };
 
-            OneChallenge.findOne().sort('-date').exec(
+            Challenge.findOne().sort('-date').exec(
                 function(err, challenge) {
                     var host = app.get('host');
                     challenge.thumb_url = host + challenge.thumb_url;
@@ -57,5 +57,12 @@ module.exports = {
                     //     }
                     // });
             });
-        }
+        },
+    getMainChallenge : function(cb) {
+        Challenge.findOne().sort('-date').exec(
+            function(err, challenge) {
+                if (err) return cb(err, null);
+                cb(null, challenge);
+            }
+        )}
 }

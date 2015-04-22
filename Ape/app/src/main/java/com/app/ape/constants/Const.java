@@ -21,4 +21,6 @@ public class Const {
     public static final String KEY_TOKEN_SHARED = "token";
     public static final String KEY_EXP_SHARED = "expDate";
 
+    public static final String KEY_HAS_REPLIED = "hasReplied";
+
 }
