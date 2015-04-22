@@ -54,12 +54,16 @@ public class CameraFragmentCWAC extends CameraFragment {
     private boolean shotTaken = false;
     private CameraView cameraView;
 
-    private SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-    private SharedPreferences.Editor editor = pref.edit();
+    private SharedPreferences pref = null;
+    private SharedPreferences.Editor editor = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
+        this.pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        this.editor = pref.edit();
+
         View content = inflater.inflate(R.layout.cwac_camera_layout, container, false);
 
         cameraView = (CameraView) content.findViewById(R.id.camera);
@@ -82,6 +86,9 @@ public class CameraFragmentCWAC extends CameraFragment {
                     }
                 }
         );
+
+        // default is invisible if the user hasn't replied then make it visible
+        captureButton.setVisibility(View.INVISIBLE);
 
         HashMap<String, String> params = new HashMap<>();
 
