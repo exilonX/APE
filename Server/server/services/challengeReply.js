@@ -78,10 +78,10 @@ module.exports = {
     },
 
     bestReply : function(cb) {
-        Reply.find({}).sort('-likes.length').exec(function(err, replies) {
+        Reply.find({}).sort('-number_likes').exec(function(err, replies) {
             if (err) return cb(err, null);
             if (replies.length == 0) return cb(new Error("no reply found"), null);
-            console.log(replies);
+            //console.log(replies);
             var maxNumberOfLikes = replies[0].likes.length;
 
             Reply.find({'likes' : {$size : maxNumberOfLikes}}, function(err, data) {
@@ -113,6 +113,18 @@ module.exports = {
                 challenge.save();
                 cb(null, {response: 'ok'});
             });
+    },
+
+    updateNrLikes : function() {
+        Reply.find().exec(function(err, data) {
+            console.log("Intra aici");
+            console.log(data.length);
+            for(var i in data) {
+                data[i].number_likes = data[i].likes.length;
+                console.log(data[i].likes.length);
+                data[i].save();
+            }
+        })
     }
 
 

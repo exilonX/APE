@@ -74,6 +74,7 @@ var Reply = new Schema({
     thumb_url           : String,
     content_url         : String,
     likes               : [Like],
+    number_likes        : Number,
     comments            : [Comment]
 });
 

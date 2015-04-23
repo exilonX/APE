@@ -19,6 +19,7 @@ var CronJob = require('cron').CronJob;
 var job = new CronJob('0 00 13 * * *',
     function() {
         console.log("Se executa cron job");
+        challengeReply.updateNrLikes();
         // get the best reply (if more have the same number of likes) get one random
         challengeReply.bestReply(function(err, data) {
             if (err) return console.log("Error while executing job");
@@ -35,6 +36,8 @@ var job = new CronJob('0 00 13 * * *',
         console.log("Job ended");
     },
     true, "Europe/Bucharest");
+
+
 
 GLOBAL.app = express();
 

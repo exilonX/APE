@@ -167,6 +167,7 @@ module.exports = {
                         like.username = req.body.user;
                         like.date = new Date();
                         reply.likes.push(like);
+                        reply.number_likes = reply.likes.length;
                         reply.save();
                         res.json({result: 'success'});
                     }
