@@ -16,18 +16,23 @@ var express         = require('express'),
 var CronJob = require('cron').CronJob;
 
 // Sec Min Hour DayOfMonth Month DayOfWeek
-new CronJob('0 22 1 * * *', function() {
-    console.log("Se executa cron job");
-    // get the best reply (if more have the same number of likes) get one random
-    challengeReply.bestReply(function(err, data) {
-        if (err) return console.log("Error while executing job");
-        challengeReply.createChallenge(data.username, function(err, data) {
-            if (err) return console.log("Error in creating the challenge");
-            return data;
-        })
-    });
+var job = new CronJob('0 00 13 * * *',
+    function() {
+        console.log("Se executa cron job");
+        // get the best reply (if more have the same number of likes) get one random
+        challengeReply.bestReply(function(err, data) {
+            if (err) return console.log("Error while executing job");
+            challengeReply.createChallenge(data.username, function(err, data) {
+                if (err) return console.log("Error in creating the challenge");
+                return data;
+            })
+        });
     // add a new challenge with the username of the one that had the best reply
-})
+    },
+    function() {
+        console.log("Job ended");
+    },
+    true, "Europe/Bucharest");
 
 GLOBAL.app = express();
 

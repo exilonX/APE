@@ -1,1 +1,4 @@
 This is the README for APE
+
+npm install bcrypt --msvs_version=2012
+

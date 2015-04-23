@@ -78,10 +78,11 @@ module.exports = {
     },
 
     bestReply : function(cb) {
-        Reply.find({}).sort('-likes.length').exec(function(err, challenge) {
+        Reply.find({}).sort('-likes.length').exec(function(err, replies) {
             if (err) return cb(err, null);
-            console.log(challenge[0]);
-            var maxNumberOfLikes = challenge[0].likes.length;
+            if (replies.length == 0) return cb(new Error("no reply found"), null);
+            console.log(replies);
+            var maxNumberOfLikes = replies[0].likes.length;
 
             Reply.find({'likes' : {$size : maxNumberOfLikes}}, function(err, data) {
                 if (err) return cb(err, null);
