@@ -65,11 +65,11 @@ module.exports = {
         },
 
     hasReplied : function(req, res) {
-        Challenge.findOne().sort('-date').exec(
+        Challenge.find().sort({date : -1}).exec(
             function(err, challenge) {
                 if (evaluateReplyError(res, err, challenge))
                     return;
-                Reply.find({username: req.body.username, challenge_id : challenge._id}, function (err, reply) {
+                Reply.find({username: req.body.username, challenge_id : challenge[0]._id}, function (err, reply) {
                     if (evaluateReplyError(res, err, reply))
                         return;
                     if (reply.length > 0) return res.json({hasReplied: true});
@@ -82,22 +82,22 @@ module.exports = {
     bestReply : function(cb) {
         async.waterfall([
                 function(callback) {
-                    Challenge.findOne().sort('-date').exec(
+                    Challenge.find().sort({date : -1}).exec(
                         function(err, challenge) {
                             if (err) return callback(err, null);
-                            callback(null, challenge);
+                            callback(null, challenge[0]);
                         });
                 },
                 function(challenge, callback) {
-                    Reply.find({}).sort({number_likes : -1}).exec(function(err, replies) {
+                    Reply.find({}).sort({number_likes : -1, challenge_id : challenge._id}).exec(function(err, replies) {
                         if (err) return callback(err, null);
                         if (replies.length == 0) return callback(new Error("no reply found"), null);
                         var maxNumberOfLikes = replies[0].number_likes;
-                        callback(null, maxNumberOfLikes);
+                        callback(null, maxNumberOfLikes, challenge._id);
                     })
                 },
-                function(maxNumberOfLikes, callback) {
-                    Reply.find({'number_likes' : maxNumberOfLikes}, function(err, data) {
+                function(maxNumberOfLikes, challenge_id, callback) {
+                    Reply.find({'number_likes' : maxNumberOfLikes, challenge_id: challenge_id}, function(err, data) {
                         if (err) return callback(err, null);
                         if (data.length == 0) return callback(null, {bestReply : 'none'});
                         if (data.length == 1) {

@@ -16,7 +16,7 @@ var express         = require('express'),
 var CronJob = require('cron').CronJob;
 
 // Sec Min Hour DayOfMonth Month DayOfWeek
-var job = new CronJob('0 00 13 * * *',
+var job = new CronJob('0 10 18 * * *',
     function() {
         console.log("Se executa cron job");
         // get the best reply (if more have the same number of likes) get one random
