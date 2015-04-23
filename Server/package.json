@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "server/server.js",
   "dependencies": {
+    "async": "^0.9.0",
     "bcrypt": "*",
     "body-parser": "*",
     "cron": "^1.0.9",
