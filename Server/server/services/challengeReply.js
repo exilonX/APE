@@ -107,8 +107,8 @@ module.exports = {
                 challenge.username = bestReplyUser;
                 challenge.date = new Date();
                 challenge.title = 'This is the newest challenge from' + bestReplyUser;
-                challenge.thumb_url = 'http://52.11.44.10:8080/images/test/sparta.jpg';
-                challenge.content_url = 'http://52.11.44.10:8080/images/test/sparta.jpg';
+                challenge.thumb_url = 'images/test/sparta.jpg';
+                challenge.content_url = 'images/test/sparta.jpg';
 
                 challenge.save();
                 cb(null, {response: 'ok'});

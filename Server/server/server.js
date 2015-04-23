@@ -22,6 +22,8 @@ var job = new CronJob('0 00 13 * * *',
         // get the best reply (if more have the same number of likes) get one random
         challengeReply.bestReply(function(err, data) {
             if (err) return console.log("Error while executing job");
+            console.log("The data from best reply");
+            console.log(data);
             challengeReply.createChallenge(data.username, function(err, data) {
                 if (err) return console.log("Error in creating the challenge");
                 return data;
