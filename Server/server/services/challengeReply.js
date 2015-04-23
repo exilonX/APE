@@ -78,13 +78,13 @@ module.exports = {
     },
 
     bestReply : function(cb) {
-        Reply.find({}).sort('-number_likes').exec(function(err, replies) {
+        Reply.find({}).sort({number_likes : -1}).exec(function(err, replies) {
             if (err) return cb(err, null);
             if (replies.length == 0) return cb(new Error("no reply found"), null);
             //console.log(replies);
-            var maxNumberOfLikes = replies[0].likes.length;
+            var maxNumberOfLikes = replies[0].number_likes;
 
-            Reply.find({'likes' : {$size : maxNumberOfLikes}}, function(err, data) {
+            Reply.find({'number_likes' : maxNumberOfLikes}, function(err, data) {
                 if (err) return cb(err, null);
 
                 if (data.length == 0) return cb(null, {bestReply : 'none'});
@@ -93,7 +93,6 @@ module.exports = {
                 }
 
                 var randomIndex = Math.floor(Math.random() * data.length);
-
                 cb(null, {bestReply : data[randomIndex]});
             })
         })
