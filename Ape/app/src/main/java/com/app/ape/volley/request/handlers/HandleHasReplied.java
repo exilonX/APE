@@ -1,5 +1,6 @@
 package com.app.ape.volley.request.handlers;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,7 +29,8 @@ public class HandleHasReplied implements HandleJsonObjectResponse {
             if (hasReplied.equals("true")) {
                 captureButton.setVisibility(View.INVISIBLE);
             } else {
-                captureButton.setVisibility(View.INVISIBLE);
+                Log.d("VISIBILITY", "false");
+                captureButton.setVisibility(View.VISIBLE);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -24,7 +24,7 @@ var job = new CronJob('0 00 13 * * *',
             if (err) return console.log("Error while executing job");
             console.log("The data from best reply");
             console.log(data);
-            challengeReply.createChallenge(data.username, function(err, data) {
+            challengeReply.createChallenge(data.bestReply.username, function(err, data) {
                 if (err) return console.log("Error in creating the challenge");
                 return data;
             })

@@ -1,6 +1,7 @@
 package com.app.ape.volley.request.handlers;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.app.ape.helper.ChallengeItem;
 import com.app.ape.helper.ItemInfo;
@@ -30,6 +31,9 @@ public class ChallengeHandler implements HandleJsonObjectResponse {
         Gson gson = new Gson();
 
         ChallengeItem item = gson.fromJson(response.toString(), ChallengeItem.class);
+
+        TextView title = (TextView) challenge.findViewById(R.id.challengeTextView);
+        title.setText(item.getTitle());
 
         FeedImageView feedImgView = (FeedImageView) challenge.findViewById(R.id.challengeImage);
         feedImgView.setImageUrl(item.getThumb_image(), imageLoader);
