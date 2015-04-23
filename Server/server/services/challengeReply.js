@@ -89,7 +89,7 @@ module.exports = {
                         });
                 },
                 function(challenge, callback) {
-                    Reply.find({}).sort({number_likes : -1, challenge_id : challenge._id}).exec(function(err, replies) {
+                    Reply.find({challenge_id : challenge._id}).sort({number_likes : -1}).exec(function(err, replies) {
                         if (err) return callback(err, null);
                         if (replies.length == 0) return callback(new Error("no reply found"), null);
                         var maxNumberOfLikes = replies[0].number_likes;
