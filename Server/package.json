@@ -8,6 +8,7 @@
     "body-parser": "*",
     "cron": "^1.0.9",
     "express": "~4.0.0",
+    "gcm": "^1.0.1",
     "jwt-simple": "*",
     "lockfile": "*",
     "method-override": "*",

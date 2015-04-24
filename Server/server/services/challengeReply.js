@@ -141,6 +141,21 @@ module.exports = {
                 data[i].save();
             }
         })
+    },
+
+    getMyChallenge : function(req, res) {
+        var username = req.body.username;
+        Challenge.find().sort({date : -1}).exec(
+            function(err, challenge) {
+                if (evaluateReplyError(res, err, challenge))
+                    return;
+                Reply.find({username: req.body.username, challenge_id : challenge[0]._id}, function (err, reply) {
+                    if (evaluateReplyError(res, err, reply))
+                        return;
+                    if (reply.length > 0) return res.json({hasReplied: true});
+                    res.json({hasReplied: false});
+                })
+            })
     }
 
 

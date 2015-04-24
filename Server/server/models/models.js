@@ -12,7 +12,8 @@ var User  = new Schema({
     description         : String,
     profile_pic_url     : String,
     registration_date   : Date,
-    birth_date          : Date
+    birth_date          : Date,
+    registration_id     : String
 });
 
 // check if password is valid
