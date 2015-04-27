@@ -18,7 +18,7 @@ var GCM = require('./services/gcm');
 var CronJob = require('cron').CronJob;
 
 // Sec Min Hour DayOfMonth Month DayOfWeek
-var job = new CronJob('0 10 18 * * *',
+var job = new CronJob('0 30 16 * * *',
     function() {
         console.log("Se executa cron job");
         // get the best reply (if more have the same number of likes) get one random
@@ -28,6 +28,11 @@ var job = new CronJob('0 10 18 * * *',
             console.log(data);
             challengeReply.createChallenge(data.bestReply.username, function(err, data) {
                 if (err) return console.log("Error in creating the challenge");
+                // notify via GCM all the registered users that the challenge was changed
+                GCM.notifyAll("Challenge-ul s-a schimbat", function(err, data){
+                    if (err) return console.log("Eroare " + err.message);
+                    console.log(data);
+                })
                 return data;
             })
         });
