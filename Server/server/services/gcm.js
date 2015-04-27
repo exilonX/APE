@@ -66,11 +66,14 @@ GCMService.prototype.notifyAll = function(message, cb) {
     User.find({}, function(err, users) {
         if (err) return cb(err, null);
         _.each(users, function(user) {
-            if (user.registration_id != undefined) return console.log('Not registered');
+            if (user.registration_id == undefined) return console.log('Not registered');
             var notification = {
                 'registration_id' : user.registration_id,
                 'data' : message
             }
+
+            console.log("For user " + user.name);
+            console.log(notification);
 
             self.gcm.send(notification, function(err, messageId) {
                 if (err) {
