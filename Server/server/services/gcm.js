@@ -21,7 +21,7 @@ GCMService.prototype.addRegistrationId = function(username, registration_id, cb)
     this.registration_ids[username] = registration_id;
     if (!registration_id || registration_id == undefined) return cb(err, null);
     // Add the registration id to the database replace it if it already exists
-    User.find({username : username}, function(err, users) {
+    User.find({name : username}, function(err, users) {
         if (err) return cb(err, null);
         users[0].registration_id = registration_id;
         users[0].save(function(err) {

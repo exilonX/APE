@@ -23,6 +23,11 @@ public class Const {
 
     public static final String KEY_HAS_REPLIED = "hasReplied";
 
+
+    public static final String KEY_GCM_USER = "username";
+    public static final String KEY_GCM_MESSAGE = "message";
+    public static final String KEY_GCM_REG_ID = "registration_id";
+
     public static final String GCM_PROJECT_NUMBER = "342496740600";
 //    public static final String GCM_
 
