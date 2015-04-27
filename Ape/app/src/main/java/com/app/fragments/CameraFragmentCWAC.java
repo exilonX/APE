@@ -135,10 +135,6 @@ public class CameraFragmentCWAC extends CameraFragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String title = input.getText().toString();
-
-                                Toast toast = Toast.makeText(getActivity(), title, Toast.LENGTH_LONG);
-                                toast.show();
-
                                 String username = pref.getString(Const.KEY_USR_SHARED, null);
                                 String token = pref.getString(Const.KEY_TOKEN_SHARED, null);
 

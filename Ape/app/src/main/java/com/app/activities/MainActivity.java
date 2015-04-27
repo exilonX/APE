@@ -1,6 +1,10 @@
 package com.app.activities;
 
 import com.app.ape.R;
+import com.app.ape.volley.request.ConstRequest;
+import com.app.ape.volley.request.VolleyRequests;
+import com.app.ape.constants.Const;
+import com.app.ape.volley.request.handlers.HandleRegisterGCM;
 import com.app.camera.src.cwac.CameraHost;
 import com.app.camera.src.cwac.CameraHostProvider;
 import com.app.camera.src.cwac.SimpleCameraHost;
@@ -27,6 +31,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 
 public class MainActivity extends FragmentActivity implements FragmentSwitchListener , CameraHostProvider{
@@ -38,36 +43,44 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 
-    String SENDER_ID = "342496740600";
-    static final String TAG = "GCM Demo";
-
-
-    // DEMO FOR GCM
-
     ViewPager tab;
     TabPaggerAdapter tabAdapter;
     ActionBar actionBar;
+
+    // DEMO FOR GCM
+
 
     GoogleCloudMessaging gcm;
     String regid;
     Context context;
 
-	@Override
+    String SENDER_ID = "342496740600";
+    static final String TAG = "GCM Demo";
+
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "in On create");
 
         context = getApplicationContext();
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
 
+            // should register the id to the server
+            // make a new handler if the user is not registered
+            // that user will not get any notifications
+
             if (regid.isEmpty()) {
                 registerInBackground();
+            } else {
+                this.registerUser(this.getUsername(), regid);
+                Log.d(TAG, regid);
             }
-
-            Log.d(TAG, regid);
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
@@ -118,11 +131,30 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 		actionBar.addTab(actionBar.newTab().setText("Feed").setTabListener(tabListener));
 	}
 
+    private String getUsername() {
+        SharedPreferences pref = this.getApplicationContext().getSharedPreferences("MyPref", 0);
+        return pref.getString(Const.KEY_USR_SHARED, null);
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         checkPlayServices();
+    }
+
+    private void registerUser(String username, String registration_id) {
+        HandleRegisterGCM handler = new HandleRegisterGCM(this);
+
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put(Const.KEY_GCM_USER, username);
+        params.put(Const.KEY_GCM_REG_ID, registration_id);
+
+        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
+                ConstRequest.POST_REGISTER_GCM,
+                handler,
+                params);
     }
 
     /**
@@ -257,13 +289,14 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
         return getSharedPreferences(MainActivity.class.getSimpleName(),
                 Context.MODE_PRIVATE);
     }
+
     /**
      * Sends the registration ID to your server over HTTP, so it can use GCM/HTTP or CCS to send
      * messages to your app. Not needed for this demo since the device sends upstream messages
      * to a server that echoes back the message using the 'from' address in the message.
      */
     private void sendRegistrationIdToBackend() {
-        // Your implementation here.
+        this.registerUser(this.getUsername(), regid);
     }
 
     public void replaceFragment(Fragment newFragment) {

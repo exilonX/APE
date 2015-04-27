@@ -13,6 +13,8 @@ var express         = require('express'),
     onechallenge    = require('./services/mainChallenge'),
     multer          = require('multer');
 
+var GCM = require('./services/gcm');
+
 var CronJob = require('cron').CronJob;
 
 // Sec Min Hour DayOfMonth Month DayOfWeek
@@ -93,6 +95,20 @@ router.route('/reply/comment/like/add').put(feed.replyCommentAddLike);
 router.route('/reply/hasReplied').post(challengeReply.hasReplied)
 
 router.route('/reply/bestReply').get(challengeReply.bestReply);
+
+// register the user in the GCM service
+router.route('/register_gcm').post(function(req, res) {
+    var username = req.body.username;
+    var registration_id = req.body.registration_id;
+
+    console.log("Se inregistreaza la GCM" + username + "  " + registration_id);
+
+    GCM.addRegistrationId(username, registration_id, function(err, data) {
+        if (err) return res.json({error : true, message : 'Error ' + err.message}, 404);
+        return res.json({error : false, message : "Success register"});
+    });
+
+});
 
 // sign up new user
 // parameters: name, password, email

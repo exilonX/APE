@@ -6,6 +6,7 @@ var GCM = require('gcm').GCM;
 var CONST = require('../const');
 var restful          = require('node-restful'),
     mongoose         = restful.mongoose;
+var _ = require('underscore');
 
 var User       = mongoose.model('User');
 
@@ -31,23 +32,25 @@ GCMService.prototype.addRegistrationId = function(username, registration_id, cb)
 }
 
 GCMService.prototype.getRegistrationID = function(username, cb) {
+    var self = this;
     if (this.registration_ids[username] != undefined) return cb(null, this.registration_ids[username]);
     User.find({'username' : username}, function(err, users) {
         if (err) return cb(err, null);
         cb(null, users[0].registration_id);
+        self.registration_ids[username] = users[0].registration_id;
     })
 }
 
 GCMService.prototype.sendNotification = function(message, username) {
-
-    this.getRegistrationID(username, function(err, registration_id) {
+    var self = this;
+    self.getRegistrationID(username, function(err, registration_id) {
 
         var notification = {
             'registration_id' : registration_id,
             'data' : message
-        }
+        };
 
-        gcm.send(notification, function(err, messageId) {
+        self.gcm.send(notification, function(err, messageId) {
             if (err) {
                 console.log("Something has gone wrong!");
             } else {
@@ -56,8 +59,29 @@ GCMService.prototype.sendNotification = function(message, username) {
         })
 
     })
-
 }
 
+GCMService.prototype.notifyAll = function(message, cb) {
+    var self = this;
+    User.find({}, function(err, users) {
+        if (err) return cb(err, null);
+        _.each(users, function(user) {
+            if (user.registration_id != undefined) return console.log('Not registered');
+            var notification = {
+                'registration_id' : user.registration_id,
+                'data' : message
+            }
 
+            self.gcm.send(notification, function(err, messageId) {
+                if (err) {
+                    return cb(err, null);
+                } else {
+                    return cb(null, messageId);
+                }
+            })
 
+        })
+    })
+}
+
+module.exports = new GCMService();
