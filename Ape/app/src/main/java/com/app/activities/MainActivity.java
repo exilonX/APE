@@ -93,7 +93,7 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		
-		tabAdapter = new TabPaggerAdapter(getSupportFragmentManager());
+		tabAdapter = new TabPaggerAdapter(getSupportFragmentManager(), this);
 		
 		tab = (ViewPager)findViewById(R.id.pager);
 		tab.setOnPageChangeListener(

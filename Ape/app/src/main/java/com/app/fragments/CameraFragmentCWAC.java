@@ -90,17 +90,17 @@ public class CameraFragmentCWAC extends CameraFragment {
         // default is invisible if the user hasn't replied then make it visible
         captureButton.setVisibility(View.INVISIBLE);
 
-        HashMap<String, String> params = new HashMap<>();
-
-        params.put(Const.KEY_USR, pref.getString(Const.KEY_USR_SHARED, null));
-
-        // if the user has already replied then deactivate the capture button
-        HandleHasReplied handler = new HandleHasReplied(captureButton);
-
-        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
-                ConstRequest.GET_HAS_REPLIED,
-                handler,
-                params);
+//        HashMap<String, String> params = new HashMap<>();
+//
+//        params.put(Const.KEY_USR, pref.getString(Const.KEY_USR_SHARED, null));
+//
+//        // if the user has already replied then deactivate the capture button
+//        HandleHasReplied handler = new HandleHasReplied(captureButton);
+//
+//        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
+//                ConstRequest.GET_HAS_REPLIED,
+//                handler,
+//                params);
 
 
         //preview = (ImageView) content.findViewById(R.id.picture_preview);

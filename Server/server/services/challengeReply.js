@@ -72,7 +72,7 @@ module.exports = {
                 Reply.find({username: req.body.username, challenge_id : challenge[0]._id}, function (err, reply) {
                     if (evaluateReplyError(res, err, reply))
                         return;
-                    if (reply.length > 0) return res.json({hasReplied: true});
+                    if (reply.length > 0) return res.json({hasReplied: true, reply: reply[0]});
                     res.json({hasReplied: false});
                 })
             }

@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import com.app.ape.constants.Const;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class CommentTag {
 	public String 	_id;
 	public int 		position;
@@ -38,6 +41,19 @@ public class CommentTag {
         this.username		= args != null ? args.getString(Const.KEY_USR) : null;
         this.date			= args != null ? args.getString(Const.KEY_DATE_COMM) : null;
         this.description	= args != null ? args.getString(Const.KEY_TITLE) : null;
+    }
+
+    public CommentTag(JSONObject object) {
+        try{
+            this._id = object.getString(Const.KEY_ID);
+            this.position = 1;
+            this.imageUrl = object.getString(Const.KEY_THUMBNAIL);
+            this.username = object.getString(Const.KEY_USR);
+            this.date = object.getString(Const.KEY_DATE_COMM);
+            this.description = object.getString(Const.KEY_TITLE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 	
 	@Override
