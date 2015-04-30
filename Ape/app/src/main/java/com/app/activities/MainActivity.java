@@ -4,6 +4,7 @@ import com.app.ape.R;
 import com.app.ape.volley.request.ConstRequest;
 import com.app.ape.volley.request.VolleyRequests;
 import com.app.ape.constants.Const;
+import com.app.ape.volley.request.handlers.HandleHasReplied;
 import com.app.ape.volley.request.handlers.HandleRegisterGCM;
 import com.app.camera.src.cwac.CameraHost;
 import com.app.camera.src.cwac.CameraHostProvider;
@@ -105,6 +106,9 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 					}
 				});
 		tab.setAdapter(tabAdapter);
+
+        checkReply(this.getUsername());
+
 		
 		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -153,6 +157,20 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 
         VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
                 ConstRequest.POST_REGISTER_GCM,
+                handler,
+                params);
+    }
+
+    private void checkReply(String username) {
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put(Const.KEY_USR, username);
+
+        // if the user has already replied then deactivate the capture button
+        HandleHasReplied handler = new HandleHasReplied(this, tab, getSupportFragmentManager());
+
+        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
+                ConstRequest.GET_HAS_REPLIED,
                 handler,
                 params);
     }
@@ -301,6 +319,7 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 
     public void replaceFragment(Fragment newFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(android.R.id.content, newFragment, newFragment.toString());
         fragmentTransaction.addToBackStack(newFragment.toString());

@@ -24,7 +24,6 @@ public class TabPaggerAdapter extends FragmentStatePagerAdapter {
 
     private Activity activity = null;
     private SharedPreferences pref = null;
-    private boolean hasReplied = false;
 
 	public TabPaggerAdapter(FragmentManager fm, Activity activity) {
 		super(fm);
@@ -37,8 +36,6 @@ public class TabPaggerAdapter extends FragmentStatePagerAdapter {
 
 		switch (item) {
 		case 0:
-            checkHasReplied();;
-            // return CameraFragment or Reply Fragment Based on the reply
 			return new LoadingFragment();
 
 		case 1:
@@ -49,22 +46,6 @@ public class TabPaggerAdapter extends FragmentStatePagerAdapter {
 		}
 		return null;
 	}
-
-    private void checkHasReplied() {
-        HashMap<String, String> params = new HashMap<>();
-
-        params.put(Const.KEY_USR, pref.getString(Const.KEY_USR_SHARED, null));
-
-        // if the user has already replied then deactivate the capture button
-        HandleHasReplied handler = new HandleHasReplied(this.activity);
-
-        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
-                ConstRequest.GET_HAS_REPLIED,
-                handler,
-                params);
-    }
-
-
 
 	@Override
 	public int getCount() {
