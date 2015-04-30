@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.app.activities.MainActivity;
 import com.app.fragments.CameraFragmentCWAC;
 import com.app.fragments.ChallengeFragment;
 import com.app.fragments.FeedFragment;

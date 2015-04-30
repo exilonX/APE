@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.app.activities.MainActivity;
 import com.app.ape.R;
 import com.app.ape.constants.Const;
 import com.app.ape.helper.ChallengeItem;
@@ -88,7 +89,7 @@ public class CameraFragmentCWAC extends CameraFragment {
         );
 
         // default is invisible if the user hasn't replied then make it visible
-        captureButton.setVisibility(View.INVISIBLE);
+//        captureButton.setVisibility(View.INVISIBLE);
 
 //        HashMap<String, String> params = new HashMap<>();
 //
@@ -110,10 +111,13 @@ public class CameraFragmentCWAC extends CameraFragment {
     }
 
     private void restartFragmentPreview() {
+        Log.d("RestartFragment", "Intra aici in restartFragmentPreview");
         sendButton.setVisibility(View.INVISIBLE);
         cancelButton.setVisibility(View.INVISIBLE);
+        captureButton.setVisibility(View.INVISIBLE);
         cameraView.restartPreview();
         shotTaken = false;
+
     }
 
 
@@ -140,9 +144,13 @@ public class CameraFragmentCWAC extends CameraFragment {
 
                                 ChallengeItem item = new ChallengeItem(null, username, title, null, null);
 
-                                UploadFileToServer upload = new UploadFileToServer(item, data);
+                                MainActivity activity = (MainActivity)getActivity();
+
+
+                                UploadFileToServer upload = new UploadFileToServer(item, data, activity, username);
                                 upload.execute();
                                 restartFragmentPreview();
+
                             }
                         });
 

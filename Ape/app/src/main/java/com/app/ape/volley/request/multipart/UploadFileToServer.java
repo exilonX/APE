@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.app.activities.MainActivity;
+import com.app.ape.constants.Const;
 import com.app.ape.helper.ChallengeItem;
 import com.app.ape.volley.request.ConstRequest;
 
@@ -33,6 +35,8 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     private long totalSize;
     private File sourceFile;
     private ChallengeItem replyInfo = null;
+    private MainActivity activity;
+    private String username;
 
     public UploadFileToServer(/* ProgressBar prgBar, TextView txt, */ File file) {
         //progressBar = prgBar;
@@ -41,9 +45,11 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         sourceFile = file;
     }
 
-    public UploadFileToServer(ChallengeItem info, File file) {
+    public UploadFileToServer(ChallengeItem info, File file, MainActivity activity, String username) {
         this.sourceFile = file;
         this.replyInfo = info;
+        this.activity = activity;
+        this.username = username;
     }
 
     @Override
@@ -134,6 +140,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         Log.e("TAG", "Response from server: " + result);
+        activity.checkReply(username);
 
         // showing the server response in an alert dialog
         // showAlert(result);

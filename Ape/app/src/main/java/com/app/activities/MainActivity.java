@@ -161,7 +161,7 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
                 params);
     }
 
-    private void checkReply(String username) {
+    public void checkReply(String username) {
         HashMap<String, String> params = new HashMap<>();
 
         params.put(Const.KEY_USR, username);
