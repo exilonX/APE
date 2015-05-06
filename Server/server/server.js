@@ -23,8 +23,8 @@ var allBestReplies = [];
 
 var waitChallengeJob = new CronJob('0 */10 * * * *', function() {
     // I should notify the other user that the challenge expired
-    if (data.bestReply != null)
-        GCM.sendNotification("Your chance expired, you should reply in 10 minutes", data.bestReply.username);
+    if (bestReply != null)
+        GCM.sendNotification("Your chance expired, you should reply in 10 minutes", bestReply.username);
 
 
     // get the best reply (if more have the same number of likes) get one random
