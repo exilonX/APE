@@ -86,8 +86,8 @@ module.exports = {
 
                 // TODO Nu se propaga eroare mi-e lene
                 GCM.notifyAll("Challenge-ul s-a schimbat", function(err, data){
-                    if (err) return return res.json({error : true, message : err.message}, 500);
-                    return res.json({error : false, message : "ok"}, 500);
+                    if (err) return res.json({error : true, message : err.message}, 500);
+                    return res.json({error : false, message : "ok"}, 200);
                 })
             });
     }
