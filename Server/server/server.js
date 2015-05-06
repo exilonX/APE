@@ -23,7 +23,8 @@ var allBestReplies = [];
 
 var waitChallengeJob = new CronJob('0 */10 * * * *', function() {
     // I should notify the other user that the challenge expired
-    GCM.sendNotification("Your chance expired, you should reply in 10 minutes", data.bestReply.username);
+    if (data.bestReply != null)
+        GCM.sendNotification("Your chance expired, you should reply in 10 minutes", data.bestReply.username);
 
 
     // get the best reply (if more have the same number of likes) get one random
@@ -155,6 +156,8 @@ router.route('/challenge').get(onechallenge.mainchallenge);
 router.route('/challenge').post(function(req, res) {
     // stop the best reply cron job
     waitChallengeJob.stop();
+    allBestReplies = [];
+    bestReply = null;
     // create the challenge and notify the users
     onechallenge.createChallenge(req, res);
 });
