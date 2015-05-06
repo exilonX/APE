@@ -17,32 +17,58 @@ var GCM = require('./services/gcm');
 
 var CronJob = require('cron').CronJob;
 
+var bestReply;
+var allBestReplies = [];
+
+
+var waitChallengeJob = new CronJob('0 */10 * * * *', function() {
+    // I should notify the other user that the challenge expired
+    GCM.sendNotification("Your chance expired, you should reply in 10 minutes", data.bestReply.username);
+
+
+    // get the best reply (if more have the same number of likes) get one random
+    challengeReply.bestReply(allBestReplies, function(err, data) {
+        if (err) return console.log("Error while executing job");
+        console.log("The data from best reply");
+        console.log(data);
+        bestReply = data.bestReply;
+        allBestReplies.push(bestReply.username);
+        // se notifica cel care a castigat iar atunci cand acesta raspunde
+        // trebuie sa se notifice ceilalti ca s-a schimbat challenge ul si
+        // pot da reply
+        GCM.sendNotification("Ai castigat ai 10 minute sa raspunzi", data.bestReply.username);
+
+        // after sending the notification to the client that won a new cron job
+        // should start and a new winner should be selected if the first one
+        // didn't respond in a timely manner
+
+
+
+        //challengeReply.createChallenge(data.bestReply.username, function(err, data) {
+        //    if (err) return console.log("Error in creating the challenge");
+        //    // notify via GCM all the registered users that the challenge was changed
+        //
+        //
+        //
+        //    GCM.notifyAll("Challenge-ul s-a schimbat", function(err, data){
+        //        if (err) return console.log("Eroare " + err.message);
+        //        console.log(data);
+        //    })
+        //    return data;
+        //})
+    });
+});
+
 // Sec Min Hour DayOfMonth Month DayOfWeek
 var job = new CronJob('0 30 16 * * *',
     function() {
-        console.log("Se executa cron job");
-        // get the best reply (if more have the same number of likes) get one random
-        challengeReply.bestReply(function(err, data) {
-            if (err) return console.log("Error while executing job");
-            console.log("The data from best reply");
-            console.log(data);
-            challengeReply.createChallenge(data.bestReply.username, function(err, data) {
-                if (err) return console.log("Error in creating the challenge");
-                // notify via GCM all the registered users that the challenge was changed
-                GCM.notifyAll("Challenge-ul s-a schimbat", function(err, data){
-                    if (err) return console.log("Eroare " + err.message);
-                    console.log(data);
-                })
-                return data;
-            })
-        });
-    // add a new challenge with the username of the one that had the best reply
+        waitChallengeJob.start();
+        // add a new challenge with the username of the one that had the best reply
     },
     function() {
         console.log("Job ended");
     },
     true, "Europe/Bucharest");
-
 
 
 GLOBAL.app = express();
@@ -126,6 +152,19 @@ router.route('/login').post(registration.authenticate);
 router.route('/user/:name').get(registration.userInfo);
 
 router.route('/challenge').get(onechallenge.mainchallenge);
+router.route('/challenge').post(function(req, res) {
+    // stop the best reply cron job
+    waitChallengeJob.stop();
+    // create the challenge and notify the users
+    onechallenge.createChallenge(req, res);
+});
+
+router.route('/iswinner').get(function(req, res) {
+    if (req.body.username == bestReply.username) {
+        return res.json({winner : true});
+    }
+    return res.json({winner : false});
+})
 
 app.use(express.static(path.join(__dirname , '/static')));
 

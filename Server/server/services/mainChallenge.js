@@ -4,6 +4,8 @@ var express          = require('express'),
     mongoosePaginate = require('mongoose-query-paginate'),
     lockFile         = require('lockfile');
 
+var GCM = require('./gcm');
+
 GLOBAL.app = express();
 
 var Challenge       = mongoose.model('Challenge');
@@ -58,11 +60,36 @@ module.exports = {
                     // });
             });
         },
+
     getMainChallenge : function(cb) {
         Challenge.findOne().sort('-date').exec(
             function(err, challenge) {
                 if (err) return cb(err, null);
                 cb(null, challenge);
             }
-        )}
+        )},
+
+    createChallenge : function(req, res) {
+        var userName = req.body.username;
+
+        Challenge.create({},
+            function(err, challenge) {
+                // Evaluate possible errors
+                if (err) return res.json({error : true, message : err.message}, 500);
+                challenge.username = bestReplyUser;
+                challenge.date = new Date();
+                challenge.title = 'This is the newest challenge from ' + bestReplyUser;
+                challenge.thumb_url = 'images/test/sparta.jpg';
+                challenge.content_url = 'images/test/sparta.jpg';
+
+                challenge.save();
+
+                // TODO Nu se propaga eroare mi-e lene
+                GCM.notifyAll("Challenge-ul s-a schimbat", function(err, data){
+                    if (err) return return res.json({error : true, message : err.message}, 500);
+                    return res.json({error : false, message : "ok"}, 500);
+                })
+            });
+    }
+
 }

@@ -82,7 +82,7 @@ module.exports = {
         );
     },
 
-    bestReply : function(cb) {
+    bestReply : function(notResponded, cb) {
         async.waterfall([
                 function(callback) {
                     Challenge.find().sort({date : -1}).exec(
@@ -92,7 +92,8 @@ module.exports = {
                         });
                 },
                 function(challenge, callback) {
-                    Reply.find({challenge_id : challenge._id}).sort({number_likes : -1}).exec(function(err, replies) {
+                    Reply.find({challenge_id : challenge._id, username : {$nin : notResponded}})
+                        .sort({number_likes : -1}).exec(function(err, replies) {
                         if (err) return callback(err, null);
                         if (replies.length == 0) return callback(new Error("no reply found"), null);
                         var maxNumberOfLikes = replies[0].number_likes;
