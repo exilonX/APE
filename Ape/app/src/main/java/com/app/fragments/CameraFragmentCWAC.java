@@ -46,6 +46,7 @@ import java.util.HashMap;
 public class CameraFragmentCWAC extends CameraFragment {
 
     private static final String KEY_USE_FFC = "USE_FFC";
+    private static final String KEY_URL = "URL";
 
     private boolean singleShotProcessing=false;
     private Button captureButton = null;
@@ -54,9 +55,20 @@ public class CameraFragmentCWAC extends CameraFragment {
     private ImageView preview = null;
     private boolean shotTaken = false;
     private CameraView cameraView;
+    private String url;
+    private Boolean useFFC;
 
     private SharedPreferences pref = null;
     private SharedPreferences.Editor editor = null;
+
+    public static CameraFragmentCWAC newInstance(boolean useFFC, String uploadURL) {
+        CameraFragmentCWAC f=new CameraFragmentCWAC();
+        Bundle args=new Bundle();
+        args.putBoolean(KEY_USE_FFC, useFFC);
+        args.putString(KEY_URL, uploadURL);
+        f.setArguments(args);
+        return(f);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +76,11 @@ public class CameraFragmentCWAC extends CameraFragment {
 
         this.pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         this.editor = pref.edit();
+
+        // get the arguments sent via bundle argument on newInstance
+        Bundle arguments = getArguments();
+        this.useFFC = arguments.getBoolean(KEY_USE_FFC);
+        this.url = arguments.getString(KEY_URL);
 
         View content = inflater.inflate(R.layout.cwac_camera_layout, container, false);
 
@@ -88,24 +105,6 @@ public class CameraFragmentCWAC extends CameraFragment {
                 }
         );
 
-        // default is invisible if the user hasn't replied then make it visible
-//        captureButton.setVisibility(View.INVISIBLE);
-
-//        HashMap<String, String> params = new HashMap<>();
-//
-//        params.put(Const.KEY_USR, pref.getString(Const.KEY_USR_SHARED, null));
-//
-//        // if the user has already replied then deactivate the capture button
-//        HandleHasReplied handler = new HandleHasReplied(captureButton);
-//
-//        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
-//                ConstRequest.GET_HAS_REPLIED,
-//                handler,
-//                params);
-
-
-        //preview = (ImageView) content.findViewById(R.id.picture_preview);
-
         setCameraView(cameraView);
         return content;
     }
@@ -117,9 +116,7 @@ public class CameraFragmentCWAC extends CameraFragment {
         captureButton.setVisibility(View.INVISIBLE);
         cameraView.restartPreview();
         shotTaken = false;
-
     }
-
 
     private void onClickSendButton(final File data) {
         sendButton.setVisibility(View.VISIBLE);
@@ -146,8 +143,7 @@ public class CameraFragmentCWAC extends CameraFragment {
 
                                 MainActivity activity = (MainActivity)getActivity();
 
-
-                                UploadFileToServer upload = new UploadFileToServer(item, data, activity, username);
+                                UploadFileToServer upload = new UploadFileToServer(item, data, activity, username, url);
                                 upload.execute();
                                 restartFragmentPreview();
 
@@ -178,13 +174,7 @@ public class CameraFragmentCWAC extends CameraFragment {
     }
 
 
-    static CameraFragmentCWAC newInstance(boolean useFFC) {
-        CameraFragmentCWAC f=new CameraFragmentCWAC();
-        Bundle args=new Bundle();
-        args.putBoolean(KEY_USE_FFC, useFFC);
-        f.setArguments(args);
-        return(f);
-    }
+
 
     @Override
     public void onCreate(Bundle state) {

@@ -76,15 +76,14 @@ module.exports = {
             function(err, challenge) {
                 // Evaluate possible errors
                 if (err) return res.json({error : true, message : err.message}, 500);
-                challenge.username = bestReplyUser;
+                challenge.username = req.body.username;
                 challenge.date = new Date();
-                challenge.title = 'This is the newest challenge from ' + bestReplyUser;
-                challenge.thumb_url = 'images/test/sparta.jpg';
-                challenge.content_url = 'images/test/sparta.jpg';
+                challenge.title = req.body.title;
+                challenge.thumb_url = req.files.image.path.substring(7);
+                challenge.content_url = req.files.image.path.substring(7);
 
                 challenge.save();
 
-                // TODO Nu se propaga eroare mi-e lene
                 GCM.notifyAll("Challenge-ul s-a schimbat", function(err, data){
                     if (err) return res.json({error : true, message : err.message}, 500);
                     return res.json({error : false, message : "ok"}, 200);

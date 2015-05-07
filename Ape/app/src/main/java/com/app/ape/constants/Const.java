@@ -22,6 +22,7 @@ public class Const {
     public static final String KEY_EXP_SHARED = "expDate";
 
     public static final String KEY_HAS_REPLIED = "hasReplied";
+    public static final String KEY_IS_WINNER = "winner";
 
 
     public static final String KEY_GCM_USER = "username";

@@ -162,8 +162,8 @@ router.route('/challenge').post(function(req, res) {
     onechallenge.createChallenge(req, res);
 });
 
-router.route('/iswinner').get(function(req, res) {
-    if (req.body.username == bestReply.username) {
+router.route('/iswinner').post(function(req, res) {
+    if (bestReply != null && req.body.username == bestReply.username) {
         return res.json({winner : true});
     }
     return res.json({winner : false});

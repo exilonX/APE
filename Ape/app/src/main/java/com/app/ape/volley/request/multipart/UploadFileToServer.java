@@ -37,6 +37,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     private ChallengeItem replyInfo = null;
     private MainActivity activity;
     private String username;
+    private String url;
 
     public UploadFileToServer(/* ProgressBar prgBar, TextView txt, */ File file) {
         //progressBar = prgBar;
@@ -45,11 +46,13 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         sourceFile = file;
     }
 
-    public UploadFileToServer(ChallengeItem info, File file, MainActivity activity, String username) {
+    public UploadFileToServer(ChallengeItem info, File file, MainActivity activity,
+                              String username, String url) {
         this.sourceFile = file;
         this.replyInfo = info;
         this.activity = activity;
         this.username = username;
+        this.url = url;
     }
 
     @Override
@@ -83,7 +86,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         String responseString = null;
 
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(ConstRequest.POST_REPLY);
+        HttpPost httppost = new HttpPost(this.url);
 
         try {
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -140,7 +143,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         Log.e("TAG", "Response from server: " + result);
-        activity.checkReply(username);
+        activity.checkReply();
 
         // showing the server response in an alert dialog
         // showAlert(result);

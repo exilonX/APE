@@ -34,7 +34,7 @@ GCMService.prototype.addRegistrationId = function(username, registration_id, cb)
 GCMService.prototype.getRegistrationID = function(username, cb) {
     var self = this;
     if (this.registration_ids[username] != undefined) return cb(null, this.registration_ids[username]);
-    User.find({'username' : username}, function(err, users) {
+    User.find({'name' : username}, function(err, users) {
         if (err) return cb(err, null);
         cb(null, users[0].registration_id);
         self.registration_ids[username] = users[0].registration_id;

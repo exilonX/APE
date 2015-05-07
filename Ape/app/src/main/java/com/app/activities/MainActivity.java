@@ -5,6 +5,7 @@ import com.app.ape.volley.request.ConstRequest;
 import com.app.ape.volley.request.VolleyRequests;
 import com.app.ape.constants.Const;
 import com.app.ape.volley.request.handlers.HandleHasReplied;
+import com.app.ape.volley.request.handlers.HandleIsWinner;
 import com.app.ape.volley.request.handlers.HandleRegisterGCM;
 import com.app.camera.src.cwac.CameraHost;
 import com.app.camera.src.cwac.CameraHostProvider;
@@ -107,7 +108,12 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 				});
 		tab.setAdapter(tabAdapter);
 
-        checkReply(this.getUsername());
+
+        // TODO should check if he is a winner then check if he replied
+        // if he is not the winner
+
+
+        checkWinner();
 
 		
 		actionBar = getActionBar();
@@ -161,7 +167,8 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
                 params);
     }
 
-    public void checkReply(String username) {
+    public void checkReply() {
+        String username = this.getUsername();
         HashMap<String, String> params = new HashMap<>();
 
         params.put(Const.KEY_USR, username);
@@ -171,6 +178,19 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 
         VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
                 ConstRequest.GET_HAS_REPLIED,
+                handler,
+                params);
+    }
+
+    public void checkWinner() {
+        String username = this.getUsername();
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put(Const.KEY_USR, username);
+
+        HandleIsWinner handler = new HandleIsWinner(this, tab, getSupportFragmentManager());
+        VolleyRequests.jsonObjectPostRequest(ConstRequest.TAG_JSON_OBJECT,
+                ConstRequest.GET_IS_WINNER,
                 handler,
                 params);
     }

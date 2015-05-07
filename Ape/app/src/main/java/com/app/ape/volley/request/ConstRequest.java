@@ -28,7 +28,9 @@ public class ConstRequest {
     public static String PUT_LIKE_ADD   = BASE_URL + "/api/reply/like/add";
     public static String POST_REPLY     = BASE_URL + "/api/challenge_reply";
     public static String GET_HAS_REPLIED = BASE_URL + "/api/reply/hasReplied";
+    public static String GET_IS_WINNER  = BASE_URL + "/api/iswinner";
     public static String POST_REGISTER_GCM = BASE_URL + "/api/register_gcm";
+    public static String POST_CHALLENGE = BASE_URL + "/api/challenge";
 
 
     public static String getFeedLink(int pageSize, int pageNumber, String user) {
