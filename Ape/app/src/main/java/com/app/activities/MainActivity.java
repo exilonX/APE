@@ -183,6 +183,7 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
     }
 
     public void checkWinner() {
+        Log.d("CheckWinner", "Sunt in check winner");
         String username = this.getUsername();
         HashMap<String, String> params = new HashMap<>();
 

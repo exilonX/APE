@@ -3,6 +3,7 @@ package com.app.ape.volley.request.handlers;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.app.activities.MainActivity;
 import com.app.ape.constants.Const;
@@ -35,6 +36,7 @@ public class HandleIsWinner implements HandleJsonObjectResponse {
         FragmentStatePagerAdapter adapter;
         try {
             String isWinner = response.getString(Const.KEY_IS_WINNER);
+            Log.d("CheckWinner", isWinner);
 
             if (isWinner.equals("true")) {
                 // launch winner reply fragment
