@@ -27,6 +27,14 @@ android {
     }
 }
 
+repositories {
+    mavenCentral();
+
+    maven {
+        url "https://repo.commonsware.com.s3.amazonaws.com"
+    }
+}
+
 dependencies {
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.google.code.gson:gson:2.3'
@@ -37,4 +45,11 @@ dependencies {
     compile files('libs/httpcore-4.3.3.jar')
     compile files('libs/httpmime-4.3.6.jar')
     compile files('libs/httpclient-4.3.6.jar')
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+
+    compile('com.commonsware.cwac:camera-v9:0.6.+') {
+        exclude module: 'support-v4'
+    }
+
+    compile 'com.android.support:support-v4:18.0.+'
 }

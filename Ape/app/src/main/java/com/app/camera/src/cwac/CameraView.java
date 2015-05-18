@@ -148,20 +148,17 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
                 resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);
 
-
-
         if (width > 0 && height > 0) {
             if (camera != null) {
                 Camera.Size newSize=null;
-
                 // Get same aspect ratio
-                CameraUtils.CameraSizes sizes = CameraUtils.getHighestSimilarSizes(
-                        camera.getParameters(), width, height);
-                if (sizes != null) {
-                    newSize = sizes.getPreviewSize();
-                    pictureSize = sizes.getPictureSize();
-                }
-                else {
+//                CameraUtils.CameraSizes sizes = CameraUtils.getHighestSimilarSizes(
+//                        camera.getParameters(), width, height);
+//                if (sizes != null) {
+//                    newSize = sizes.getPreviewSize();
+//                    pictureSize = sizes.getPictureSize();
+//                }
+//                else {
                     try {
                         if (getHost().getRecordingHint() != CameraHost.RecordingHint.STILL_ONLY) {
                             // Camera.Size deviceHint=
@@ -171,12 +168,12 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
                             // height,
                             // camera.getParameters());
 
-                            newSize =
-                                    getHost().getPreferredPreviewSizeForVideo(getDisplayOrientation(),
-                                            width,
-                                            height,
-                                            camera.getParameters(),
-                                            null);
+                            newSize=
+                            getHost().getPreferredPreviewSizeForVideo(getDisplayOrientation(),
+                                    width,
+                                    height,
+                                    camera.getParameters(),
+                                    null);
 
                             // if (newSize != null) {
                             // android.util.Log.wtf("CameraView",
@@ -187,18 +184,19 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
                         }
 
                         if (newSize == null || newSize.width * newSize.height < 65536) {
-                            newSize =
+                            newSize=
                                     getHost().getPreviewSize(getDisplayOrientation(),
                                             width, height,
                                             camera.getParameters());
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         android.util.Log.e(getClass().getSimpleName(),
                                 "Could not work with camera parameters?",
                                 e);
                         // TODO get this out to library clients
                     }
-                }
+//                }
 
                 if (newSize != null) {
                     if (previewSize == null) {
@@ -301,18 +299,11 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
                 previewParams=camera.getParameters();
 
                 Camera.Parameters pictureParams=camera.getParameters();
+                Camera.Size pictureSize=
+                        xact.host.getPictureSize(xact, pictureParams);
 
-                Camera.Size cameraPictureSize = null;
-
-                if (pictureSize != null) {
-                    cameraPictureSize = pictureSize;
-                }
-                else {
-                    cameraPictureSize = xact.host.getPictureSize(xact, pictureParams);
-                }
-
-                pictureParams.setPictureSize(cameraPictureSize.width,
-                        cameraPictureSize.height);
+                pictureParams.setPictureSize(pictureSize.width,
+                        pictureSize.height);
                 pictureParams.setPictureFormat(ImageFormat.JPEG);
 
                 if (xact.flashMode != null) {

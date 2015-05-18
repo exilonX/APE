@@ -41,7 +41,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+
 
 public class CameraFragmentCWAC extends CameraFragment {
 
@@ -179,11 +179,15 @@ public class CameraFragmentCWAC extends CameraFragment {
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
-        setHasOptionsMenu(true);
+
+        setHasOptionsMenu(false);
+
         CurrentCameraHost host = new CurrentCameraHost(getActivity());
         host.useSingleShotMode();
+
         setHost(host);
     }
+
 
     boolean isSingleShotProcessing() {
         return(singleShotProcessing);
@@ -225,12 +229,13 @@ public class CameraFragmentCWAC extends CameraFragment {
 
         @Override
         public void saveImage(PictureTransaction xact, byte[] image) {
-
+            Log.d("CAPTURE", "Fragment CWAC save image");
             if (useSingleShotMode()) {
                 singleShotProcessing=false;
                 takePicture = true;
 
                 Log.d(className, "Saved the image");
+
                 final BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inSampleSize = 8;
                 // TO DO: Do the proper scaling with inJustDecodeBonds
@@ -318,7 +323,7 @@ public class CameraFragmentCWAC extends CameraFragment {
             takePicture = true;
         }
 
-//        @Override
+        //        @Override
 //        public void saveImage(PictureTransaction xact, byte[] bitmap) {
 //        }
 
