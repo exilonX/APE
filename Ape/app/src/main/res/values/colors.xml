@@ -11,5 +11,6 @@
     <color name="timestamp">#a0a3a7</color>
     <color name="black">#000000</color>
     <color name="comment_bg">#FAFAFA</color>
+    <color name="camerabkg">#CBB298</color>
 
 </resources>

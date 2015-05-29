@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.app.ape.volley.request.ConstRequest;
 import com.app.fragments.CameraFragmentCWAC;
+import com.app.fragments.CameraFragmentIntent;
 import com.app.fragments.ChallengeFragment;
 import com.app.fragments.FeedFragment;
 
@@ -27,7 +28,7 @@ public class WinnerTabPaggerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 // return CameraFragment or Reply Fragment Based on the reply
-                return CameraFragmentCWAC.newInstance(false, ConstRequest.POST_CHALLENGE);
+                return CameraFragmentIntent.newInstance(ConstRequest.POST_CHALLENGE);
             case 1:
                 return new ChallengeFragment();
 

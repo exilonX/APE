@@ -1,12 +1,6 @@
 package com.app.fragments.adapter;
 
 
-import com.app.ape.constants.Const;
-import com.app.ape.volley.request.ConstRequest;
-import com.app.ape.volley.request.VolleyRequests;
-import com.app.ape.volley.request.handlers.HandleHasReplied;
-import com.app.fragments.CameraFragmentCWAC;
-import com.app.fragments.CameraFragmentOld;
 import com.app.fragments.ChallengeFragment;
 import com.app.fragments.FeedFragment;
 import com.app.fragments.LoadingFragment;

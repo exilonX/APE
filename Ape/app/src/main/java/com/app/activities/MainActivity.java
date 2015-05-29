@@ -18,11 +18,13 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -58,6 +60,7 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 
     String SENDER_ID = "342496740600";
     static final String TAG = "GCM Demo";
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
 
 
     @Override
@@ -108,14 +111,8 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
 				});
 		tab.setAdapter(tabAdapter);
 
-
-        // TODO should check if he is a winner then check if he replied
-        // if he is not the winner
-
-
         checkWinner();
 
-		
 		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
@@ -146,6 +143,21 @@ public class MainActivity extends FragmentActivity implements FragmentSwitchList
         return pref.getString(Const.KEY_USR_SHARED, null);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment != null)
+                fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void callCameraIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,
+                CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
 
     @Override
     protected void onResume() {

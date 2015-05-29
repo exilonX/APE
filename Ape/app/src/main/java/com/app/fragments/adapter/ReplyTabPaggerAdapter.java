@@ -7,9 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.app.ape.constants.Const;
 import com.app.ape.helper.CommentTag;
-import com.app.ape.volley.request.ConstRequest;
-import com.app.ape.volley.request.VolleyRequests;
-import com.app.ape.volley.request.handlers.HandleHasReplied;
 import com.app.fragments.ChallengeFragment;
 import com.app.fragments.FeedFragment;
 import com.app.fragments.LoadingFragment;
