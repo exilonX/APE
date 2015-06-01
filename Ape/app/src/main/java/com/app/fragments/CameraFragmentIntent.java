@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -78,9 +82,6 @@ public class CameraFragmentIntent extends Fragment {
 
         View rootView = inflater.inflate(R.layout.camera_layout, container, false);
 
-        RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.cameraRel1);
-
-
         button = (ImageButton)rootView.findViewById(R.id.btnCameraOpen);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -94,22 +95,16 @@ public class CameraFragmentIntent extends Fragment {
         sendButton = (Button)rootView.findViewById(R.id.send_button);
         cancelButton = (Button)rootView.findViewById(R.id.cancel_button);
 
-        imageView = new ImageView(getActivity());
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT));
+        imageView = (ImageView) rootView.findViewById(R.id.preview);
 
         // deal with the fac that after calling an intent on some devices the app is restarted
         // and on create is called again
         if (bitmap != null && image != null) {
             imageView.setImageBitmap(bitmap);
+            scaleImage(imageView);
             onClickCancelButton();
             onClickSendButton(image);
         }
-
-        rl.addView(imageView);
-
-
 
         this.pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         this.editor = pref.edit();
@@ -130,7 +125,7 @@ public class CameraFragmentIntent extends Fragment {
             Bitmap bmp = (Bitmap) data.getExtras().get("data");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] byteArray = stream.toByteArray();
 
             // convert byte array to Bitmap
@@ -143,6 +138,9 @@ public class CameraFragmentIntent extends Fragment {
 
             // do whatever with the bitmap
             imageView.setImageBitmap(bitmap);
+            Log.d("BITMAP SIZE", "Width " + bitmap.getWidth() + "Height " + bitmap.getHeight());
+
+            scaleImage(imageView);
 
             this.image = getOutputMediaFile();
             try {
@@ -157,6 +155,63 @@ public class CameraFragmentIntent extends Fragment {
             onClickCancelButton();
             onClickSendButton(image);
         }
+    }
+
+    private void scaleImage(ImageView view)
+    {
+        // Get the ImageView and its bitmap
+        Drawable drawing = view.getDrawable();
+        if (drawing == null) {
+            return; // Checking for null & return, as suggested in comments
+        }
+        Bitmap bitmap = ((BitmapDrawable)drawing).getBitmap();
+
+        // Get current dimensions AND the desired bounding box
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int bounding = dpToPx(250);
+        Log.i("Test", "original width = " + Integer.toString(width));
+        Log.i("Test", "original height = " + Integer.toString(height));
+        Log.i("Test", "bounding = " + Integer.toString(bounding));
+
+        // Determine how much to scale: the dimension requiring less scaling is
+        // closer to the its side. This way the image always stays inside your
+        // bounding box AND either x/y axis touches it.
+        float xScale = ((float) bounding) / width;
+        float yScale = ((float) bounding) / height;
+        float scale = (xScale <= yScale) ? xScale : yScale;
+        Log.i("Test", "xScale = " + Float.toString(xScale));
+        Log.i("Test", "yScale = " + Float.toString(yScale));
+        Log.i("Test", "scale = " + Float.toString(scale));
+
+        // Create a matrix for the scaling and add the scaling data
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        // Create a new bitmap and convert it to a format understood by the ImageView
+        Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        width = scaledBitmap.getWidth(); // re-use
+        height = scaledBitmap.getHeight(); // re-use
+        BitmapDrawable result = new BitmapDrawable(scaledBitmap);
+        Log.i("Test", "scaled width = " + Integer.toString(width));
+        Log.i("Test", "scaled height = " + Integer.toString(height));
+
+        // Apply the scaled bitmap
+        view.setImageDrawable(result);
+
+        // Now change ImageView's dimensions to match the scaled image
+        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) view.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        view.setLayoutParams(params);
+
+        Log.i("Test", "done");
+    }
+
+    private int dpToPx(int dp)
+    {
+        float density = getActivity().getResources().getDisplayMetrics().density;
+        return Math.round((float)dp * density);
     }
 
 
@@ -217,6 +272,7 @@ public class CameraFragmentIntent extends Fragment {
 
                                 UploadFileToServer upload = new UploadFileToServer(item, data, activity, username, url);
                                 upload.execute();
+                                restartFragmentPreview();
                             }
                         });
 
