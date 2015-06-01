@@ -17,19 +17,33 @@ public class FullImageFragment extends Fragment {
 	
 	String imageUrl;
 	ImageLoader imageLoader;
+    private static String imageUrlKey = "ImageURL";
+    private static String imageLoaderKey = "ImageLoader";
 	
-	public FullImageFragment(String imageUrl) {
-		this.imageUrl = imageUrl;
-		this.imageLoader	= AppController.getInstance().getImageLoader();
-	}
-	
+//	public FullImageFragment(String imageUrl) {
+//		this.imageUrl = imageUrl;
+//		this.imageLoader	= AppController.getInstance().getImageLoader();
+//	}
+
+    public static FullImageFragment newInstance(String imageUrl) {
+        FullImageFragment frg = new FullImageFragment();
+        Bundle bundleArgs = new Bundle();
+        bundleArgs.putString(imageUrlKey, imageUrl);
+        frg.setArguments(bundleArgs);
+        return frg;
+    }
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		RelativeLayout linear = (RelativeLayout) inflater.inflate(R.layout.full_image, container, false);
-		
+
+        Bundle args = getArguments();
+        this.imageUrl = args.getString(imageUrlKey);
+        this.imageLoader = AppController.getInstance().getImageLoader();
+
 		FeedImageView feedImgView = (FeedImageView) linear.findViewById(R.id.feedImage2);
-		feedImgView.setImageUrl(imageUrl, imageLoader);
+        feedImgView.setImageUrl(imageUrl, imageLoader);
 		feedImgView.setVisibility(View.VISIBLE);
 		feedImgView.setResponseObserver(new FeedImageView.ResponseObserver() {
 			@Override

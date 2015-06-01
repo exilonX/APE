@@ -163,7 +163,7 @@ public class CustomAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				// TODO AICISEA CONTINUARE CU FULL SCREEN IMAGE VIEW
 				FragmentSwitchListener activ = (FragmentSwitchListener)activity;
-				Fragment commentFrag = new FullImageFragment(url);
+				Fragment commentFrag = FullImageFragment.newInstance(url);
 				activ.replaceFragment(commentFrag);
 			}
 		});

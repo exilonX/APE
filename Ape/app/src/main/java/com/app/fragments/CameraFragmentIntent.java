@@ -1,5 +1,6 @@
 package com.app.fragments;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.activities.MainActivity;
@@ -55,7 +57,8 @@ public class CameraFragmentIntent extends Fragment {
 
     private SharedPreferences pref = null;
     private SharedPreferences.Editor editor = null;
-    private Bitmap bitmap;
+    private static Bitmap bitmap = null;
+    private static File image = null;
 
     public static CameraFragmentIntent newInstance(String uploadURL) {
         CameraFragmentIntent f = new CameraFragmentIntent();
@@ -69,8 +72,14 @@ public class CameraFragmentIntent extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        Log.d("RESTART", "INtra in onCreateView");
+        boolean b = bitmap == null;
+        Log.d("RESTART", "Bitmap is null: " + b);
 
         View rootView = inflater.inflate(R.layout.camera_layout, container, false);
+
+        RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.cameraRel1);
+
 
         button = (ImageButton)rootView.findViewById(R.id.btnCameraOpen);
 
@@ -85,7 +94,22 @@ public class CameraFragmentIntent extends Fragment {
         sendButton = (Button)rootView.findViewById(R.id.send_button);
         cancelButton = (Button)rootView.findViewById(R.id.cancel_button);
 
-        imageView = (ImageView) rootView.findViewById(R.id.imagePreview);
+        imageView = new ImageView(getActivity());
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT));
+
+        // deal with the fac that after calling an intent on some devices the app is restarted
+        // and on create is called again
+        if (bitmap != null && image != null) {
+            imageView.setImageBitmap(bitmap);
+            onClickCancelButton();
+            onClickSendButton(image);
+        }
+
+        rl.addView(imageView);
+
+
 
         this.pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         this.editor = pref.edit();
@@ -100,6 +124,7 @@ public class CameraFragmentIntent extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("RESTART", "INtra in onActivityResult In Fragment");
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             Bitmap bmp = (Bitmap) data.getExtras().get("data");
@@ -113,9 +138,13 @@ public class CameraFragmentIntent extends Fragment {
             bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
                     byteArray.length);
 
+            Log.d("RESTART","in onActivityResult se ia bitmap-ul");
+
+
             // do whatever with the bitmap
             imageView.setImageBitmap(bitmap);
-            File image = getOutputMediaFile();
+
+            this.image = getOutputMediaFile();
             try {
                 FileOutputStream fos = new FileOutputStream(image);
                 fos.write(byteArray);
@@ -132,9 +161,12 @@ public class CameraFragmentIntent extends Fragment {
 
 
     private void restartFragmentPreview() {
-        Log.d("RestartFragment", "Intra aici in restartFragmentPreview");
+        Log.d("Restart", "Intra aici in restartFragmentPreview");
         sendButton.setVisibility(View.INVISIBLE);
         cancelButton.setVisibility(View.INVISIBLE);
+        bitmap = null;
+        image = null;
+        imageView.setImageDrawable(null);
         // clear image view
     }
 
